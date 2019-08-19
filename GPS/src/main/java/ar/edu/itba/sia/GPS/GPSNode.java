@@ -1,7 +1,7 @@
-package ar.edu.itba.sia.gps;
+package ar.edu.itba.sia.GPS;
 
-import ar.edu.itba.sia.gps.api.Rule;
-import ar.edu.itba.sia.gps.api.State;
+import ar.edu.itba.sia.interfaces.Rule;
+import ar.edu.itba.sia.interfaces.State;
 
 public class GPSNode {
 

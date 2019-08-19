@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="d199cfef-4133-470f-88d4-dc4d5d56d2f1" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/GPS/src/main/java/ar/edu/itba/sia/GPS/GPSEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/GPS/src/main/java/ar/edu/itba/sia/GPS/GPSEngine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GPS/src/main/java/ar/edu/itba/sia/GPS/GPSNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/GPS/src/main/java/ar/edu/itba/sia/GPS/GPSNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GPS/src/main/java/ar/edu/itba/sia/GPS/SearchStrategy.java" beforeDir="false" afterPath="$PROJECT_DIR$/GPS/src/main/java/ar/edu/itba/sia/GPS/SearchStrategy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interfaces/src/main/java/ar/edu/itba/sia/interfaces/api/Heuristic.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/interfaces/src/main/java/ar/edu/itba/sia/interfaces/api/Problem.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/interfaces/src/main/java/ar/edu/itba/sia/interfaces/api/Rule.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/interfaces/src/main/java/ar/edu/itba/sia/interfaces/api/State.java" beforeDir="false" />
+    </list>
+    <ignored path="$PROJECT_DIR$/out/" />
+    <ignored path="$PROJECT_DIR$/interfaces/target/" />
+    <ignored path="$PROJECT_DIR$/target/" />
+    <ignored path="$PROJECT_DIR$/problem/target/" />
+    <ignored path="$PROJECT_DIR$/GPS/target/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DefaultGradleProjectSettings">
+    <option name="testRunner" value="GRADLE" />
+    <option name="delegatedBuild" value="true" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/GPS/src/main/java/ar/edu/itba/sia/GPS/GPSEngine.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="630">
+              <caret line="56" column="16" selection-start-line="56" selection-start-column="16" selection-end-line="56" selection-end-column="16" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/GPS/src/main/java/ar/edu/itba/sia/GPS/GPSNode.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="90">
+              <caret line="7" column="24" selection-start-line="7" selection-start-column="24" selection-end-line="7" selection-end-column="24" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/GPS/src/main/java/ar/edu/itba/sia/GPS/SearchStrategy.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="45">
+              <caret line="3" column="34" selection-start-line="3" selection-start-column="34" selection-end-line="3" selection-end-column="34" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/GPS/src/main/java/ar/edu/itba/sia/GPS/GPSNode.java" />
+        <option value="$PROJECT_DIR$/GPS/src/main/java/ar/edu/itba/sia/GPS/SearchStrategy.java" />
+        <option value="$PROJECT_DIR$/GPS/src/main/java/ar/edu/itba/sia/GPS/GPSEngine.java" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectConfigurationFiles">
+    <option name="files">
+      <list>
+        <option value="$PROJECT_DIR$/interfaces/interfaces.iml" />
+        <option value="$PROJECT_DIR$/simpleSquares.iml" />
+        <option value="$PROJECT_DIR$/problem/problem.iml" />
+        <option value="$PROJECT_DIR$/GPS/GPS.iml" />
+        <option value="$PROJECT_DIR$/.idea/vcs.xml" />
+        <option value="$PROJECT_DIR$/.idea/compiler.xml" />
+        <option value="$PROJECT_DIR$/.idea/encodings.xml" />
+        <option value="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_11.xml" />
+        <option value="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="10" />
+    <option name="y" value="20" />
+    <option name="width" value="1260" />
+    <option name="height" value="952" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="simpleSquares" type="b2602c69:ProjectViewProjectNode" />
+              <item name="simpleSquares" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="simpleSquares" type="b2602c69:ProjectViewProjectNode" />
+              <item name="simpleSquares" type="462c0819:PsiDirectoryNode" />
+              <item name="GPS" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="simpleSquares" type="b2602c69:ProjectViewProjectNode" />
+              <item name="simpleSquares" type="462c0819:PsiDirectoryNode" />
+              <item name="GPS" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="simpleSquares" type="b2602c69:ProjectViewProjectNode" />
+              <item name="simpleSquares" type="462c0819:PsiDirectoryNode" />
+              <item name="GPS" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="simpleSquares" type="b2602c69:ProjectViewProjectNode" />
+              <item name="simpleSquares" type="462c0819:PsiDirectoryNode" />
+              <item name="GPS" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="simpleSquares" type="b2602c69:ProjectViewProjectNode" />
+              <item name="simpleSquares" type="462c0819:PsiDirectoryNode" />
+              <item name="GPS" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="itba" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="simpleSquares" type="b2602c69:ProjectViewProjectNode" />
+              <item name="simpleSquares" type="462c0819:PsiDirectoryNode" />
+              <item name="GPS" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="itba" type="462c0819:PsiDirectoryNode" />
+              <item name="sia" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="simpleSquares" type="b2602c69:ProjectViewProjectNode" />
+              <item name="simpleSquares" type="462c0819:PsiDirectoryNode" />
+              <item name="GPS" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="itba" type="462c0819:PsiDirectoryNode" />
+              <item name="sia" type="462c0819:PsiDirectoryNode" />
+              <item name="GPS" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d199cfef-4133-470f-88d4-dc4d5d56d2f1" name="Default Changelist" comment="" />
+      <created>1566236631010</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1566236631010</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-1" y="0" width="1602" height="861" extended-state="6" />
+    <layout>
+      <window_info id="Image Layers" />
+      <window_info id="Designer" />
+      <window_info id="UI Designer" />
+      <window_info id="Capture Tool" />
+      <window_info id="Favorites" side_tool="true" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24967825" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Version Control" />
+      <window_info anchor="bottom" id="Terminal" />
+      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="right" id="Palette" />
+      <window_info anchor="right" id="Theme Preview" />
+      <window_info anchor="right" id="Maven" />
+      <window_info anchor="right" id="Capture Analysis" />
+      <window_info anchor="right" id="Palette&#9;" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/GPS/src/main/java/ar/edu/itba/sia/GPS/SearchStrategy.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="34" selection-start-line="3" selection-start-column="34" selection-end-line="3" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GPS/src/main/java/ar/edu/itba/sia/GPS/GPSNode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="7" column="24" selection-start-line="7" selection-start-column="24" selection-end-line="7" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GPS/src/main/java/ar/edu/itba/sia/GPS/GPSEngine.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="630">
+          <caret line="56" column="16" selection-start-line="56" selection-start-column="16" selection-end-line="56" selection-end-column="16" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
