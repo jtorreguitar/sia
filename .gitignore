@@ -27,5 +27,8 @@ hs_err_pid*
 *.swo
 .vimrc
 
+#intellij
+*.iml
+
 # whatever
 *.lst
