@@ -1,0 +1,37 @@
+package ar.edu.itba.sia.problem;
+
+import ar.edu.itba.sia.interfaces.Problem;
+import ar.edu.itba.sia.interfaces.Rule;
+import ar.edu.itba.sia.interfaces.State;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class SSProblem implements Problem {
+
+    private final SSState initialState;
+    private final SSRule[] rules;
+
+    public SSProblem(SSState initialState) {
+        this.initialState = initialState;
+        this.rules = null; // figure out rule initialization.
+    }
+
+    @Override
+    public State getInitState() {
+        return initialState;
+    }
+
+    @Override
+    public boolean isGoal(State state) {
+        if(!(state instanceof SSState))
+            return false;
+        return Arrays.stream(((SSState) state).getSquares())
+                        .allMatch(s -> s.getPosition().equals(s.getGoal()));
+    }
+
+    @Override
+    public List<Rule> getRules() {
+        return null;
+    }
+}

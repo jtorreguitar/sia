@@ -2,7 +2,6 @@ package ar.edu.itba.sia.interfaces;
 
 import java.util.Optional;
 
-
 /**
  * Rule interface.
  */
