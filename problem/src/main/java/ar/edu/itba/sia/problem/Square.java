@@ -35,16 +35,21 @@ public class Square {
         if(!(obj instanceof Square))
             return false;
         final Square square = (Square) obj;
-        return this.position.equals(square.position) &&
-                this.goal.equals(square.goal);
+        // under the rules of the game, two different squares should
+        // never have the same position.
+        return this.position.equals(square.position); 
     }
 
-    public static Square withNewDirection(final Square oldSquare, final Direction newDirection) {
+    public Square changeDirection(final Square oldSquare, final Direction newDirection) {
         return new Square(oldSquare, newDirection);
     }
 
-    public static Square changePosition(final Square oldSquare, final Direction direction) {
-        return new Square(oldSquare, findNewPosition(oldSquare.position, direction));
+    public Square move() {
+        return new Square(this, findNewPosition(position, direction));
+    }
+
+    public Square push(final Square pushingSquare) {
+        return new Square(this, findNewPosition(position, pushingSquare.direction));
     }
 
     /* package */ static Point findNewPosition(final Point oldPosition, final Direction direction) {
@@ -67,5 +72,9 @@ public class Square {
 
     /* package */ Point getPosition() {
         return position;
+    }
+
+    /* package */ Direction getDirection() {
+        return direction;
     }
 }

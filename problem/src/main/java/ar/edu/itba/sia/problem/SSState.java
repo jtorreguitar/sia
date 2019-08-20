@@ -23,8 +23,8 @@ public class SSState implements State {
         this.squares = state.squares;
     }
 
-    private static SSState setSquareInBoard(SSState state, Square square) {
-        SSState ret = new SSState(state);
+    private SSState setSquareInBoard(Square square) {
+        SSState ret = new SSState(this);
         ret.squares[square.getId()] = square;
         validateSquareSetting(ret, square);
         ret.board[square.getPosition().x][square.getPosition().y] = square.getId();
@@ -56,15 +56,27 @@ public class SSState implements State {
                 Arrays.equals(this.squares, state.squares);
     }
 
-    public Optional<State> move(Square square, Direction direction) {
-        final Square newSquare = Square.changePosition(square, direction);
+    public Optional<State> moveSquare(Square square, Direction direction) {
+        final Square newSquare = square.move();
         if(isOutOfBounds(newSquare.getPosition()))
             return Optional.empty();
         if(board[newSquare.getPosition().x][newSquare.getPosition().y] == EMPTY_CELL)
-            return Optional.of(setSquareInBoard(this, newSquare));
-        final Optional<State> maybeState = move(findNeighbour(square, direction), direction);
+            return Optional.of(setSquareInBoard(newSquare));
+        final Optional<State> maybeState = pushSquare(square, findNeighbour(square, direction));
         if(maybeState.isPresent())
-            return Optional.of(setSquareInBoard((SSState)maybeState.get(), newSquare));
+            return Optional.of(((SSState)maybeState.get()).setSquareInBoard(newSquare));
+        return Optional.empty();
+    }
+
+    private Optional<State> pushSquare(Square pushingSquare, Square pushedSquare) {
+        final Square newSquare = pushedSquare.push(pushingSquare);
+        if(isOutOfBounds(newSquare.getPosition()))
+            return Optional.empty();
+        if(board[newSquare.getPosition().x][newSquare.getPosition().y] == EMPTY_CELL)
+            return Optional.of(setSquareInBoard(newSquare));
+        final Optional<State> maybeState = pushSquare(pushingSquare, findNeighbour(pushedSquare, pushingSquare.getDirection()));
+        if(maybeState.isPresent())
+            return Optional.of(((SSState)maybeState.get()).setSquareInBoard(newSquare));
         return Optional.empty();
     }
 
