@@ -1,0 +1,22 @@
+{
+    "size": "n:int", // size of nxn board
+    "blocks": [
+        {
+            "initialPosition": {
+                "x": "initialX:int",
+                "y": "initialY:int"
+            },
+            "goal": {
+                "x": "goalX:int",
+                "y": "goalY:int"
+            },
+            "direction": "UP|DOWN|LEFT|RIGHT"
+        }
+    ],
+    "directionChangePoints": [
+        {
+            "x": "x:int",
+            "y": "y:int"
+        }
+    ]
+}
