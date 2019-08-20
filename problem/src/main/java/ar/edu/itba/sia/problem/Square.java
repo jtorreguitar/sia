@@ -44,12 +44,10 @@ public class Square {
     }
 
     public static Square changePosition(final Square oldSquare, final Direction direction) {
-        if(oldSquare.direction != direction)
-            return null;
         return new Square(oldSquare, findNewPosition(oldSquare.position, direction));
     }
 
-    private static Point findNewPosition(final Point oldPosition, final Direction direction) {
+    /* package */ static Point findNewPosition(final Point oldPosition, final Direction direction) {
         switch (direction) {
             case UP: return new Point(oldPosition.x, oldPosition.y + 1);
             case DOWN: return new Point(oldPosition.x, oldPosition.y - 1);
