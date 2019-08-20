@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public class SSState implements State {
 
-    private static final int EMPTY_CELL = -1;
+    public static final int EMPTY_CELL = -1;
 
     private final int[][] board;
     private final Square[] squares;
@@ -85,11 +85,15 @@ public class SSState implements State {
     }
 
     private Square getSquare(Point position) {
-        return squares[getSquareId(position)];
+        return getSquare(getSquareId(position));
     }
 
     private int getSquareId(Point position) {
         return board[position.x][position.y];
+    }
+
+    public Square getSquare(int id) {
+        return squares[id];
     }
 
     @Override
@@ -99,5 +103,9 @@ public class SSState implements State {
 
     public Square[] getSquares() {
         return squares;
+    }
+
+    public int[][] getBoard() {
+        return board;
     }
 }

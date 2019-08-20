@@ -6,6 +6,7 @@ import ar.edu.itba.sia.interfaces.State;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.LinkedList;
 
 public class SSProblem implements Problem {
 
@@ -14,7 +15,7 @@ public class SSProblem implements Problem {
 
     public SSProblem(SSState initialState) {
         this.initialState = initialState;
-        this.rules = null; // figure out rule initialization.
+        this.rules = initializeRules(initialState);
     }
 
     @Override
@@ -33,5 +34,23 @@ public class SSProblem implements Problem {
     @Override
     public List<Rule> getRules() {
         return null;
+    }
+
+    private SSRule[] initializeRules(SSState state) {
+        final LinkedList<SSRule> rules = new LinkedList<>();
+        for(int[] row : state.getBoard())
+            for(int element : row)
+                if(element != SSState.EMPTY_CELL)
+                    rules.addAll(rulesForSquare(state.getSquare(element)));
+        return rules.toArray(new SSRule[] { });
+    }
+
+    private List<SSRule> rulesForSquare(Square square) {
+        final LinkedList<SSRule> rules = new LinkedList<>();
+        rules.add(new SSRule(Direction.UP, square));
+        rules.add(new SSRule(Direction.DOWN, square));
+        rules.add(new SSRule(Direction.LEFT, square));
+        rules.add(new SSRule(Direction.RIGHT, square));
+        return rules;
     }
 }
