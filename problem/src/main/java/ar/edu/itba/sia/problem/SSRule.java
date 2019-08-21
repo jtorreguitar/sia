@@ -28,6 +28,8 @@ public class SSRule implements Rule {
 
     @Override
     public Optional<State> apply(State state) {
-        return null;
+        if(!(state instanceof SSState))
+            return Optional.empty();
+        return ((SSState)state).moveSquare(square, direction);
     }
 }
