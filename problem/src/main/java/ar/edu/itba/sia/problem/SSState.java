@@ -3,8 +3,7 @@ package ar.edu.itba.sia.problem;
 import ar.edu.itba.sia.interfaces.State;
 
 import java.awt.*;
-import java.util.Arrays;
-import java.util.Optional;
+import java.util.*;
 
 public class SSState implements State {
 
@@ -19,8 +18,14 @@ public class SSState implements State {
     }
 
     private SSState(SSState state) {
-        this.board = state.board;
-        this.squares = state.squares;
+        this.board = Arrays.stream(state.board).map(i -> Arrays.copyOf(i, i.length)).toArray(int[][]::new);
+        this.squares = newSquareArray(state.squares);
+    }
+
+    private Square[] newSquareArray(Square[] squares) {
+        return Arrays.stream(squares)
+                    .map(s -> new Square(s))
+                    .toArray(Square[]::new);
     }
 
     private SSState setSquareInBoard(Square square) {

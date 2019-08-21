@@ -16,18 +16,25 @@ public class Square {
         this.direction = direction;
     }
 
+    public Square(Square square) {
+        this.id = square.id;
+        this.goal = new Point(square.goal);
+        this.position = new Point(square.position);
+        this.direction = square.direction;
+    }
+
     private Square(final Square square, Direction direction) {
         this.id = square.id;
-        this.goal = square.goal;
-        this.position = square.position;
+        this.goal = new Point(square.goal);
+        this.position = new Point(square.position);
         this.direction = direction;
     }
 
     private Square(final Square square, Point point) {
         this.id = square.id;
-        this.goal = square.goal;
+        this.goal = new Point(square.goal);
         this.direction = square.direction;
-        this.position = point;
+        this.position = new Point(point);
     }
 
     @Override
@@ -35,9 +42,7 @@ public class Square {
         if(!(obj instanceof Square))
             return false;
         final Square square = (Square) obj;
-        // under the rules of the game, two different squares should
-        // never have the same position.
-        return this.position.equals(square.position); 
+        return this.id == square.id; 
     }
 
     public Square changeDirection(final Square oldSquare, final Direction newDirection) {
