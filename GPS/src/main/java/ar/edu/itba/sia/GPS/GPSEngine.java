@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 import ar.edu.itba.sia.GPS.searchAlgorithms.BFSAlgorithm;
 import ar.edu.itba.sia.GPS.searchAlgorithms.SearchAlgorithm;
+import ar.edu.itba.sia.GPS.searchAlgorithms.SearchAlgorithmFactory;
 import ar.edu.itba.sia.interfaces.*;
 
 public class GPSEngine {

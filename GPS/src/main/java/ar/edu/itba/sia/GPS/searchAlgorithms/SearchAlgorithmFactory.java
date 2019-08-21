@@ -1,12 +1,20 @@
+package ar.edu.itba.sia.GPS.searchAlgorithms;
+
+import ar.edu.itba.sia.GPS.GPSNode;
+import ar.edu.itba.sia.interfaces.Problem;
+
 import java.util.Deque;
+import java.util.LinkedList;
 
 public class SearchAlgorithmFactory {
 
-    public SearchAlgorithm newBFS(Problem problem) {
-        return new CollectionBasedSearch(problem, Deque::getFirst, Deque::offer);
+    public static SearchAlgorithm newBFS(Problem problem) {
+        final Deque<GPSNode> deque = new LinkedList<>();
+        return new CollectionBasedAlgorithm(problem, deque, deque::pollFirst, deque::offerLast);
     }
 
-    public SearchAlgorithm newDFS(Problem problem) {
-        return new CollectionBasedSearch(problem, Deque::pop, Deque::push);
+    public static SearchAlgorithm newDFS(Problem problem) {
+        final Deque<GPSNode> deque = new LinkedList<>();
+        return new CollectionBasedAlgorithm(problem, deque, deque::pop, deque::push);
     }
 }
