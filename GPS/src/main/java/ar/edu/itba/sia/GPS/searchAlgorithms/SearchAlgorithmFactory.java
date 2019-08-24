@@ -17,4 +17,19 @@ public class SearchAlgorithmFactory {
         final Deque<GPSNode> deque = new LinkedList<>();
         return new CollectionBasedAlgorithm(problem, deque, deque::pop, deque::push);
     }
+
+    public static SearchAlgorithm newIDDFS(Problem problem) {
+        final Deque<GPSNode> deque = new LinkedList<>();
+        return new CollectionBasedAlgorithm(problem, deque, deque::pop, deque::push);
+    }
+
+    public static SearchAlgorithm newGREEDY(Problem problem) {
+        final Deque<GPSNode> deque = new LinkedList<>();
+        return new CollectionBasedAlgorithm(problem, deque, deque::pop, deque::push);
+    }
+
+    public static SearchAlgorithm newASTAR(Problem problem) {
+        final Deque<GPSNode> deque = new LinkedList<>();
+        return new CollectionBasedAlgorithm(problem, deque, deque::pop, deque::push);
+    }
 }
