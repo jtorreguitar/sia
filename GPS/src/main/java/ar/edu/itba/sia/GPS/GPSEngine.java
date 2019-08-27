@@ -2,89 +2,85 @@ package ar.edu.itba.sia.GPS;
 
 import java.util.*;
 
-import ar.edu.itba.sia.GPS.searchAlgorithms.BFSAlgorithm;
-import ar.edu.itba.sia.GPS.searchAlgorithms.SearchAlgorithm;
-import ar.edu.itba.sia.GPS.searchAlgorithms.SearchAlgorithmFactory;
+import ar.edu.itba.sia.GPS.searchAlgorithms.*;
 import ar.edu.itba.sia.interfaces.*;
 
 public class GPSEngine {
 
-	private final List<GPSNode> borderNodes = new LinkedList<>();
-	private final Set<GPSNode> allNodes = new HashSet<>();
-	private final Map<State, Integer> bestCosts = new HashMap<>();
-	private final Problem problem;
-	private final Heuristic heuristic;
-	private final SearchAlgorithm algorithm;
+    private List<GPSNode> borderNodes;
+    private Set<GPSNode> allNodes;
+    private SearchAlgorithm algorithm;
 
-	public GPSEngine(final Problem problem, final SearchStrategy strategy, final Heuristic heuristic) {
-        this.problem = problem;
-        this.heuristic = heuristic;
-        this.algorithm = determineAlgorithm(strategy);
-	}
+    private Metrics metricGenerator = Metrics.getInstance();
 
-	public void findSolution(Rule rule) {
+    public GPSEngine(SearchStrategy strategy) {
+        borderNodes = new LinkedList<>();
+        allNodes = new HashSet<>();
+        switch (strategy) {
+            case BFS: this.algorithm = new BFSAlgorithm();
+            case DFS: this.algorithm = new DFSAlgorithm();
+            case IDDFS: this.algorithm = new IterativeDeepeningSearch();
+            case GREEDY: this.algorithm = new GreedySearch();
+            case ASTAR: this.algorithm = new AStarSearch();
 
-		State currentState = problem.getInitState();
-		// Como vamos a manejar el tema de las reglas?
-		GPSNode currentNode = new GPSNode(currentState, 0, rule);
-		borderNodes.add(currentNode);
-		allNodes.add(currentNode);
+        }
+    }
 
-		try{
-			while( !problem.isGoal(currentState) ){
-				List<Rule> rules = problem.getRules();
+    public void findSolution(Problem p) {
+        Heuristic defaultHeuristic = (t) -> 0;
+        this.genericSearch(p, defaultHeuristic);
+    }
 
-				borderNodes.remove(0);
+    public void findSolution(Problem p, Heuristic h) {
+        this.genericSearch(p, h);
+    }
 
-				List<GPSNode> candidates = expand(rules, currentNode, heuristic);
+    private void genericSearch(Problem p, Heuristic h) {
 
-				algorithm.findSolution(candidates, borderNodes);
+        State currentState = p.getInitState();
+        GPSNode currentNode = new GPSNode(currentState, h);
+        borderNodes.add(currentNode);
+        allNodes.add(currentNode);
 
-				currentNode = borderNodes.get(0);
-				currentState = currentNode.getState();
-			}
+        try {
+            while (!p.isGoal(currentState)) {
+                List<Rule> rulesToApply = p.getRules();
 
-			// Aca habria que calcular la metrica o score del algoritmo?
-		}
+                borderNodes.remove(0);
 
-		catch (ArrayIndexOutOfBoundsException e){
-			System.out.println("No tiene solucion");
-		}
+                List<GPSNode> candidates = expand(rulesToApply, currentNode, h);
 
-		catch (IllegalArgumentException e){
-			System.out.println("No tiene solucion");
-		}
+                algorithm.findSolution(candidates, borderNodes);
 
-	}
+                currentNode = borderNodes.get(0);
+                currentState = currentNode.getState();
+            }
+            metricGenerator.computeMetrics(allNodes.size(), borderNodes.size(), currentNode);
+        }
 
-	private List<GPSNode> expand(List<Rule> rules, GPSNode currentNode, Heuristic heuristic) {
+        catch (IndexOutOfBoundsException e) {
+            System.out.println("El estado inicial no tiene solución");
+        }
+    }
 
-		LinkedList<GPSNode> candidates = new LinkedList<>();
-		State currentState = currentNode.getState();
+    public List<GPSNode> expand(List<Rule> toApply, GPSNode currentNode, Heuristic heuristic) {
 
-		for(Rule r: rules){
-			State newState = r.apply(currentState).get();
+        LinkedList<GPSNode> candidates = new LinkedList<>();
 
-			GPSNode newNode = new GPSNode(newState, r.getCost() + currentNode.getDepth(), r);
-			if (!allNodes.contains(newNode)) {
-				candidates.add(newNode);
-				allNodes.add(newNode);
-			}
-			else
-				System.out.println("metrica + 1");//aca habria que sumar la metrica
-		}
-		return candidates;
-	}
+        State currentState = currentNode.getState();
 
-	private SearchAlgorithm determineAlgorithm(SearchStrategy strategy) {
-		switch (strategy) {
-			case BFS: return SearchAlgorithmFactory.newBFS(problem);
-			case DFS: return SearchAlgorithmFactory.newDFS(problem);
-			case IDDFS: return SearchAlgorithmFactory.newIDDFS(problem);
-			case GREEDY: return SearchAlgorithmFactory.newGREEDY(problem);
-			case ASTAR: return SearchAlgorithmFactory.newASTAR(problem);
+        for (Rule r : toApply) {
+            State newState = r.apply(currentState).get();
+            GPSNode newNode = new GPSNode(newState, currentNode.getAccum() + r.getCost(),
+                    heuristic.getValue(newState), r, currentNode);
+            if (!allNodes.contains(newNode)) {
+                candidates.add(newNode);
+                allNodes.add(newNode);
+            }
+            else
+                metricGenerator.repHit();
+        }
+        return candidates;
+    }
 
-		}
-		return null;
-	}
 }

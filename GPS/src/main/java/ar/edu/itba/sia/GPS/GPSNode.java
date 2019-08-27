@@ -1,78 +1,59 @@
 package ar.edu.itba.sia.GPS;
 
+import ar.edu.itba.sia.interfaces.Heuristic;
 import ar.edu.itba.sia.interfaces.Rule;
 import ar.edu.itba.sia.interfaces.State;
 
 public class GPSNode {
 
-	private State state;
-	private GPSNode parent;
-	private Integer cost;
-	private Rule generationRule;
-	private Integer depth = 0;
+    private State state;
+    private double accum;
+    private double heuristicValue;
+    private Rule rule;
+    private GPSNode parent;
 
-	public GPSNode(State state, Integer cost, Rule generationRule) {
-		this.state = state;
-		this.cost = cost;
-		this.generationRule = generationRule;
-	}
+    public GPSNode(State initialState, Heuristic h) {
+        state = initialState;
+        accum = 0;
+        heuristicValue = h.getValue(initialState);
+    }
 
-	public GPSNode getParent() {
-		return parent;
-	}
+    public GPSNode(State state, double accum, double heuristic, Rule rule,
+                       GPSNode parent) {
+        this.state = state;
+        this.accum = accum;
+        this.heuristicValue = heuristic;
+        this.rule = rule;
+        this.parent = parent;
+    }
 
-	public void setParent(GPSNode parent) {
-		this.parent = parent;
-		this.depth = parent.getDepth() + 1;
-	}
+    public GPSNode getParent() {
+        return parent;
+    }
 
-	public State getState() {
-		return state;
-	}
+    public State getState() {
+        return state;
+    }
 
-	public Integer getCost() {
-		return cost;
-	}
+    public double getAccum() {
+        return accum;
+    }
 
-	public Integer getDepth() {
-		return depth;
-	}
+    public double getHeuristicValue() {
+        return heuristicValue;
+    }
 
-	@Override
-	public String toString() {
-		return state.toString();
-	}
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-	public String getSolution() {
-		if (this.parent == null) {
-			return this.state.toString();
-		}
-		return this.parent.getSolution() + this.state.toString();
-	}
+        GPSNode that = (GPSNode) o;
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		GPSNode other = (GPSNode) obj;
-		if (state == null) {
-			if (other.state != null)
-				return false;
-		} else if (!state.equals(other.state))
-			return false;
-		return true;
-	}
+        return this.getState().equals(that.getState());
+    }
 
-	public Rule getGenerationRule() {
-		return generationRule;
-	}
-
-	public void setGenerationRule(Rule generationRule) {
-		this.generationRule = generationRule;
-	}
-
+    @Override
+    public int hashCode() {
+        return this.getState().hashCode();
+    }
 }
