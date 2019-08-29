@@ -10,7 +10,7 @@ public class GPSEngine {
     private List<GPSNode> borderNodes;
     private Set<GPSNode> allNodes;
     private SearchAlgorithm algorithm;
-    private Map<String, Double> bestCosts;
+    private Map<GPSNode, Double> bestCosts;
 
     private Metrics metricGenerator = Metrics.getInstance();
 
@@ -59,7 +59,11 @@ public class GPSEngine {
                 currentState = currentNode.getState();
             }
             cost = Double.valueOf( metricGenerator.computeMetrics(allNodes.size(), borderNodes.size(), currentNode) );
-            bestCosts.put(algorithm.toString(),cost);
+            if( bestCosts.containsKey(currentNode) && bestCosts.get(currentNode) < cost ) {
+                // do nothing
+            }
+            else
+                bestCosts.put(currentNode,cost);
         }
 
         catch (IndexOutOfBoundsException e) {
