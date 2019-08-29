@@ -13,5 +13,8 @@ public class GreedySearch implements SearchAlgorithm {
         new CriteriaSearch().findSolution(candidates, borderNodes, comp);
     }
 
-
+    @Override
+    public String toString() {
+        return "Greedy";
+    }
 }

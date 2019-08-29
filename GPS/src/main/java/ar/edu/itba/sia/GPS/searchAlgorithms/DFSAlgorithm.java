@@ -13,4 +13,9 @@ public class DFSAlgorithm implements SearchAlgorithm {
     public void findSolution(List<GPSNode> candidates, List<GPSNode> borderNodes) {
         borderNodes.addAll(0, candidates);
     }
+
+    @Override
+    public String toString() {
+        return "DFS";
+    }
 }

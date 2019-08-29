@@ -20,6 +20,11 @@ public class IterativeDeepeningSearch implements SearchAlgorithm {
     }
 
     @Override
+    public String toString() {
+        return "IDDFS";
+    }
+
+    @Override
     public void findSolution(List<GPSNode> candidates, List<GPSNode> borderNodes) {
 
         currentHeight++;

@@ -11,4 +11,5 @@ import java.util.Queue;
 
 public interface SearchAlgorithm {
     void findSolution(List<GPSNode> candidates, List<GPSNode> borderNodes);
+    String toString();
 }

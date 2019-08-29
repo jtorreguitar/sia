@@ -14,4 +14,9 @@ public class AStarSearch implements SearchAlgorithm {
 
         new CriteriaSearch().findSolution(candidates, borderNodes, comparator);
     }
+
+    @Override
+    public String toString() {
+        return "ASTAR";
+    }
 }

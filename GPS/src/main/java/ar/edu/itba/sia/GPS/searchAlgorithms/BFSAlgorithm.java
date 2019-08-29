@@ -13,4 +13,9 @@ public class BFSAlgorithm implements SearchAlgorithm {
     public void findSolution(List<GPSNode> candidates, List<GPSNode> borderNodes) {
         borderNodes.addAll(candidates);
     }
+
+    @Override
+    public String toString() {
+        return "BFS";
+    }
 }

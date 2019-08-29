@@ -16,7 +16,7 @@ public class Metrics {
         private Metrics () {
         }
 
-        public void computeMetrics(final Integer statesGeneratedCount, final Integer borderNodesCount,
+        public double computeMetrics(final Integer statesGeneratedCount, final Integer borderNodesCount,
                                    final GPSNode solutionNode) {
 
             List<Pair<String, Double>> statesChosen = new LinkedList<>();
@@ -64,6 +64,8 @@ public class Metrics {
                 System.out.println(pair.getKey());
                 i++;
             }
+
+            return cost;
         }
 
         public void repHit() {

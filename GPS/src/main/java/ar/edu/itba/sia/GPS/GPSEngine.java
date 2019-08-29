@@ -10,12 +10,14 @@ public class GPSEngine {
     private List<GPSNode> borderNodes;
     private Set<GPSNode> allNodes;
     private SearchAlgorithm algorithm;
+    private Map<String, Double> bestCosts;
 
     private Metrics metricGenerator = Metrics.getInstance();
 
     public GPSEngine(SearchStrategy strategy) {
         borderNodes = new LinkedList<>();
         allNodes = new HashSet<>();
+        bestCosts = new HashMap<>();
         switch (strategy) {
             case BFS: this.algorithm = new BFSAlgorithm();
             case DFS: this.algorithm = new DFSAlgorithm();
@@ -37,6 +39,7 @@ public class GPSEngine {
 
     private void genericSearch(Problem p, Heuristic h) {
 
+        Double cost;
         State currentState = p.getInitState();
         GPSNode currentNode = new GPSNode(currentState, h);
         borderNodes.add(currentNode);
@@ -55,7 +58,8 @@ public class GPSEngine {
                 currentNode = borderNodes.get(0);
                 currentState = currentNode.getState();
             }
-            metricGenerator.computeMetrics(allNodes.size(), borderNodes.size(), currentNode);
+            cost = Double.valueOf( metricGenerator.computeMetrics(allNodes.size(), borderNodes.size(), currentNode) );
+            bestCosts.put(algorithm.toString(),cost);
         }
 
         catch (IndexOutOfBoundsException e) {
