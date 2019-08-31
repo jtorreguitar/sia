@@ -7,14 +7,23 @@ import ar.edu.itba.sia.interfaces.*;
 
 public class GPSEngine {
 
+    // test variables
+    private long explosionCounter;
+    private boolean isFailed;
+    private boolean isFinished;
+    private GPSNode solutionNode;
+    private SearchStrategy strategy;
+    private Map<GPSNode, Double> bestCosts;
+
+    // useful variables
     private List<GPSNode> borderNodes;
     private Set<GPSNode> allNodes;
     private SearchAlgorithm algorithm;
-    private Map<GPSNode, Double> bestCosts;
 
     private Metrics metricGenerator = Metrics.getInstance();
 
     public GPSEngine(SearchStrategy strategy) {
+        this.strategy = strategy;
         borderNodes = new LinkedList<>();
         allNodes = new HashSet<>();
         bestCosts = new HashMap<>();
@@ -24,7 +33,6 @@ public class GPSEngine {
             case IDDFS: this.algorithm = new IterativeDeepeningSearch();
             case GREEDY: this.algorithm = new GreedySearch();
             case ASTAR: this.algorithm = new AStarSearch();
-
         }
     }
 
@@ -64,10 +72,12 @@ public class GPSEngine {
             }
             else
                 bestCosts.put(currentNode,cost);
+            setTestVariables(true, currentNode);
         }
 
         catch (IndexOutOfBoundsException e) {
             System.out.println("El estado inicial no tiene solución");
+            setTestVariables(false, null);
         }
     }
 
@@ -79,7 +89,7 @@ public class GPSEngine {
 
         for (Rule r : toApply) {
             State newState = r.apply(currentState).get();
-            GPSNode newNode = new GPSNode(newState, currentNode.getAccum() + r.getCost(),
+            GPSNode newNode = new GPSNode(newState, currentNode.getDepth() + r.getCost(),
                     heuristic.getValue(newState), r, currentNode);
             if (!allNodes.contains(newNode)) {
                 candidates.add(newNode);
@@ -91,4 +101,38 @@ public class GPSEngine {
         return candidates;
     }
 
+    private void setTestVariables(boolean isFailed, GPSNode solutionNode) {
+        this.explosionCounter = allNodes.size() - borderNodes.size();
+        this.isFinished = true;
+        this.isFailed = isFailed;
+        this.solutionNode = solutionNode;
+    }
+
+    /* package */ long getExplosionCounter() {
+        return this.explosionCounter;
+    }
+
+    /* package */ boolean isFailed() {
+        return this.isFailed;
+    }
+
+    /* package */ boolean isFinished() {
+        return this.isFinished;
+    }
+
+    /* package */ GPSNode getSolutionNode() {
+        return this.solutionNode;
+    }
+
+    /* package */ SearchStrategy getStrategy() {
+        return this.strategy;
+    }
+
+    /* package */ Map<GPSNode, Double> getBestCosts() {
+        return this.bestCosts;
+    }
+
+    /* package */ List<GPSNode> getOpen() {
+        return this.borderNodes;
+    }
 }

@@ -35,7 +35,7 @@ public class GPSNode {
         return state;
     }
 
-    public double getAccum() {
+    public double getDepth() {
         return accum;
     }
 
@@ -55,5 +55,9 @@ public class GPSNode {
     @Override
     public int hashCode() {
         return this.getState().hashCode();
+    }
+
+    public Integer getCost() {
+        return rule.getCost();
     }
 }

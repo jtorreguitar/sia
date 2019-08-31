@@ -27,12 +27,12 @@ public class Metrics {
 
             System.out.println("Estados generados: " + statesGeneratedCount);
 
-            double cost = solutionNode.getAccum();
+            double cost = solutionNode.getDepth();
 
             int height = 0;
             GPSNode currentNode = solutionNode;
             while (currentNode != null) {
-                statesChosen.add(0, new Pair<>(currentNode.getState().toString(), currentNode.getAccum()));
+                statesChosen.add(0, new Pair<>(currentNode.getState().toString(), currentNode.getDepth()));
                 currentNode = currentNode.getParent();
                 height++;
             }
