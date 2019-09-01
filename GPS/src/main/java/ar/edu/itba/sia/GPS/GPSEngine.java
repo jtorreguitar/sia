@@ -19,6 +19,7 @@ public class GPSEngine {
     private List<GPSNode> borderNodes;
     private Set<GPSNode> allNodes;
     private SearchAlgorithm algorithm;
+    private Set<GPSNode> stopNodes;
 
     private Metrics metricGenerator = Metrics.getInstance();
 
@@ -27,6 +28,7 @@ public class GPSEngine {
         borderNodes = new LinkedList<>();
         allNodes = new HashSet<>();
         bestCosts = new HashMap<>();
+        stopNodes = new HashSet<>();
         switch (strategy) {
             case BFS: this.algorithm = new BFSAlgorithm();
             case DFS: this.algorithm = new DFSAlgorithm();
@@ -61,12 +63,17 @@ public class GPSEngine {
 
                 List<GPSNode> candidates = expand(rulesToApply, currentNode, h);
 
+                //System.out.println("CHANGE");
+
                 algorithm.findSolution(candidates, borderNodes);
+
+                //System.out.println("border nodes size> " + borderNodes.size());
+                //System.out.println("all nodes size>" + allNodes.size());
 
                 currentNode = borderNodes.get(0);
                 currentState = currentNode.getState();
             }
-            cost = Double.valueOf( metricGenerator.computeMetrics(allNodes.size(), borderNodes.size(), currentNode) );
+            cost = metricGenerator.computeMetrics(allNodes.size(), borderNodes.size(), currentNode);
             if( bestCosts.containsKey(currentNode) && bestCosts.get(currentNode) < cost ) {
                 // do nothing
             }
@@ -86,18 +93,27 @@ public class GPSEngine {
         LinkedList<GPSNode> candidates = new LinkedList<>();
 
         State currentState = currentNode.getState();
-
+        int counter = 0;
+        //System.out.println("rules to apply:" + toApply.size());
         for (Rule r : toApply) {
-            State newState = r.apply(currentState).get();
-            GPSNode newNode = new GPSNode(newState, currentNode.getDepth() + r.getCost(),
-                    heuristic.getValue(newState), r, currentNode);
-            if (!allNodes.contains(newNode)) {
-                candidates.add(newNode);
-                allNodes.add(newNode);
+            Optional<State> state = r.apply(currentState);
+            if (state.isPresent() != false) {
+                State newState = state.get();
+                GPSNode newNode = new GPSNode(newState, currentNode.getDepth() + r.getCost(),
+                        heuristic.getValue(newState), r, currentNode);
+                //System.out.println(allNodes.contains(newNode) ? "is present" : "not present");
+                if (!allNodes.contains(newNode)) {
+                    candidates.add(newNode);
+                    allNodes.add(newNode);
+                } else
+                    metricGenerator.repHit();
             }
-            else
-                metricGenerator.repHit();
+            counter++;
+            //System.out.println("applied rule:" + counter + " of " + toApply.size());
         }
+        //System.out.println("candidate added : " + candidates.size());
+
+        if ( candidates.size() == 0 && !allNodes.contains(currentNode) ) {allNodes.add(currentNode);}
         return candidates;
     }
 

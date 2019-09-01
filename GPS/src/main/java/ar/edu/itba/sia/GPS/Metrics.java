@@ -1,9 +1,8 @@
 package ar.edu.itba.sia.GPS;
 
-import javafx.util.Pair;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Metrics {
 
@@ -19,7 +18,7 @@ public class Metrics {
         public double computeMetrics(final Integer statesGeneratedCount, final Integer borderNodesCount,
                                    final GPSNode solutionNode) {
 
-            List<Pair<String, Double>> statesChosen = new LinkedList<>();
+            Map<String, Double> statesChosen = new HashMap<>();
 
             long runningTimeEnd = System.currentTimeMillis();
 
@@ -32,7 +31,7 @@ public class Metrics {
             int height = 0;
             GPSNode currentNode = solutionNode;
             while (currentNode != null) {
-                statesChosen.add(0, new Pair<>(currentNode.getState().toString(), currentNode.getDepth()));
+                statesChosen.put( currentNode.getState().toString(), currentNode.getDepth() );
                 currentNode = currentNode.getParent();
                 height++;
             }
@@ -51,7 +50,7 @@ public class Metrics {
 
             int i = 0;
             double prevAccum = 0;
-            for (Pair<String, Double> pair : statesChosen) {
+            for (Map.Entry<String, Double> pair : statesChosen.entrySet()) {
                 if (i != 0) {
                     System.out.println("Movimiento " + i + ":\n");
                     System.out.println("Costo " + (pair.getValue() - prevAccum) + "\n");

@@ -1,11 +1,6 @@
 package ar.edu.itba.sia.GPS.walk.rules;
 
 import ar.edu.itba.sia.GPS.Pair;
-import ar.edu.itba.sia.interfaces.Rule;
-import ar.edu.itba.sia.interfaces.State;
-import ar.edu.itba.sia.GPS.walk.WalkingState;
-
-import java.util.Optional;
 
 public class WalkingMoveStraightRule extends WalkingMoveRule {
 

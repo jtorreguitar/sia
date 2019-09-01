@@ -4,6 +4,8 @@ import ar.edu.itba.sia.interfaces.Heuristic;
 import ar.edu.itba.sia.interfaces.Rule;
 import ar.edu.itba.sia.interfaces.State;
 
+import java.util.Optional;
+
 public class GPSNode {
 
     private State state;
