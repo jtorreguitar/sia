@@ -30,6 +30,7 @@ public abstract class E8MoveRule implements Rule {
                 ans = new E8State(blank,array);
             }
         }
+        /*
         System.out.print(e8state);
 
         System.out.print("  |  \n  v  \n");
@@ -37,6 +38,8 @@ public abstract class E8MoveRule implements Rule {
         System.out.print(ans);
 
         System.out.print('\n');
+
+         */
         return Optional.of(ans);
     }
 }

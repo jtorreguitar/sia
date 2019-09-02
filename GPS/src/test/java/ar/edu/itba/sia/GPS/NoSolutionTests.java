@@ -30,10 +30,10 @@ public class NoSolutionTests {
 		greedyEngine = new GPSEngine(SearchStrategy.GREEDY);
 
 		System.out.println("Running NoSolution engines");
+		runEngineTiming(problem, aStarEngine, "aStar", E8HeuristicB.instance());
 		runEngineTiming(problem, bfsEngine, "bfs", null);
 		runEngineTiming(problem, dfsEngine, "dfs", null);
 		runEngineTiming(problem, iddfsEngine, "iddfs", null);
-		runEngineTiming(problem, aStarEngine, "aStar", E8HeuristicB.instance());
 		runEngineTiming(problem, greedyEngine, "greedy", E8HeuristicB.instance());
 		System.out.println("All engine ran, running the tests");
 	}

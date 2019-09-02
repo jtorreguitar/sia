@@ -2,6 +2,7 @@ package ar.edu.itba.sia.GPS;
 
 import java.util.*;
 
+import ar.edu.itba.sia.GPS.eightpuzzle.E8Problem;
 import ar.edu.itba.sia.GPS.searchAlgorithms.*;
 import ar.edu.itba.sia.interfaces.*;
 
@@ -30,16 +31,16 @@ public class GPSEngine {
         bestCosts = new HashMap<>();
         stopNodes = new HashSet<>();
         switch (strategy) {
-            case BFS: this.algorithm = new BFSAlgorithm();
-            case DFS: this.algorithm = new DFSAlgorithm();
-            case IDDFS: this.algorithm = new IterativeDeepeningSearch();
-            case GREEDY: this.algorithm = new GreedySearch();
-            case ASTAR: this.algorithm = new AStarSearch();
+            case BFS: this.algorithm = new BFSAlgorithm(); break;
+            case DFS: this.algorithm = new DFSAlgorithm(); break;
+            case IDDFS: this.algorithm = new IterativeDeepeningSearch(); break;
+            case GREEDY: this.algorithm = new GreedySearch(); break;
+            case ASTAR: this.algorithm = new AStarSearch(); break;
         }
     }
 
     public void findSolution(Problem p) {
-        Heuristic defaultHeuristic = (t) -> 0;
+        Heuristic defaultHeuristic = t -> 0;
         this.genericSearch(p, defaultHeuristic);
     }
 
@@ -55,6 +56,7 @@ public class GPSEngine {
         borderNodes.add(currentNode);
         allNodes.add(currentNode);
 
+
         try {
             while (!p.isGoal(currentState)) {
                 List<Rule> rulesToApply = p.getRules();
@@ -62,6 +64,8 @@ public class GPSEngine {
                 borderNodes.remove(0);
 
                 List<GPSNode> candidates = expand(rulesToApply, currentNode, h);
+
+                explosionCounter++;
 
                 //System.out.println("CHANGE");
 
@@ -74,17 +78,17 @@ public class GPSEngine {
                 currentState = currentNode.getState();
             }
             cost = metricGenerator.computeMetrics(allNodes.size(), borderNodes.size(), currentNode);
+            setTestVariables(false, currentNode);
             if( bestCosts.containsKey(currentNode) && bestCosts.get(currentNode) < cost ) {
                 // do nothing
             }
             else
                 bestCosts.put(currentNode,cost);
-            setTestVariables(true, currentNode);
         }
 
         catch (IndexOutOfBoundsException e) {
             System.out.println("El estado inicial no tiene solución");
-            setTestVariables(false, null);
+            setTestVariables(true, null);
         }
     }
 
@@ -93,13 +97,12 @@ public class GPSEngine {
         LinkedList<GPSNode> candidates = new LinkedList<>();
 
         State currentState = currentNode.getState();
-        int counter = 0;
         //System.out.println("rules to apply:" + toApply.size());
         for (Rule r : toApply) {
             Optional<State> state = r.apply(currentState);
-            if (state.isPresent() != false) {
+            if (state.isPresent()) {
                 State newState = state.get();
-                GPSNode newNode = new GPSNode(newState, currentNode.getDepth() + r.getCost(),
+                GPSNode newNode = new GPSNode(newState, currentNode.getDepth(), currentNode.getCost(),
                         heuristic.getValue(newState), r, currentNode);
                 //System.out.println(allNodes.contains(newNode) ? "is present" : "not present");
                 if (!allNodes.contains(newNode)) {
@@ -108,7 +111,7 @@ public class GPSEngine {
                 } else
                     metricGenerator.repHit();
             }
-            counter++;
+
             //System.out.println("applied rule:" + counter + " of " + toApply.size());
         }
         //System.out.println("candidate added : " + candidates.size());
@@ -144,8 +147,8 @@ public class GPSEngine {
         return this.strategy;
     }
 
-    /* package */ Map<GPSNode, Double> getBestCosts() {
-        return this.bestCosts;
+    /* package */ Set<GPSNode> getBestCosts() {
+        return this.allNodes;
     }
 
     /* package */ List<GPSNode> getOpen() {

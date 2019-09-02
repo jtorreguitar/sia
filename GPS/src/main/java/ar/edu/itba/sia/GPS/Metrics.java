@@ -18,7 +18,7 @@ public class Metrics {
         public double computeMetrics(final Integer statesGeneratedCount, final Integer borderNodesCount,
                                    final GPSNode solutionNode) {
 
-            Map<String, Double> statesChosen = new HashMap<>();
+            Map<String, Integer> statesChosen = new HashMap<>();
 
             long runningTimeEnd = System.currentTimeMillis();
 
@@ -26,12 +26,12 @@ public class Metrics {
 
             System.out.println("Estados generados: " + statesGeneratedCount);
 
-            double cost = solutionNode.getDepth();
+            double cost = solutionNode.getCost();
 
             int height = 0;
             GPSNode currentNode = solutionNode;
             while (currentNode != null) {
-                statesChosen.put( currentNode.getState().toString(), currentNode.getDepth() );
+                statesChosen.put( currentNode.getState().toString(), currentNode.getCost() );
                 currentNode = currentNode.getParent();
                 height++;
             }
@@ -50,11 +50,10 @@ public class Metrics {
 
             int i = 0;
             double prevAccum = 0;
-            for (Map.Entry<String, Double> pair : statesChosen.entrySet()) {
+            for (Map.Entry<String, Integer> pair : statesChosen.entrySet()) {
                 if (i != 0) {
                     System.out.println("Movimiento " + i + ":\n");
-                    System.out.println("Costo " + (pair.getValue() - prevAccum) + "\n");
-                    prevAccum = pair.getValue();
+                    System.out.println("Costo " + (pair.getValue()) + "\n");
                 }
                 else
                     System.out.println("Estado inicial:\n");

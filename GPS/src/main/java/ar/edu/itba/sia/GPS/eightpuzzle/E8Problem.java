@@ -20,7 +20,7 @@ public class E8Problem implements Problem {
     private State initState;
 
     private static List<Rule> rules;
-    /*package*/ static E8State solution;
+    /*package*/public static E8State solution;
     static{
         rules = new ArrayList<>();
         rules.add(new E8MoveDownRule());
