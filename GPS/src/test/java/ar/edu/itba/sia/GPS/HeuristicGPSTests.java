@@ -23,8 +23,8 @@ public class HeuristicGPSTests {
 		worseHeuristicEngine = new GPSEngine(SearchStrategy.ASTAR);
 
 		System.out.println("Running Heuristic engines");
-		runEngineTiming(new E8Problem(true), betterHeuristicEngine, "Better heuristic",  E8HeuristicB.instance());
-		runEngineTiming(new E8Problem(true), worseHeuristicEngine, "Worse heuristic", E8HeuristicA.instance());
+		runEngineTiming(new E8Problem(false), betterHeuristicEngine, "Better heuristic",  E8HeuristicB.instance());
+		runEngineTiming(new E8Problem(false), worseHeuristicEngine, "Worse heuristic", E8HeuristicA.instance());
 		System.out.println("Heuristic engine ran, running the tests");
 		
 	}

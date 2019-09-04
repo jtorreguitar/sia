@@ -3,6 +3,7 @@ package ar.edu.itba.sia.GPS;
 import java.util.*;
 
 import ar.edu.itba.sia.GPS.eightpuzzle.E8Problem;
+import ar.edu.itba.sia.GPS.eightpuzzle.E8State;
 import ar.edu.itba.sia.GPS.searchAlgorithms.*;
 import ar.edu.itba.sia.interfaces.*;
 
@@ -55,7 +56,6 @@ public class GPSEngine {
         GPSNode currentNode = new GPSNode(currentState, h);
         borderNodes.add(currentNode);
         allNodes.add(currentNode);
-
 
         try {
             while (!p.isGoal(currentState)) {

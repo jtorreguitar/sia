@@ -3,16 +3,14 @@ package ar.edu.itba.sia.GPS;
 import ar.edu.itba.sia.interfaces.Heuristic;
 import ar.edu.itba.sia.interfaces.Rule;
 import ar.edu.itba.sia.interfaces.State;
-import org.omg.PortableInterceptor.INACTIVE;
 
-import java.util.Optional;
 
 public class GPSNode {
 
     private State state;
     private Integer cost;
     private Integer depth;
-    private double heuristicValue;
+    private Integer heuristicValue;
     private Rule rule;
     private GPSNode parent;
 
@@ -23,7 +21,7 @@ public class GPSNode {
         heuristicValue = h.getValue(initialState);
     }
 
-    public GPSNode(State state, Integer depth, Integer cost, double heuristic, Rule rule,
+    public GPSNode(State state, Integer depth, Integer cost, Integer heuristic, Rule rule,
                    GPSNode parent) {
         this.state = state;
         this.depth = depth + 1;
@@ -49,7 +47,7 @@ public class GPSNode {
         return cost;
     }
 
-    public double getHeuristicValue() {
+    public Integer getHeuristicValue() {
         return heuristicValue;
     }
 

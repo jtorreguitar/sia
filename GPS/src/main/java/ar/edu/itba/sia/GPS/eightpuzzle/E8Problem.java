@@ -72,7 +72,7 @@ public class E8Problem implements Problem {
             array[5] = new Pair(2,1); //OK
             array[6] = new Pair(0,0); //OK
             array[7] = new Pair(1,0); //0K 2,0*/
-    
+
             initState = new E8State(new Pair(0,1),array); //0K  0.2
             /**
              * 7 8 5    1 2 3
