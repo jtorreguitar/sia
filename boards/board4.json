@@ -1,0 +1,28 @@
+{
+    "size": "6",
+    "blocks": [
+        {
+            "initialPosition": {
+                "x": "3",
+                "y": "0"
+            },
+            "goal": {
+                "x": "2",
+                "y": "5"
+            },
+            "direction": "UP"
+        },
+        {
+            "initialPosition": {
+                "x": "4",
+                "y": "3"
+            },
+            "goal": {
+                "x": "0",
+                "y": "3"
+            },
+            "direction": "LEFT"
+        }
+    ],
+    "directionChangePoints": []
+}

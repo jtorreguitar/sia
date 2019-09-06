@@ -42,7 +42,7 @@ public class BoardParser {
 
     private void fillBoard(final int[][] board, final Square[] squares) {
         for(Square square : squares)
-            board[square.getPosition().x][square.getPosition().y] = square.getId();
+            board[square.getPosition().y][square.getPosition().x] = square.getId();
     }
 
     private int[][] emptyBoard(int size) {

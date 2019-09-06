@@ -1,0 +1,39 @@
+{
+    "size": "5",
+    "blocks": [
+        {
+            "initialPosition": {
+                "x": "2",
+                "y": "4"
+            },
+            "goal": {
+                "x": "0",
+                "y": "1"
+            },
+            "direction": "DOWN"
+        },
+        {
+            "initialPosition": {
+                "x": "3",
+                "y": "1"
+            },
+            "goal": {
+                "x": "1",
+                "y": "1"
+            },
+            "direction": "UP"
+        },
+        {
+            "initialPosition": {
+                "x": "4",
+                "y": "2"
+            },
+            "goal": {
+                "x": "1",
+                "y": "2"
+            },
+            "direction": "LEFT"
+        }
+    ],
+    "directionChangePoints": []
+}

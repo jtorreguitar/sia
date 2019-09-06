@@ -4,13 +4,6 @@ import ar.edu.itba.sia.interfaces.Heuristic;
 import ar.edu.itba.sia.interfaces.State;
 
 public class HeuristicWeightedDistance implements Heuristic {
-
-	private final SSState state;
-	
-	public HeuristicWeightedDistance(SSState state) {
-		this.state = state;
-	}
-
 	@Override
 	public Integer getValue(State state) {
 		if(!(state instanceof SSState))

@@ -9,14 +9,14 @@ public class Square {
     private final Point position;
     private final Direction direction;
 
-    public Square(final int id, final Point goal, final Point position, final Direction direction) {
+    /* package */ Square(final int id, final Point goal, final Point position, final Direction direction) {
         this.id = id;
         this.goal = goal;
         this.position = position;
         this.direction = direction;
     }
 
-    public Square(Square square) {
+    /* package */ Square(Square square) {
         this.id = square.id;
         this.goal = new Point(square.goal);
         this.position = new Point(square.position);
@@ -42,18 +42,18 @@ public class Square {
         if(!(obj instanceof Square))
             return false;
         final Square square = (Square) obj;
-        return this.id == square.id; 
+        return this.id == square.id && this.position.equals(square.position);
     }
 
     public Square changeDirection(final Square oldSquare, final Direction newDirection) {
         return new Square(oldSquare, newDirection);
     }
 
-    public Square move() {
+    /* package */ Square move() {
         return new Square(this, findNewPosition(position, direction));
     }
 
-    public Square push(final Square pushingSquare) {
+    /* package */ Square push(final Square pushingSquare) {
         return new Square(this, findNewPosition(position, pushingSquare.direction));
     }
 

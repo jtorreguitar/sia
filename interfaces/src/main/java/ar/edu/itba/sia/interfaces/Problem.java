@@ -8,7 +8,7 @@ import java.util.List;
 public interface Problem {
 
 	/**
-	 * Provides the initial state for the GPS to start from.
+	 * Provides the initial state for the gps to start from.
 	 * 
 	 * @return The initial state of the problem to be solved.
 	 */

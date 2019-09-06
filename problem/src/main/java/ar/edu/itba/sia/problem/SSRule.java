@@ -9,12 +9,10 @@ public class SSRule implements Rule {
 
     private static final int SINGLE_MOVE_COST = 1;
 
-    private final Direction direction;
-    private final Square square;
+    private final int squareId;
 
-    public SSRule(final Direction direction, final Square square) {
-        this.direction = direction;
-        this.square = square;
+    public SSRule(int squareId) {
+        this.squareId = squareId;
     }
     @Override
     public Integer getCost() {
@@ -23,13 +21,13 @@ public class SSRule implements Rule {
 
     @Override
     public String getName() {
-        return square.getPosition().toString() + direction.toString();
+        return "move " + squareId;
     }
 
     @Override
     public Optional<State> apply(State state) {
         if(!(state instanceof SSState))
             return Optional.empty();
-        return ((SSState)state).moveSquare(square, direction);
+        return ((SSState)state).moveSquare(squareId);
     }
 }
