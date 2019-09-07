@@ -24,7 +24,7 @@
   <dependencies>
     <dependency>
       <groupId>ar.edu.itba.sia</groupId>
-      <artifactId>GPS</artifactId>
+      <artifactId>gps</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
     <dependency>

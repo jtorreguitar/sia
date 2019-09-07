@@ -7,7 +7,7 @@
     <packaging>pom</packaging>
     <name>simpleSquares</name>
     <modules>
-        <module>GPS</module>
+        <module>gps</module>
         <module>problem</module>
         <module>interfaces</module>
         <module>main</module>

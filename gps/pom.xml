@@ -8,10 +8,10 @@
   </parent>
 
   <groupId>ar.edu.itba.sia</groupId>
-  <artifactId>GPS</artifactId>
+  <artifactId>gps</artifactId>
   <version>1.0</version>
 
-  <name>GPS</name>
+  <name>gps</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

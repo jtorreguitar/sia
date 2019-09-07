@@ -16,7 +16,8 @@ public class BoardParser {
         final JsonBoard jsonBoard = new Gson().fromJson(parser.parse(reader), JsonBoard.class);
         final Square[] squares = parseSquares(jsonBoard);
         final int[][] board = parseBoard(jsonBoard, squares);
-        return new SSState(board, squares);
+        final Direction[][] directions = parseDirections(jsonBoard);
+        return new SSState(board, squares, directions);
     }
 
     private Square[] parseSquares(final JsonBoard board) {
@@ -40,6 +41,14 @@ public class BoardParser {
         return board;
     }
 
+
+    private Direction[][] parseDirections(JsonBoard jsonBoard) {
+        final Direction[][] directions = new Direction[jsonBoard.size][jsonBoard.size];
+        for(JsonDirectionChangePoint p : jsonBoard.directionChangePoints)
+            directions[p.point.y][p.point.x] = p.direction;
+        return directions;
+    }
+
     private void fillBoard(final int[][] board, final Square[] squares) {
         for(Square square : squares)
             board[square.getPosition().y][square.getPosition().x] = square.getId();
@@ -55,12 +64,17 @@ public class BoardParser {
     private class JsonBoard {
         int size;
         JsonBlock[] blocks;
-        JsonPoint[] directionChangePoints;
+        JsonDirectionChangePoint[] directionChangePoints;
     }
 
     private class JsonBlock {
         JsonPoint initialPosition;
         JsonPoint goal;
+        Direction direction;
+    }
+
+    private class JsonDirectionChangePoint {
+        JsonPoint point;
         Direction direction;
     }
 

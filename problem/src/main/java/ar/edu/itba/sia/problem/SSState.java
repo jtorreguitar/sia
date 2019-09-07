@@ -7,18 +7,21 @@ import java.util.*;
 
 public class SSState implements State {
 
-    public static final int EMPTY_CELL = -1;
+    /* package */ static final int EMPTY_CELL = -1;
 
     private final int[][] board;
+    private final Direction[][] directionChangePoints;
     private final Square[] squares;
 
-    public SSState(int[][] board, Square[] squares) {
+    /* package */ SSState(int[][] board, Square[] squares, Direction[][] directionChangePoints) {
         this.board = board;
         this.squares = squares;
+        this.directionChangePoints = directionChangePoints;
     }
 
     private SSState(SSState state) {
         this.board = Arrays.stream(state.board).map(i -> Arrays.copyOf(i, i.length)).toArray(int[][]::new);
+        this.directionChangePoints = Arrays.stream(state.directionChangePoints).map(d -> Arrays.copyOf(d, d.length)).toArray(Direction[][]::new);
         this.squares = newSquareArray(state.squares);
     }
 
@@ -71,22 +74,38 @@ public class SSState implements State {
         final Square square = getSquare(squareId);
         final SSState squareRemovedState = setEmpty(square.getPosition());
         final Square newSquare = square.move();
-        return moveOrPush(square, square, newSquare, squareRemovedState);
+        if(isOutOfBounds(newSquare.getPosition()))
+            return Optional.empty();
+        if(isDirectionChangePosition(newSquare.getPosition()))
+            return moveOrPush(square, square, newSquare.changeDirection(getDirectionChange(newSquare.getPosition())), squareRemovedState);
+        else
+            return moveOrPush(square, square, newSquare, squareRemovedState);
     }
 
     private Optional<State> pushSquare(Square pushingSquare, Square pushedSquare) {
         final Square newSquare = pushedSquare.push(pushingSquare);
         final SSState squareRemovedState = setEmpty(pushedSquare.getPosition());
-        return moveOrPush(pushingSquare, pushedSquare, newSquare, squareRemovedState);
+        if(isOutOfBounds(newSquare.getPosition()))
+            return Optional.empty();
+        if(isDirectionChangePosition(newSquare.getPosition()))
+            return moveOrPush(pushingSquare, pushedSquare, newSquare.changeDirection(getDirectionChange(newSquare.getPosition())), squareRemovedState);
+        else
+            return moveOrPush(pushingSquare, pushedSquare, newSquare, squareRemovedState);
     }
 
     private Optional<State> moveOrPush(Square pushingSquare, Square pushedSquare, Square newSquare, SSState squareRemovedState) {
-        if(isOutOfBounds(newSquare.getPosition()))
-            return Optional.empty();
         if(board[newSquare.getPosition().y][newSquare.getPosition().x] == EMPTY_CELL)
             return Optional.of(squareRemovedState.setSquareInBoard(newSquare));
         final Optional<State> maybeState = squareRemovedState.pushSquare(pushingSquare, findNeighbour(pushedSquare, pushingSquare.getDirection()));
         return maybeState.map(state -> ((SSState) state).setSquareInBoard(newSquare));
+    }
+
+    private Direction getDirectionChange(Point position) {
+        return directionChangePoints[position.y][position.x];
+    }
+
+    private boolean isDirectionChangePosition(Point position) {
+        return directionChangePoints[position.y][position.x] != null;
     }
 
     private Square findNeighbour(Square square, Direction direction) {
@@ -115,7 +134,7 @@ public class SSState implements State {
         return sb.toString();
     }
 
-    public Square[] getSquares() {
+    /* package */ Square[] getSquares() {
         return squares;
     }
 }

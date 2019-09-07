@@ -42,11 +42,13 @@ public class Square {
         if(!(obj instanceof Square))
             return false;
         final Square square = (Square) obj;
-        return this.id == square.id && this.position.equals(square.position);
+        return this.id == square.id &&
+                this.position.equals(square.position) &&
+                this.direction.equals(square.direction);
     }
 
-    public Square changeDirection(final Square oldSquare, final Direction newDirection) {
-        return new Square(oldSquare, newDirection);
+    public Square changeDirection(final Direction newDirection) {
+        return new Square(this, newDirection);
     }
 
     /* package */ Square move() {

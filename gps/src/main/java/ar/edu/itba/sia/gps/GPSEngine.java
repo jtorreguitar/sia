@@ -80,6 +80,8 @@ public class GPSEngine {
             setTestVariables(false, currentNode);
             if (!(bestCosts.containsKey(currentNode) && bestCosts.get(currentNode) < cost))
                 bestCosts.put(currentNode, cost);
+            System.out.println("solution node");
+            System.out.println(currentState.getRepresentation());
         }
         catch (IndexOutOfBoundsException e) {
             System.out.println("El estado inicial no tiene solución");
