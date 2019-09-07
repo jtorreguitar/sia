@@ -8,11 +8,13 @@ import java.util.List;
 
 public class CriteriaSearch {
 
-    public void findSolution(List<GPSNode> candidates, List<GPSNode> borderNodes, Comparator<GPSNode> criteria) {
+    public boolean findSolution(List<GPSNode> candidates, List<GPSNode> borderNodes, Comparator<GPSNode> criteria) {
 
 
         borderNodes.addAll(candidates);
         Collections.sort(borderNodes, criteria);
+
+        return false;
 //        Collections.sort(candidates, criteria);
 //
 //        for (int i=0 ; i < borderNodes.size() && !candidates.isEmpty() ; i++) {

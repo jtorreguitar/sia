@@ -11,11 +11,13 @@ public class IterativeDeepeningSearch implements SearchAlgorithm {
     private static final int HEIGHT_INCREMENT = 10;
 
     private Map<GPSNode, Integer> nodesHeight;
+    private boolean keepon = true;
 
     private int currentHeight = 0;
     private int finalHeight = HEIGHT_INCREMENT + 1;
 
     public IterativeDeepeningSearch() {
+
         nodesHeight = new HashMap<>();
     }
 
@@ -24,15 +26,24 @@ public class IterativeDeepeningSearch implements SearchAlgorithm {
         return "IDDFS";
     }
 
-    @Override
-    public void findSolution(List<GPSNode> candidates, List<GPSNode> borderNodes) {
+    public void idsSolution(List<GPSNode> candidates, List<GPSNode> borderNodes, Map<GPSNode, Integer> minNodeHeight) throws OutOfMemoryError {
 
         currentHeight++;
-        for (GPSNode n : candidates)
+        // anotamos en que iteracion vimos al nodo
+        for (GPSNode n : candidates){
             nodesHeight.put(n, currentHeight);
+            if(minNodeHeight.containsKey(n)){
+                //anotamos la altura minima en la que vimos al nodo
+                if( minNodeHeight.get(n) > n.getDepth() ){
+                    minNodeHeight.put(n,n.getDepth());
+                }
+            }else{
+                minNodeHeight.put(n,n.getDepth());
+            }
+        }
+
 
         if (currentHeight == finalHeight) {
-            borderNodes.addAll(candidates);
             GPSNode nextNodeToExplore = borderNodes.get(0);
             currentHeight = nodesHeight.get(nextNodeToExplore);
 
@@ -43,11 +54,65 @@ public class IterativeDeepeningSearch implements SearchAlgorithm {
                     break;
                 }
             }
-            if (expandHeight)
+            if (expandHeight){
+                keepon = false;
+                for (GPSNode n : borderNodes) {
+                    if (minNodeHeight.get(n) >= finalHeight) {
+                        keepon = true;
+                    }
+                }
                 finalHeight += HEIGHT_INCREMENT;
+                borderNodes.clear();
+                nodesHeight.clear();
+                //si borderNodes esta vacio, hay que reiniciar
+                if(!keepon){ throw new OutOfMemoryError(); }
+            }
+
         }
         else
             borderNodes.addAll(0, candidates);
 
+    }
+
+
+    @Override
+    public boolean findSolution(List<GPSNode> candidates, List<GPSNode> borderNodes) {
+
+        if( !candidates.isEmpty() && nodesHeight.containsKey(candidates.get(0).getParent())){
+            nodesHeight.remove(candidates.get(0).getParent());
+        }
+
+        for(GPSNode n : nodesHeight.keySet()){
+            if ( currentHeight < n.getDepth() ){
+                currentHeight = n.getDepth();
+            }
+        }
+        for (GPSNode n : candidates)
+            nodesHeight.put(n, n.getDepth());
+
+        if (currentHeight <= (finalHeight-1) ) {
+            borderNodes.addAll(candidates);
+        }
+        else{
+            if(currentHeight == finalHeight){
+                boolean expandHeight = true;
+                for (GPSNode n : borderNodes) {
+                    if (nodesHeight.get(n) != finalHeight) {
+                        expandHeight = false;
+                        break;
+                    }
+                }
+                if (expandHeight){
+                    finalHeight += HEIGHT_INCREMENT;
+                    borderNodes.clear();
+                    nodesHeight.clear();
+                    return true;
+                }
+                return false;
+            }
+            borderNodes.addAll(0, candidates);
+        }
+
+        return false;
     }
 }
