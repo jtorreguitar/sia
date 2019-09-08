@@ -1,16 +1,49 @@
 {
-    "size": "4",
+    "size": "10",
     "blocks": [
         {
             "initialPosition": {
-                "x": "0",
+                "x": "1",
                 "y": "0"
             },
             "goal": {
-                "x": "1",
-                "y": "1" 
+                "x": "0",
+                "y": "0" 
             },
             "direction": "RIGHT"
+        },
+        {
+            "initialPosition": {
+                "x": "8",
+                "y": "1"
+            },
+            "goal": {
+                "x": "9",
+                "y": "1" 
+            },
+            "direction": "LEFT"
+        },
+        {
+            "initialPosition": {
+                "x": "1",
+                "y": "9"
+            },
+            "goal": {
+                "x": "0",
+                "y": "9" 
+            },
+            "direction": "RIGHT"
+        },
+        {
+            "initialPosition": {
+                "x": "8",
+                "y": "8"
+            },
+            "goal": {
+                "x": "9",
+                "y": "9" 
+            },
+            "direction": "LEFT"
         }
     ],
     "directionChangePoints": []
