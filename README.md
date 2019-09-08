@@ -7,6 +7,7 @@ The program can change the algorithm used based on user input. The possible algo
 
 ## Running the project
 running run.sh will start the project. This script takes three arguments:
+
 1 - the algorithm to use. Options: BFS|DFS|IDDFS|ASTAR|GREEDY
 
 2 - the absolute path to the file where the simple squares board that wants to be solved is.
