@@ -19,7 +19,6 @@ public class GPSEngine {
     private List<GPSNode> borderNodes;
     private Set<GPSNode> allNodes;
     private SearchAlgorithm algorithm;
-    private Set<GPSNode> stopNodes;
 
     private Metrics metricGenerator = Metrics.getInstance();
 
@@ -28,7 +27,6 @@ public class GPSEngine {
         borderNodes = new LinkedList<>();
         allNodes = new HashSet<>();
         bestCosts = new HashMap<>();
-        stopNodes = new HashSet<>();
         switch (strategy) {
             case BFS: this.algorithm = new BFSAlgorithm(); break;
             case DFS: this.algorithm = new DFSAlgorithm(); break;
@@ -51,9 +49,11 @@ public class GPSEngine {
 
         Double cost;
         State currentState = p.getInitState();
-        GPSNode currentNode = new GPSNode(currentState, h);
+        GPSNode startNode = new GPSNode(currentState, h);
+        GPSNode currentNode = startNode;
         borderNodes.add(currentNode);
         allNodes.add(currentNode);
+        int previouslyExplored = 0;
 
         try {
             while (!p.isGoal(currentState)) {
@@ -63,62 +63,73 @@ public class GPSEngine {
 
                 List<GPSNode> candidates = expand(rulesToApply, currentNode, h);
 
-                explosionCounter++;
-
-                //System.out.println("CHANGE");
-
-                algorithm.findSolution(candidates, borderNodes);
-
-                //System.out.println("border nodes size> " + borderNodes.size());
-                //System.out.println("all nodes size>" + allNodes.size());
+                if(algorithm.findSolution(candidates, borderNodes)) {
+                    if(previouslyExplored == allNodes.size()) {
+                        setFailed();
+                        return;
+                    }
+                    previouslyExplored = resetSearch(startNode);
+                }
 
                 currentNode = borderNodes.get(0);
                 currentState = currentNode.getState();
             }
 
-            cost = metricGenerator.computeMetrics(allNodes.size(), borderNodes.size(), currentNode);
-            setTestVariables(false, currentNode);
-            if (!(bestCosts.containsKey(currentNode) && bestCosts.get(currentNode) < cost))
-                bestCosts.put(currentNode, cost);
-            System.out.println("solution node");
-            System.out.println(currentState.getRepresentation());
+            setSucceeded(currentNode);
         }
         catch (IndexOutOfBoundsException e) {
-            System.out.println("El estado inicial no tiene solución");
-            setTestVariables(true, null);
+            setFailed();
         }
     }
 
-    private List<GPSNode> expand(List<Rule> toApply, GPSNode currentNode, Heuristic heuristic) {
+    private int resetSearch(GPSNode startNode) {
+        int previouslyExplored;
+        previouslyExplored = allNodes.size();
+        borderNodes.add(startNode);
+        allNodes.clear();
+        return previouslyExplored;
+    }
 
+    private void setFailed() {
+        System.out.println("El estado inicial no tiene solución");
+        setTestVariables(true, null);
+    }
+
+    private void setSucceeded(GPSNode currentNode) {
+        Double cost;
+        cost = metricGenerator.computeMetrics(allNodes.size(), borderNodes.size(), currentNode);
+        setTestVariables(false, currentNode);
+        if (!(bestCosts.containsKey(currentNode) && bestCosts.get(currentNode) < cost))
+            bestCosts.put(currentNode, currentNode.getCost().doubleValue());
+    }
+
+    private List<GPSNode> expand(List<Rule> toApply, GPSNode currentNode, Heuristic heuristic) {
+        explosionCounter++;
         LinkedList<GPSNode> candidates = new LinkedList<>();
 
         State currentState = currentNode.getState();
-        //System.out.println("rules to apply:" + toApply.size());
         for (Rule r : toApply) {
             Optional<State> state = r.apply(currentState);
             if (state.isPresent()) {
                 State newState = state.get();
-                GPSNode newNode = new GPSNode(newState, currentNode.getDepth(), currentNode.getCost(),
-                        heuristic.getValue(newState), r, currentNode);
-                //System.out.println(allNodes.contains(newNode) ? "is present" : "not present");
-                if (!allNodes.contains(newNode)) {
-                    candidates.add(newNode);
+                GPSNode newNode = new GPSNode(newState, currentNode.getDepth() + 1, currentNode.getCost() + r.getCost(),
+                        heuristic.getValue(newState), currentNode);
+                if (!allNodes.contains(newNode) && noBetterCostFound(newNode)){
                     allNodes.add(newNode);
+                    bestCosts.put(newNode, newNode.getCost().doubleValue());
+                    candidates.add(newNode);
                 } else
                     metricGenerator.repHit();
             }
-
-            //System.out.println("applied rule:" + counter + " of " + toApply.size());
         }
-        //System.out.println("candidate added : " + candidates.size());
-
-        if ( candidates.size() == 0 && !allNodes.contains(currentNode) ) {allNodes.add(currentNode);}
         return candidates;
     }
 
+    private boolean noBetterCostFound(GPSNode newNode) {
+        return bestCosts.get(newNode) == null || bestCosts.get(newNode) >= newNode.getCost().doubleValue();
+    }
+
     private void setTestVariables(boolean isFailed, GPSNode solutionNode) {
-        this.explosionCounter = allNodes.size() - borderNodes.size();
         this.isFinished = true;
         this.isFailed = isFailed;
         this.solutionNode = solutionNode;

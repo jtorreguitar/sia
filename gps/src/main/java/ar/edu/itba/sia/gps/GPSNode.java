@@ -7,27 +7,24 @@ import ar.edu.itba.sia.interfaces.State;
 
 public class GPSNode {
 
-    private State state;
-    private Integer cost;
-    private Integer depth;
-    private Integer heuristicValue;
-    private Rule rule;
+    private final State state;
+    private final Integer cost;
+    private final Integer depth;
+    private final Integer heuristicValue;
     private GPSNode parent;
 
     public GPSNode(State initialState, Heuristic h) {
         state = initialState;
-        cost = Integer.valueOf(0);
-        depth = Integer.valueOf(0);
+        cost = 0;
+        depth = 0;
         heuristicValue = h.getValue(initialState);
     }
 
-    public GPSNode(State state, Integer depth, Integer cost, Integer heuristic, Rule rule,
-                   GPSNode parent) {
+    public GPSNode(State state, Integer depth, Integer cost, Integer heuristic, GPSNode parent) {
         this.state = state;
-        this.depth = depth + 1;
-        this.cost = cost + rule.getCost();
+        this.depth = depth;
+        this.cost = cost;
         this.heuristicValue = heuristic;
-        this.rule = rule;
         this.parent = parent;
     }
 

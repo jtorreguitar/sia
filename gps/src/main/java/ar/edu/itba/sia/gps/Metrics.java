@@ -25,8 +25,6 @@ public class Metrics {
 
             double runningTime = ((double)(runningTimeEnd - runningTimeStart)) / 1000;
 
-            // System.out.println("Estados generados: " + statesGeneratedCount);
-
             double cost = solutionNode.getCost();
 
             int height = 0;
@@ -38,19 +36,7 @@ public class Metrics {
             }
             height--;
 
-            System.out.println("Altura de la solución: " + height);
-
-            System.out.println("Número de nodos frontera: " + borderNodesCount);
-            System.out.println("Número de nodos expandidos: " + (statesGeneratedCount - borderNodesCount));
-            System.out.println("Tiempo de ejecución: " + runningTime + " segundos");
-            System.out.println("Costo de la solución: " + cost);
-            System.out.println("Repeticiones omitidas: " + repOmitted);
-            System.out.println("\n");
-            System.out.println("Movimientos elegidos para ganar: ");
-            System.out.println("\n");
-
             int i = 0;
-            double prevAccum = 0;
             for (Map.Entry<String, Integer> pair : statesChosen.entrySet()) {
                 if (i != 0) {
                     System.out.println("Movimiento " + i + ":\n");
@@ -63,6 +49,17 @@ public class Metrics {
                 System.out.println(pair.getKey());
                 i++;
             }
+
+            System.out.println("Altura de la solución: " + height);
+
+            System.out.println("Número de nodos frontera: " + borderNodesCount);
+            System.out.println("Número de nodos expandidos: " + (statesGeneratedCount - borderNodesCount));
+            System.out.println("Tiempo de ejecución: " + runningTime + " segundos");
+            System.out.println("Costo de la solución: " + cost);
+            System.out.println("Repeticiones omitidas: " + repOmitted);
+            System.out.println("\n");
+            System.out.println("Movimientos elegidos para ganar: ");
+            System.out.println("\n");
 
             return cost;
         }

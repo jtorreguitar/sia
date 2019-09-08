@@ -6,8 +6,9 @@ import java.util.*;
 
 public class BFSAlgorithm implements SearchAlgorithm {
     @Override
-    public void findSolution(List<GPSNode> candidates, List<GPSNode> borderNodes) {
+    public boolean findSolution(List<GPSNode> candidates, List<GPSNode> borderNodes) {
         borderNodes.addAll(candidates);
+        return false;
     }
 
     @Override

@@ -7,12 +7,10 @@ import java.util.List;
 
 public class AStarSearch implements SearchAlgorithm {
     @Override
-    public void findSolution(List<GPSNode> candidates, List<GPSNode> borderNodes) {
-
-
-        Comparator<GPSNode> comparator = Comparator.comparingInt(n -> ((int) n.getCost() + (int) n.getHeuristicValue()));
-
+    public boolean findSolution(List<GPSNode> candidates, List<GPSNode> borderNodes) {
+        Comparator<GPSNode> comparator = Comparator.comparingInt(n -> (n.getCost() + n.getHeuristicValue()));
         new CriteriaSearch().findSolution(candidates, borderNodes, comparator);
+        return false;
     }
 
     @Override

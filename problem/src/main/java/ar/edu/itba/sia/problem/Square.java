@@ -47,7 +47,7 @@ public class Square {
                 this.direction.equals(square.direction);
     }
 
-    public Square changeDirection(final Direction newDirection) {
+    /* package */ Square changeDirection(final Direction newDirection) {
         return new Square(this, newDirection);
     }
 

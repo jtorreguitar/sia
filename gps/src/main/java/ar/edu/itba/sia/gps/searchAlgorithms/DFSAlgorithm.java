@@ -6,8 +6,9 @@ import java.util.*;
 
 public class DFSAlgorithm implements SearchAlgorithm {
     @Override
-    public void findSolution(List<GPSNode> candidates, List<GPSNode> borderNodes) {
+    public boolean findSolution(List<GPSNode> candidates, List<GPSNode> borderNodes) {
         borderNodes.addAll(0, candidates);
+        return false;
     }
 
     @Override

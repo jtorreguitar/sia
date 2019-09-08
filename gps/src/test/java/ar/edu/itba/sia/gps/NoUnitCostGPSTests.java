@@ -36,7 +36,7 @@ public class NoUnitCostGPSTests {
 	@Test
 	public void differDepthSolution(){
 		assert aStarEngine.getSolutionNode().getDepth() > bfsEngine.getSolutionNode().getDepth() :
-				MessageFormat.format("In this case, A* have a deeper solution than BFS. " +
+				MessageFormat.format("In this case, A* has a deeper solution than BFS. " +
 								"A* depth: {0}, BFS depth: {1}",
 						aStarEngine.getSolutionNode().getDepth(), bfsEngine.getSolutionNode().getDepth());
 	}
