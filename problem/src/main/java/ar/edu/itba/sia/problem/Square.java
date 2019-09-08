@@ -47,6 +47,15 @@ public class Square {
                 this.direction.equals(square.direction);
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 17;
+        hash = hash * 31 + Integer.hashCode(this.id);
+        hash = hash * 31 + this.getPosition().hashCode();
+        hash = hash * 31 + this.direction.hashCode();
+        return hash;
+    }
+
     /* package */ Square changeDirection(final Direction newDirection) {
         return new Square(this, newDirection);
     }

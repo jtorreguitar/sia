@@ -1,0 +1,86 @@
+{
+    "size": "5",
+    "blocks": [
+        {
+            "initialPosition": {
+                "x": "0",
+                "y": "0"
+            },
+            "goal": {
+                "x": "0",
+                "y": "1"
+            },
+            "direction": "UP"
+        },
+        {
+            "initialPosition": {
+                "x": "0",
+                "y": "2"
+            },
+            "goal": {
+                "x": "1",
+                "y": "0"
+            },
+            "direction": "RIGHT"
+        },
+        {
+            "initialPosition": {
+                "x": "2",
+                "y": "0"
+            },
+            "goal": {
+                "x": "1",
+                "y": "2"
+            },
+            "direction": "LEFT"
+        },
+        {
+            "initialPosition": {
+                "x": "2",
+                "y": "2"
+            },
+            "goal": {
+                "x": "2",
+                "y": "1"
+            },
+            "direction": "DOWN"
+        }
+    ],
+    "directionChangePoints": [
+        {
+            "point": {
+                "x": "0",
+                "y": "0"
+            },
+            "direction": "UP"
+        },
+        {
+            "point": {
+                "x": "0",
+                "y": "2"
+            },
+            "direction": "RIGHT"
+        },
+        {
+            "point": {
+                "x": "2",
+                "y": "0"
+            },
+            "direction": "LEFT"
+        },
+        {
+            "point": {
+                "x": "2",
+                "y": "2"
+            },
+            "direction": "DOWN"
+        },
+        {
+            "point": {
+                "x": "0",
+                "y": "4"
+            },
+            "direction": "DOWN"
+        }
+    ]
+}

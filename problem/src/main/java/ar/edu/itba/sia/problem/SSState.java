@@ -70,6 +70,14 @@ public class SSState implements State {
                 Arrays.equals(this.squares, state.squares);
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 17;
+        hash = hash * 31 + Arrays.deepHashCode(this.board);
+        hash = hash * 31 + Arrays.hashCode(this.squares);
+        return hash;
+    }
+
     /* package */ Optional<State> moveSquare(int squareId) {
         final Square square = getSquare(squareId);
         final SSState squareRemovedState = setEmpty(square.getPosition());
