@@ -13,7 +13,8 @@ public class HeuristicInPlace implements Heuristic {
 		long count = Arrays.stream(((SSState) state).getSquares())
 				.filter(s -> s.getPosition().equals(s.getGoal()))
 				.count();
-		int ret = Math.toIntExact(count);
+		int total = Math.toIntExact(count);
+		int ret = ((SSState) state).getSquares().length - total;
 		return ret;
 	}
 
