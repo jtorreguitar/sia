@@ -14,6 +14,7 @@ public class GPSEngine {
     private GPSNode solutionNode;
     private SearchStrategy strategy;
     private Map<GPSNode, Double> bestCosts;
+    private Heuristic heuristic;
 
     // useful variables
     private List<GPSNode> borderNodes;
@@ -42,6 +43,7 @@ public class GPSEngine {
     }
 
     public void findSolution(Problem p, Heuristic h) {
+        heuristic = h;
         this.genericSearch(p, h);
     }
 
@@ -91,14 +93,15 @@ public class GPSEngine {
     }
 
     private void setFailed() {
+        metricGenerator.computeMetrics(this);
         System.out.println("El estado inicial no tiene solución");
         setTestVariables(true, null);
     }
 
     private void setSucceeded(GPSNode currentNode) {
-        Double cost;
-        cost = metricGenerator.computeMetrics(allNodes.size(), borderNodes.size(), currentNode);
         setTestVariables(false, currentNode);
+        Double cost;
+        cost = metricGenerator.computeMetrics(this);
         if (!(bestCosts.containsKey(currentNode) && bestCosts.get(currentNode) < cost))
             bestCosts.put(currentNode, currentNode.getCost().doubleValue());
     }
@@ -113,7 +116,7 @@ public class GPSEngine {
             if (state.isPresent()) {
                 State newState = state.get();
                 GPSNode newNode = new GPSNode(newState, currentNode.getDepth() + 1, currentNode.getCost() + r.getCost(),
-                        heuristic.getValue(newState), currentNode);
+                        heuristic.getValue(newState), currentNode, r);
                 if (!allNodes.contains(newNode) && noBetterCostFound(newNode)){
                     allNodes.add(newNode);
                     bestCosts.put(newNode, newNode.getCost().doubleValue());
@@ -161,5 +164,9 @@ public class GPSEngine {
 
     /* package */ List<GPSNode> getOpen() {
         return this.borderNodes;
+    }
+
+    /* package */ Heuristic getHeuristic() {
+        return this.heuristic;
     }
 }

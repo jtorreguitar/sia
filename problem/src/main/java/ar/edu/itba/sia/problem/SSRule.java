@@ -14,6 +14,7 @@ public class SSRule implements Rule {
     public SSRule(int squareId) {
         this.squareId = squareId;
     }
+
     @Override
     public Integer getCost() {
         return SINGLE_MOVE_COST;
@@ -29,5 +30,10 @@ public class SSRule implements Rule {
         if(!(state instanceof SSState))
             return Optional.empty();
         return ((SSState)state).moveSquare(squareId);
+    }
+
+    @Override
+    public String toString() {
+        return "move square " + squareId;
     }
 }
