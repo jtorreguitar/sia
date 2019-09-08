@@ -36,6 +36,9 @@ public class Metrics {
             }
             height--;
 
+            System.out.println("Movimientos elegidos para ganar: ");
+            System.out.println("\n");
+
             int i = 0;
             for (Map.Entry<String, Integer> pair : statesChosen.entrySet()) {
                 if (i != 0) {
@@ -57,8 +60,6 @@ public class Metrics {
             System.out.println("Tiempo de ejecución: " + runningTime + " segundos");
             System.out.println("Costo de la solución: " + cost);
             System.out.println("Repeticiones omitidas: " + repOmitted);
-            System.out.println("\n");
-            System.out.println("Movimientos elegidos para ganar: ");
             System.out.println("\n");
 
             return cost;

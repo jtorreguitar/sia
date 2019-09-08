@@ -8,7 +8,14 @@ import java.util.List;
 public class AStarSearch implements SearchAlgorithm {
     @Override
     public boolean findSolution(List<GPSNode> candidates, List<GPSNode> borderNodes) {
-        Comparator<GPSNode> comparator = Comparator.comparingInt(n -> (n.getCost() + n.getHeuristicValue()));
+        Comparator<GPSNode> comparator = (n1, n2) -> {
+            if (n1.getHeuristicValue() + n1.getCost() == n2.getCost() + n2.getHeuristicValue()){
+                return n1.getCost() > n2.getCost() ? -1 : 1;
+            }
+            else{
+                return (n1.getHeuristicValue() + n1.getCost()) - (n2.getCost() + n2.getHeuristicValue());
+            }
+        };
         new CriteriaSearch().findSolution(candidates, borderNodes, comparator);
         return false;
     }
