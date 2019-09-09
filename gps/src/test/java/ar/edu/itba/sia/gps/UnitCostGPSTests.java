@@ -22,18 +22,18 @@ public class UnitCostGPSTests {
 	public static void setUp(){
 		E8Problem problem = new E8Problem(false);
 		
-		bfsEngine = new GPSEngine(SearchStrategy.BFS);
-		dfsEngine = new GPSEngine(SearchStrategy.DFS);
-		iddfsEngine = new GPSEngine(SearchStrategy.IDDFS);
-		aStarEngine = new GPSEngine(SearchStrategy.ASTAR);
-		greedyEngine = new GPSEngine(SearchStrategy.GREEDY);
+		bfsEngine = new GPSEngine(problem, SearchStrategy.BFS, null);
+		dfsEngine = new GPSEngine(problem, SearchStrategy.DFS, null);
+		iddfsEngine = new GPSEngine(problem, SearchStrategy.IDDFS, null);
+		aStarEngine = new GPSEngine(problem, SearchStrategy.ASTAR, E8HeuristicB.instance());
+		greedyEngine = new GPSEngine(problem, SearchStrategy.GREEDY, E8HeuristicB.instance());
 
 		System.out.println("Running UnitCost engines");
-		runEngineTiming(problem, bfsEngine, "bfs", null);
-		runEngineTiming(problem, dfsEngine, "dfs", null);
-		runEngineTiming(problem, iddfsEngine, "iddfs", null);
-		runEngineTiming(problem, aStarEngine, "aStar", E8HeuristicB.instance());
-		runEngineTiming(problem, greedyEngine, "greedy", E8HeuristicB.instance());
+		runEngineTiming(bfsEngine, "bfs");
+		runEngineTiming(dfsEngine, "dfs");
+		runEngineTiming(iddfsEngine, "iddfs");
+		runEngineTiming(aStarEngine, "aStar");
+		runEngineTiming(greedyEngine, "greedy");
 		System.out.println("All engine ran, running the tests");
 	}
 	

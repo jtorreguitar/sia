@@ -6,10 +6,10 @@ import ar.edu.itba.sia.interfaces.Problem;
 
 public class TestUtils {
 
-    public static void runEngineTiming(Problem problem, GPSEngine engine, String name, Heuristic heuristic){
+    public static void runEngineTiming(GPSEngine engine, String name){
         System.out.println("Finding " + name + " solution");
         long start = System.currentTimeMillis();
-        engine.findSolution(problem, heuristic != null ? heuristic : t -> 0);
+        engine.findSolution();
         double time = (System.currentTimeMillis()- start)/ 1000.0;
         System.out.println(name + " time "+ time + "s");
     }

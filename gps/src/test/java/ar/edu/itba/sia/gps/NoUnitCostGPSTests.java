@@ -15,12 +15,12 @@ public class NoUnitCostGPSTests {
 	
 	@BeforeClass
 	public static void setUp(){
-		bfsEngine = new GPSEngine(SearchStrategy.BFS);
-		aStarEngine = new GPSEngine(SearchStrategy.ASTAR);
+		bfsEngine = new GPSEngine(new WalkingProblem(), SearchStrategy.BFS, null);
+		aStarEngine = new GPSEngine(new WalkingProblem(), SearchStrategy.ASTAR, WalkingHeuristic.instance());
 
 		System.out.println("Running NoUnitCost engines");
-		runEngineTiming(new WalkingProblem(), bfsEngine, "BFS", null);
-		runEngineTiming(new WalkingProblem(), aStarEngine, "A*", WalkingHeuristic.instance());
+		runEngineTiming(bfsEngine, "BFS");
+		runEngineTiming(aStarEngine, "A*");
 		System.out.println("NoUnitCost engine ran, running the tests");
 		
 	}

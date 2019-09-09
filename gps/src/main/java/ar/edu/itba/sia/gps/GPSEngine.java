@@ -15,6 +15,7 @@ public class GPSEngine {
     private SearchStrategy strategy;
     private Map<GPSNode, Double> bestCosts;
     private Heuristic heuristic;
+    private Problem problem;
 
     // useful variables
     private List<GPSNode> borderNodes;
@@ -37,6 +38,12 @@ public class GPSEngine {
         }
     }
 
+    public GPSEngine(Problem problem, SearchStrategy strategy, Heuristic heuristic) {
+        this(strategy);
+        this.problem = problem;
+        this.strategy = strategy;
+    }
+
     public void findSolution(Problem p) {
         Heuristic defaultHeuristic = t -> 0;
         this.genericSearch(p, defaultHeuristic);
@@ -45,6 +52,11 @@ public class GPSEngine {
     public void findSolution(Problem p, Heuristic h) {
         heuristic = h;
         this.genericSearch(p, h);
+    }
+
+    public void findSolution() {
+        if(heuristic == null) findSolution(problem);
+        else findSolution(problem, heuristic);
     }
 
     private void genericSearch(Problem p, Heuristic h) {

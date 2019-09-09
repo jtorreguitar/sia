@@ -19,12 +19,12 @@ public class HeuristicGPSTests {
 	
 	@BeforeClass
 	public static void setUp(){
-		betterHeuristicEngine = new GPSEngine(SearchStrategy.ASTAR);
-		worseHeuristicEngine = new GPSEngine(SearchStrategy.ASTAR);
+		betterHeuristicEngine = new GPSEngine(new E8Problem(false), SearchStrategy.ASTAR, E8HeuristicB.instance());
+		worseHeuristicEngine = new GPSEngine(new E8Problem(false), SearchStrategy.ASTAR, E8HeuristicA.instance());
 
 		System.out.println("Running Heuristic engines");
-		runEngineTiming(new E8Problem(false), betterHeuristicEngine, "Better heuristic",  E8HeuristicB.instance());
-		runEngineTiming(new E8Problem(false), worseHeuristicEngine, "Worse heuristic", E8HeuristicA.instance());
+		runEngineTiming(betterHeuristicEngine, "Better heuristic");
+		runEngineTiming(worseHeuristicEngine, "Worse heuristic");
 		System.out.println("Heuristic engine ran, running the tests");
 		
 	}
