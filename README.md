@@ -13,3 +13,11 @@ running run.sh will start the project. This script takes three arguments:
 2 - the absolute path to the file where the simple squares board that wants to be solved is.
 
 3 - an optional argument representing the heuristic that wants to be used in case an informed search is being used. Options: InPlace|Distance|WeightedDistance.
+
+### Examples:
+
+ ./run.sh BFS <absolute_path_to_file>
+ 
+ ./run.sh ASTAR <absolute_path_to_file> InPlace
+ 
+ ./run.sh GREEDY <absolute_path_to_file> WeightedDistance
