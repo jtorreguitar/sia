@@ -38,5 +38,4 @@ public class HeuristicNoPushing implements Heuristic {
 		}
 		return sumDistance;
 	}
-
 }
