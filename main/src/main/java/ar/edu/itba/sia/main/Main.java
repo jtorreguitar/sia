@@ -34,6 +34,7 @@ public class Main {
             case "Distance": return new HeuristicDistance();
             case "InPlace": return new HeuristicInPlace();
             case "WeightedDistance": return new HeuristicWeightedDistance();
+            case "NoPushing": return new HeuristicNoPushing();
         }
         throw new IllegalArgumentException("There is no heuristic with the given name");
     }
