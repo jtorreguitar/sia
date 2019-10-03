@@ -3,11 +3,11 @@ neurons 2,15,10,1
 epochs 200
 training_size 300
 eta 0.01 
-error_treshold_flag 0
+error_threshold_flag 0
 momentum_flag 1
 adaptative_eta_flag 1
 shuffle_flag 1
-error_treshold_value 0.1
+error_threshold_value 0.1
 eta_check_steps 10
 eta_increase_value 0.001
 eta_decrease_factor 0.95

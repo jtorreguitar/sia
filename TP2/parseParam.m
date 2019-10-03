@@ -20,7 +20,8 @@ function param = parseParam(paramName)
                splitted = strsplit(neurons, neurons_separator);
                splitted_size = size(splitted);
                aux = zeros(1, splitted_size(2));
-               for j=1:splitted_size(2)
+               % splitted_size es un array fxc y nosotros queremos la cantidad de columnas => layers
+               for j=1:splitted_size(2) 
                    aux(j) = str2num(splitted{j});
                end
                param = aux;
