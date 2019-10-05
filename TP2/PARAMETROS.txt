@@ -17,4 +17,5 @@ shuffle_flag - activar el shuffling
 error_threshold_flag - si tenemos una cota de error y estamos por debajo de ella, este flag permite que se corte la ejecucion
 error_threshold_value - cota de error
 epsilon_error - si el valor real y el valor esperado difieren en menos de epsilon, entonces ese valor se toma como correcto
+batch - cantidad de iteraciones hasta que hacemos el ajuste de pesos (1 = incremental)
 tanh - usar backpropagation con tanh, si el valor es 0, se usa con exponencial
