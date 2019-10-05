@@ -4,7 +4,7 @@ epochs 200
 training_size 300
 eta 0.01
 error_threshold_flag 0
-momentum_flag 0
+momentum_flag 1
 alpha_momentum 0.5
 adaptative_eta_flag 1
 eta_check_steps 10

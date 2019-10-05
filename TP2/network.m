@@ -29,7 +29,7 @@ eta_decrease_factor = parseParam('eta_decrease_factor');
 momentum_flag = parseParam('momentum_flag');
 alpha_momentum_init = parseParam('alpha_momentum');
 alpha_momentum = alpha_momentum_init;
-pause_gamma = 0.00000001;
+plotting_pause = 0.00000001;
 
 
 if parseParam('tanh')
@@ -84,6 +84,9 @@ for k = 1:(layers-1)
         testing_weighted_sum{k} = zeros(neurons(k+1), testingSize);
     end
 end
+
+% para eta adaptativo
+old_weights_cell = weights_cell;
 
 %disp(neurons);
 
@@ -187,8 +190,26 @@ for i = 1:epochs
     if i==1
         training_cuadratic_old_error = training_cuadratic_error; 
     end
-    
-    % TODO eta adaptativo
+
+    if(adaptative_eta_flag)
+        % si el error actual es mayor que el anterior, entonces nos quedamos con el peso viejo
+        % nuestro nuevo eta desciende en BETA
+        % cortamos el momentum
+        if(training_cuadratic_error > training_cuadratic_old_error)
+            weights_cell = weights_old_cell;
+            eta = eta*eta_decrease_factor;
+            alpha_momentum = 0;
+        % si el error actual es menor que el anterior, venimos bien
+        % entonces incrementamos el eta y guardamos estos pesos
+        % y volvemos a poner nuestro momentum inicial
+        elseif(rem(i, eta_check_steps) == 0 && (training_cuadratic_error < training_cuadratic_old_error))
+            eta = eta + eta_increase_value;
+            weights_old_cell = weights_cell;
+            alpha_momentum = alpha_momentum_init;
+        end
+        %guardamos el error actual
+        training_cuadratic_old_error = training_cuadratic_error;
+    end
 
      
     %print resultados
