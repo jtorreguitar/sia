@@ -138,10 +138,8 @@ for i = 1:epochs
                 backward_previous = weighted_sum{k-1}(:,r)';
             end
             %calculo y guardo los pesos nuevos
-            %TODO aca iria lo de eta?
-            weight_variation = training_delta{k} * backward_previous;
-            % TODO aca iria lo de momentum?
-            weights_cell{k} = weights_cell{k} + weight_variation + previous_weights_variation{k};
+            weight_variation = eta * training_delta{k} * backward_previous;
+            weights_cell{k} = weights_cell{k} + weight_variation + momentum_flag * alpha_momentum * previous_weights_variation{k};
             previous_weights_variation{k} = weight_variation;
         end
     end
@@ -191,6 +189,7 @@ for i = 1:epochs
     end
     
     % TODO eta adaptativo
+
      
     %print resultados
     training_cuadratic_error

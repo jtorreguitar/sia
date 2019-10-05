@@ -1,0 +1,20 @@
+PARAMETROS
+
+Para todos los flags 0 es off y 1 es on.
+
+input_file - nombre de archivo donde estan los datos
+neurons - l1,l2,l3,l4 cantidad de nodos en cada layer, separados por ','
+epochs - cantidad de ciclos para el entrenamiento
+training_size - del archivo, cuantos tomamos para entrenar
+eta - valor que se le asigna al parametro eta (debe ser entre 0 y 1) 
+momentum_flag - activar el momentum
+alpha_momentum - porcentaje de la variacion a la hora de hacer momentum
+adaptative_eta_flag - activar la mejora de eta adaptativo
+eta_check_steps - cada cuantos pasos aplicamos el algoritmo
+eta_increase_value - valor "alpha" o de incremento en el eta adapt
+eta_decrease_factor - valor "beta" o de decremento en el eta adapt
+shuffle_flag - activar el shuffling
+error_threshold_flag - si tenemos una cota de error y estamos por debajo de ella, este flag permite que se corte la ejecucion
+error_threshold_value - cota de error
+epsilon_error - si el valor real y el valor esperado difieren en menos de epsilon, entonces ese valor se toma como correcto
+tanh - usar backpropagation con tanh, si el valor es 0, se usa con exponencial
