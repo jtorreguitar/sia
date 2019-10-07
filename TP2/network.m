@@ -89,7 +89,7 @@ weights_old_cell = weights_cell;
 
 %aca habria que inicializar la visualizacion
 
-cycles = 1;
+cycles = 10;
 
 %plotting
 epochs_array= zeros(cycles, 1);
@@ -98,7 +98,7 @@ ecm_array = zeros(cycles,1);
 
 %para ciclar
 for p = 1:cycles
-    inc =200 +  (p-1) * 100;
+    inc =epochs +  (p-1) * 100;
     epochs = inc;
     printf("EPOCHS: %d\n", epochs);
     for i = 1:epochs
@@ -275,3 +275,4 @@ plot(epochs_array, ecm_array);
 hold on;
 xlabel('epochs');
 ylabel('ecm');
+ylim(0 0.01)
