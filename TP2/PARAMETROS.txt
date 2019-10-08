@@ -19,3 +19,4 @@ error_threshold_value - cota de error
 epsilon_error - si el valor real y el valor esperado difieren en menos de epsilon, entonces ese valor se toma como correcto
 batch - cantidad de iteraciones hasta que hacemos el ajuste de pesos (1 = incremental)
 tanh - usar backpropagation con tanh, si el valor es 0, se usa con exponencial
+saturation_prevention - agrega una constante al realizar el cálculo de delta por si la derivada da 0

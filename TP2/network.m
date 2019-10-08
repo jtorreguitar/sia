@@ -29,6 +29,7 @@ eta_decrease_factor = parseParam('eta_decrease_factor');
 momentum_flag = parseParam('momentum_flag');
 alpha_momentum_init = parseParam('alpha_momentum');
 alpha_momentum = alpha_momentum_init;
+saturation_prevention = parseParam('saturation_prevention');
 batch = parseParam('batch');
 plotting_pause = 0.00000001;
 
@@ -70,7 +71,7 @@ training_cuadratic_old_error = 0;
 
 %inicializar cells genericas
 for k = 1:(layers-1)
-    weights_cell{k} = rand(neurons(k+1), neurons(k)+1);
+    weights_cell{k} = rand(neurons(k+1), neurons(k)+1) ;
     batch_layer_sum{k} = zeros(neurons(k+1), neurons(k) +1);
     previous_weights_variation{k} = zeros(neurons(k+1), neurons(k)+1);
     training_delta{k} = zeros(neurons(k+1), 1);
@@ -101,6 +102,7 @@ for p = 1:cycles
     inc =epochs +  (p-1) * 100;
     epochs = inc;
     printf("EPOCHS: %d\n", epochs);
+    eta_change = 0;
     for i = 1:epochs
         %%% TRAINING %%%
         for j = 1:trainingSize
@@ -114,24 +116,27 @@ for p = 1:cycles
             for k = 1:(layers - 1)
                 %va creciendo para tener en cuenta las layers nuevas a la hora de hacer la suma
                 new_layer = neurons(k+1) + 1;
+
                 if k == layers - 1
                     weighted_sum{k}(r) = activation_function(weights_cell{k} * forward_previous(:, r));
                 else
-                    weighted_sum{k}(2:new_layer, r) = activation_function(weights_cell{k} * forward_previous(:, r));
+                    ah = weighted_sum{k}(2:new_layer, r) = activation_function(weights_cell{k} * forward_previous(:, r));
                 end
                 %guardamos la matriz de suma pesada en cada nodo para el proximo layer
                 forward_previous = weighted_sum{k};
             end
+            
 
             %BACK PROPAGATION
             for k = (layers - 1):-1:1
                 % con {k}(r) accedemos al r set de entrenamiento de la layer k
                 % calculo los errores
                 new_layer = neurons(k+1) + 1;
+
                 if k == layers - 1
-                    training_delta{k} = (1 - weighted_sum{k}(r).^2).*(expected_output(r) - weighted_sum{k}(r));
+                    training_delta{k} = (activation_function_derivate(weighted_sum{k}(r)) + saturation_prevention).*(expected_output(r) - weighted_sum{k}(r));
                 else
-                    training_delta{k} = activation_function_derivate(weighted_sum{k}(2:new_layer, r)).*(weights_cell{k+1}(:, 2:new_layer)' * training_delta{k+1});
+                    training_delta{k} = (activation_function_derivate(weighted_sum{k}(2:new_layer, r)) + saturation_prevention).*(weights_cell{k+1}(:, 2:new_layer)' * training_delta{k+1});
                 end
 
                 %guardo los pesos anteriores
@@ -142,13 +147,15 @@ for p = 1:cycles
                 end
 
                 %calculo la variacion y la guardo
+                
                 weight_variation = eta * training_delta{k} * backward_previous;
                 %voy sumando las variaciones en una matriz de layer
-                batch_layer_sum{k} = batch_layer_sum{k}+ weight_variation + momentum_flag * alpha_momentum * previous_weights_variation{k};
+            
+                batch_layer_sum{k} = batch_layer_sum{k} + weight_variation + momentum_flag * alpha_momentum * previous_weights_variation{k};
                 previous_weights_variation{k} = weight_variation;
-
                 %si es la iteracion que me toca hacer el cambio
                 if( rem(i, batch) == 0 )
+                    holaloco = 55555;
                     %debuggear a manopla
                     %printf("batch %d layer %d\n", i, k);
                     %calculo el promedio
@@ -163,10 +170,12 @@ for p = 1:cycles
                 %weight_variation = eta * training_delta{k} * backward_previous;
                 %weights_cell{k} = weights_cell{k} + weight_variation + momentum_flag * alpha_momentum * previous_weights_variation{k};
                 %previous_weights_variation{k} = weight_variation;
+                
             end
+            
         end
         
-        %calculo los errores de entrenamiento
+        %calculo los errores de entrenamientoexit
         training_cuadratic_error_prev = training_cuadratic_error;
         training_cuadratic_error = 0.5*sum((expected_output(1:trainingSize) - weighted_sum{layers-1}).^2)/trainingSize;
         training_abs_error = abs((expected_output(1:trainingSize) - weighted_sum{layers-1}));
@@ -194,6 +203,7 @@ for p = 1:cycles
             
         %calculo errores de testing    
         testing_cuadratic_error_prev = testing_cuadratic_error;
+        testing_cuadratic_error
         testing_cuadratic_error = 0.5*sum((expected_output((trainingSize+1):terrainSize) - testing_weighted_sum{layers-1}).^2)/(testingSize);
         testing_abs_error = abs((expected_output((trainingSize+1):terrainSize) - testing_weighted_sum{layers-1}));
         
@@ -207,24 +217,31 @@ for p = 1:cycles
         testing_success_rate = (counter/testingSize) * 100.0;
            
         if i==1
-            training_cuadratic_old_error = training_cuadratic_error; 
+            training_cuadratic_error_prev = training_cuadratic_error;
         end
 
         if(adaptative_eta_flag)
+             if(training_cuadratic_error < training_cuadratic_old_error)
+                eta_change++;
+             end
             % si el error actual es mayor que el anterior, entonces nos quedamos con el peso viejo
             % nuestro nuevo eta desciende en BETA
             % cortamos el momentum
-            if(training_cuadratic_error > training_cuadratic_old_error)
+            if(training_cuadratic_error > training_cuadratic_error_prev)
+                eta_change = 0;
                 weights_cell = weights_old_cell;
-                eta = eta*eta_decrease_factor;
+                eta = eta - eta*eta_decrease_factor;
                 alpha_momentum = 0;
+            end
             % si el error actual es menor que el anterior, venimos bien
             % entonces incrementamos el eta y guardamos estos pesos
             % y volvemos a poner nuestro momentum inicial
-            elseif(rem(i, eta_check_steps) == 0 && (training_cuadratic_error < training_cuadratic_old_error))
-                eta = eta + eta_increase_value;
-                weights_old_cell = weights_cell;
-                alpha_momentum = alpha_momentum_init;
+              
+            if(rem(eta_change, eta_check_steps) == 0 && (training_cuadratic_error < training_cuadratic_old_error))
+               eta_change = 0; 
+               eta = eta + eta_increase_value;
+               weights_old_cell = weights_cell;
+               alpha_momentum = alpha_momentum_init;
             end
             %guardamos el error actual
             training_cuadratic_old_error = training_cuadratic_error;
@@ -238,7 +255,6 @@ for p = 1:cycles
         %printf("Testing success rate: %i%%.\n", testing_success_rate);
         
         if (i == 1)
-            training_cuadratic_error_prev = training_cuadratic_error;
             testing_cuadratic_error_prev = testing_cuadratic_error;
             training_cuadratic_error_best = training_cuadratic_error;
             testing_cuadratic_error_best = testing_cuadratic_error;
@@ -275,4 +291,4 @@ plot(epochs_array, ecm_array);
 hold on;
 xlabel('epochs');
 ylabel('ecm');
-ylim(0 0.01)
+ylim(0, 0.01)
