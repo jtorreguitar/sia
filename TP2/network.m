@@ -48,7 +48,11 @@ end
 current_seed = rand('seed');
         
 terrainSize = size(y, 1);
-trainingSize = parseParam('training_size');
+if(parseParam('training_percentage_flag'))
+    training_size = parseParam('training_percentage') * terrainSize;
+else
+    training_size = parseParam('training_size');
+end
 testingSize = terrainSize - trainingSize;
 
 %armamos las matrices para testing y entrenamiento
