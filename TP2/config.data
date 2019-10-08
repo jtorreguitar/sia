@@ -1,8 +1,8 @@
 input_file terrain01.data
-neurons 2,30,20,1
-epochs 500
+neurons 2,10,1
+epochs 200
 training_size 300
-eta 0.02
+eta 0.01
 error_threshold_flag 0
 momentum_flag 0
 alpha_momentum 0.9

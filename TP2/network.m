@@ -1,3 +1,5 @@
+debug_on_interrupt(1);
+
 % parsear archivo de entrada
 X1_POS = 1;
 X2_POS = 2;
@@ -90,7 +92,7 @@ weights_old_cell = weights_cell;
 
 %aca habria que inicializar la visualizacion
 
-cycles = 10;
+cycles = 1;
 
 %plotting
 epochs_array= zeros(cycles, 1);
@@ -99,10 +101,11 @@ ecm_array = zeros(cycles,1);
 
 %para ciclar
 for p = 1:cycles
-    inc =epochs +  (p-1) * 100;
-    epochs = inc;
     printf("EPOCHS: %d\n", epochs);
     eta_change = 0;
+    training_success_rate_array = [];
+    testing_success_rate_array = [];
+    error_array = [];
     for i = 1:epochs
         %%% TRAINING %%%
         for j = 1:trainingSize
@@ -155,9 +158,6 @@ for p = 1:cycles
                 previous_weights_variation{k} = weight_variation;
                 %si es la iteracion que me toca hacer el cambio
                 if( rem(i, batch) == 0 )
-                    holaloco = 55555;
-                    %debuggear a manopla
-                    %printf("batch %d layer %d\n", i, k);
                     %calculo el promedio
                     avg_variation =  batch_layer_sum{k}./batch;
                     %afecto los pesos
@@ -177,8 +177,9 @@ for p = 1:cycles
         
         %calculo los errores de entrenamientoexit
         training_cuadratic_error_prev = training_cuadratic_error;
-        training_cuadratic_error = 0.5*sum((expected_output(1:trainingSize) - weighted_sum{layers-1}).^2)/trainingSize;
+        training_cuadratic_error = 0.5 * sum((expected_output(1:trainingSize) - weighted_sum{layers-1}).^2)/trainingSize;
         training_abs_error = abs((expected_output(1:trainingSize) - weighted_sum{layers-1}));
+        error_array = [error_array training_cuadratic_error];
         
         %calculo la precision
         counter = 0;
@@ -188,6 +189,7 @@ for p = 1:cycles
             end
         end
         training_success_rate = (counter/trainingSize) * 100.0;
+        training_success_rate_array = [training_success_rate_array training_success_rate];
         
         %%% TESTING %%%
         testing_forward_previous = testing_input_domain;    
@@ -203,7 +205,6 @@ for p = 1:cycles
             
         %calculo errores de testing    
         testing_cuadratic_error_prev = testing_cuadratic_error;
-        testing_cuadratic_error
         testing_cuadratic_error = 0.5*sum((expected_output((trainingSize+1):terrainSize) - testing_weighted_sum{layers-1}).^2)/(testingSize);
         testing_abs_error = abs((expected_output((trainingSize+1):terrainSize) - testing_weighted_sum{layers-1}));
         
@@ -215,6 +216,7 @@ for p = 1:cycles
             end
         end
         testing_success_rate = (counter/testingSize) * 100.0;
+        testing_success_rate_array = [testing_success_rate_array testing_success_rate];
            
         if i==1
             training_cuadratic_error_prev = training_cuadratic_error;
@@ -248,12 +250,6 @@ for p = 1:cycles
         end
 
          
-        %print resultados
-        %training_cuadratic_error
-        %testing_cuadratic_error
-        %printf("Training success rate: %i%%.\n", training_success_rate);
-        %printf("Testing success rate: %i%%.\n", testing_success_rate);
-        
         if (i == 1)
             testing_cuadratic_error_prev = testing_cuadratic_error;
             training_cuadratic_error_best = training_cuadratic_error;
@@ -276,8 +272,6 @@ for p = 1:cycles
 
     end
     %print resultados
-    training_cuadratic_error
-    testing_cuadratic_error
     printf("Training success rate: %i%%.\n", training_success_rate);
     printf("Testing success rate: %i%%.\n", testing_success_rate);
 
@@ -285,10 +279,13 @@ for p = 1:cycles
     ecm_array(p) = testing_cuadratic_error;
 
 end
+keyboard();
 
 %plot
-plot(epochs_array, ecm_array);
-hold on;
+plot(1:epochs, error_array, '-')
 xlabel('epochs');
-ylabel('ecm');
-ylim(0, 0.01)
+ylabel('training success rate');
+axis([0 epochs 0 0.1]);
+%plot(1:epochs, testing_success_rate_array, 'r-');
+%xlabel('epochs');
+%ylabel('testing success rate');
