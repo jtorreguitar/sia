@@ -23,7 +23,6 @@ eta = parseParam('eta');
 epsilon = parseParam('epsilon_error');
 error_threshold_value = parseParam('error_threshold_value');
 error_threshold_flag = parseParam('error_threshold_flag');
-shuffle_flag = parseParam('shuffle_flag');
 adaptative_eta_flag = parseParam('adaptative_eta_flag');
 eta_check_steps = parseParam('eta_check_steps');
 eta_increase_value = parseParam('eta_increase_value');
@@ -105,7 +104,8 @@ for p = 1:cycles
     eta_change = 0;
     training_success_rate_array = [];
     testing_success_rate_array = [];
-    error_array = [];
+    training_error_array = [];
+    testing_error_array = [];
     for i = 1:epochs
         %%% TRAINING %%%
         for j = 1:trainingSize
@@ -179,7 +179,7 @@ for p = 1:cycles
         training_cuadratic_error_prev = training_cuadratic_error;
         training_cuadratic_error = 0.5 * sum((expected_output(1:trainingSize) - weighted_sum{layers-1}).^2)/trainingSize;
         training_abs_error = abs((expected_output(1:trainingSize) - weighted_sum{layers-1}));
-        error_array = [error_array training_cuadratic_error];
+        training_error_array = [training_error_array training_cuadratic_error];
         
         %calculo la precision
         counter = 0;
@@ -207,7 +207,7 @@ for p = 1:cycles
         testing_cuadratic_error_prev = testing_cuadratic_error;
         testing_cuadratic_error = 0.5*sum((expected_output((trainingSize+1):terrainSize) - testing_weighted_sum{layers-1}).^2)/(testingSize);
         testing_abs_error = abs((expected_output((trainingSize+1):terrainSize) - testing_weighted_sum{layers-1}));
-        
+        testing_error_array = [testing_error_array testing_cuadratic_error];
         %calculo la precision
         counter = 0;
         for k = 1:testingSize
@@ -279,13 +279,13 @@ for p = 1:cycles
     ecm_array(p) = testing_cuadratic_error;
 
 end
-keyboard();
 
 %plot
-plot(1:epochs, error_array, '-')
+plot(1:epochs, training_error_array, 'r-', 1:epochs, testing_error_array, 'b-');
 xlabel('epochs');
-ylabel('training success rate');
+ylabel('error');
 axis([0 epochs 0 0.1]);
+legend('training error', 'testing error');
 %plot(1:epochs, testing_success_rate_array, 'r-');
 %xlabel('epochs');
 %ylabel('testing success rate');
