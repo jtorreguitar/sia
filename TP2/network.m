@@ -108,7 +108,7 @@ for p = 1:cycles
     testing_error_array = [];
     eta_array = [];
     for i = 1:epochs
-        eta_array = [eta_array eta];
+        eta_array = [eta_array; eta];
         %%% TRAINING %%%
         for j = 1:trainingSize
             r=j;
@@ -175,7 +175,7 @@ for p = 1:cycles
         training_cuadratic_error_prev = training_cuadratic_error
         training_cuadratic_error = 0.5 * sum((expected_output(1:trainingSize) - weighted_sum{layers-1}).^2)/trainingSize;
         training_abs_error = abs((expected_output(1:trainingSize) - weighted_sum{layers-1}));
-        training_error_array = [training_error_array training_cuadratic_error];
+        training_error_array = [training_error_array; training_cuadratic_error];
         
         %calculo la precision
         counter = 0;
@@ -202,7 +202,27 @@ for p = 1:cycles
         testing_cuadratic_error_prev = testing_cuadratic_error
         testing_cuadratic_error = 0.5*sum((expected_output((trainingSize+1):terrainSize) - testing_weighted_sum{layers-1}).^2)/(testingSize);
         testing_abs_error = abs((expected_output((trainingSize+1):terrainSize) - testing_weighted_sum{layers-1}));
-        testing_error_array = [testing_error_array testing_cuadratic_error];
+        testing_error_array = [testing_error_array; testing_cuadratic_error];
+        
+
+        %plot
+        figure (1);
+        plot(1:i, training_error_array, 'r-', 1:i, testing_error_array, 'b-');
+        xlabel('epochs');
+        ylabel('error');
+        axis([0 i]);
+        legend('training error', 'testing error');
+        
+        figure (2);
+        plot(1:i, eta_array, 'g-');
+        xlabel('epochs');
+        ylabel('eta');
+        axis([0 i]);
+        
+
+        
+        
+        
         %calculo la precision
         counter = 0;
         for k = 1:testingSize
@@ -251,7 +271,6 @@ for p = 1:cycles
         end
         
         %guardamos los mejores resultados
-        %calculo que lo vamos a querer imprimir
         if (testing_cuadratic_error < testing_cuadratic_error_best)
             weights_cell_best = weights_cell;
             testing_cuadratic_error_best = testing_cuadratic_error;
@@ -269,14 +288,8 @@ for p = 1:cycles
     printf("Training success rate: %i%%.\n", training_success_rate);
     printf("Testing success rate: %i%%.\n", testing_success_rate);
 
-    epochs_array(p) = epochs;
     ecm_array(p) = testing_cuadratic_error;
 
 end
 
-%plot
-plot(1:epochs, training_error_array, 'r-', 1:epochs, testing_error_array, 'b-');
-xlabel('epochs');
-ylabel('error');
-axis([0 epochs 0 0.03]);
-legend('training error', 'testing error');
+
