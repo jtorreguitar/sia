@@ -48,12 +48,12 @@ current_seed = rand('seed');
         
 terrainSize = size(y, 1);
 if(parseParam('training_percentage_flag'))
-    training_size = parseParam('training_percentage') * terrainSize;
+    trainingSize = floor(parseParam('training_percentage') * terrainSize);
 else
-    training_size = parseParam('training_size');
+    trainingSize= parseParam('training_size');
 end
 testingSize = terrainSize - trainingSize;
-
+keyboard();
 %armamos las matrices para testing y entrenamiento
 training_input_domain = [-1*ones(trainingSize, 1) x1(1:trainingSize) x2(1:trainingSize)]';
 testing_input_domain = [-1*ones(testingSize, 1) x1((trainingSize+1):terrainSize) x2((trainingSize+1):terrainSize)]';
