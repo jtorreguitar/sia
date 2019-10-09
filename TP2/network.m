@@ -31,7 +31,6 @@ momentum_flag = parseParam('momentum_flag');
 alpha_momentum_init = parseParam('alpha_momentum');
 alpha_momentum = alpha_momentum_init;
 saturation_prevention = parseParam('saturation_prevention');
-batch = parseParam('batch');
 plotting_pause = 0.00000001;
 
 
@@ -53,6 +52,13 @@ else
     trainingSize= parseParam('training_size');
 end
 testingSize = terrainSize - trainingSize;
+
+batch_flag = parseParam('batch_flag');
+if(batch_flag)
+  batch = trainingSize;
+else
+  batch = 1;
+endif
 
 %armamos las matrices para testing y entrenamiento
 training_input_domain = [-1*ones(trainingSize, 1) x1(1:trainingSize) x2(1:trainingSize)]';
