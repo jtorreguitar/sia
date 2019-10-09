@@ -47,7 +47,11 @@ end
 current_seed = rand('seed');
         
 terrainSize = size(y, 1);
-trainingSize = parseParam('training_size');
+if(parseParam('training_percentage_flag'))
+    trainingSize = floor(parseParam('training_percentage') * terrainSize);
+else
+    trainingSize= parseParam('training_size');
+end
 testingSize = terrainSize - trainingSize;
 
 %armamos las matrices para testing y entrenamiento
@@ -100,11 +104,11 @@ ecm_array = zeros(cycles,1);
 for p = 1:cycles
     printf("EPOCHS: %d\n", epochs);
     eta_change = 0;
-    training_success_rate_array = [];
-    testing_success_rate_array = [];
     training_error_array = [];
     testing_error_array = [];
+    eta_array = [];
     for i = 1:epochs
+        eta_array = [eta_array eta];
         %%% TRAINING %%%
         for j = 1:trainingSize
             r=j;
@@ -181,7 +185,6 @@ for p = 1:cycles
             end
         end
         training_success_rate = (counter/trainingSize) * 100.0;
-        training_success_rate_array = [training_success_rate_array training_success_rate];
         
         %%% TESTING %%%
         testing_forward_previous = testing_input_domain;    
@@ -208,7 +211,6 @@ for p = 1:cycles
             end
         end
         testing_success_rate = (counter/testingSize) * 100.0;
-        testing_success_rate_array = [testing_success_rate_array testing_success_rate];
            
         if i==1
             training_cuadratic_error_prev = training_cuadratic_error;
@@ -276,8 +278,5 @@ end
 plot(1:epochs, training_error_array, 'r-', 1:epochs, testing_error_array, 'b-');
 xlabel('epochs');
 ylabel('error');
-axis([0 epochs 0 0.1]);
+axis([0 epochs 0 0.03]);
 legend('training error', 'testing error');
-%plot(1:epochs, testing_success_rate_array, 'r-');
-%xlabel('epochs');
-%ylabel('testing success rate');

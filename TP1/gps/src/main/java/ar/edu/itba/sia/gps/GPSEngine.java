@@ -41,7 +41,7 @@ public class GPSEngine {
     public GPSEngine(Problem problem, SearchStrategy strategy, Heuristic heuristic) {
         this(strategy);
         this.problem = problem;
-        this.strategy = strategy;
+        this.heuristic = heuristic;
     }
 
     public void findSolution(Problem p) {
