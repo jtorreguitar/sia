@@ -43,7 +43,7 @@ else
     activation_function_derivate = @(x)(x.*(1-x));
 end
 
-%podriamos guardar seeds y permitir cargarlas
+%se pueden guardar seeds y permitir cargarlas
 current_seed = rand('seed');
         
 terrainSize = size(y, 1);
@@ -89,8 +89,6 @@ end
 % para eta adaptativo
 weights_old_cell = weights_cell;
 
-%aca habria que inicializar la visualizacion
-
 cycles = 1;
 
 %plotting
@@ -109,8 +107,6 @@ for p = 1:cycles
     for i = 1:epochs
         %%% TRAINING %%%
         for j = 1:trainingSize
-            % TODO : Ver como implementar shuffling
-
             r=j;
 
             % FEED FORWARD
@@ -166,17 +162,13 @@ for p = 1:cycles
                     %reinicion la suma
                     batch_layer_sum{k} = zeros(neurons(k+1), neurons(k) +1);
                 end
-                %calculo y guardo los pesos nuevos
-                %weight_variation = eta * training_delta{k} * backward_previous;
-                %weights_cell{k} = weights_cell{k} + weight_variation + momentum_flag * alpha_momentum * previous_weights_variation{k};
-                %previous_weights_variation{k} = weight_variation;
                 
             end
             
         end
         
         %calculo los errores de entrenamientoexit
-        training_cuadratic_error_prev = training_cuadratic_error;
+        training_cuadratic_error_prev = training_cuadratic_error
         training_cuadratic_error = 0.5 * sum((expected_output(1:trainingSize) - weighted_sum{layers-1}).^2)/trainingSize;
         training_abs_error = abs((expected_output(1:trainingSize) - weighted_sum{layers-1}));
         training_error_array = [training_error_array training_cuadratic_error];
@@ -204,7 +196,7 @@ for p = 1:cycles
         end
             
         %calculo errores de testing    
-        testing_cuadratic_error_prev = testing_cuadratic_error;
+        testing_cuadratic_error_prev = testing_cuadratic_error
         testing_cuadratic_error = 0.5*sum((expected_output((trainingSize+1):terrainSize) - testing_weighted_sum{layers-1}).^2)/(testingSize);
         testing_abs_error = abs((expected_output((trainingSize+1):terrainSize) - testing_weighted_sum{layers-1}));
         testing_error_array = [testing_error_array testing_cuadratic_error];
