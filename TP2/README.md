@@ -2,7 +2,7 @@
 
 ## Training/testing examples
 
-The file terrain01.data contains the input columns with their output value to the right. The network takes in two input parameters under the labels x1 and x2 and uses the numbers under the column labelled z as their corresponding output. Thus, the network has strcitly  two neurons as inputs and 1 neuron as an ouput, this will be important in the configuration stage. The terrain01.data file should look something like:
+The file terrain01.data contains the input columns with their output value to the right. The network takes in two input parameters under the labels x1 and x2 and uses the numbers under the column labelled z as their corresponding output. Thus, the network has strictly  two neurons as inputs and 1 neuron as an ouput, this will be important in the configuration stage. The terrain01.data file should look something like:
 
 | x1  | x2  | z |
 |----:|----:|--:|
