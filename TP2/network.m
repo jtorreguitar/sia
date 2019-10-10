@@ -33,7 +33,6 @@ alpha_momentum = alpha_momentum_init;
 saturation_prevention = parseParam('saturation_prevention');
 plotting_pause = 0.00000001;
 
-
 if parseParam('tanh')
     activation_function = @tanh;
     activation_function_derivate = @(x)(1 - x.^2);
@@ -113,8 +112,10 @@ for p = 1:cycles
     training_error_array = [];
     testing_error_array = [];
     eta_array = [];
-    for i = 1:epochs
-        eta_array = [eta_array; eta];
+    i = 1;
+    while i <= epochs
+        eta_prev = eta;
+        plot_flag = 1;
         %%% TRAINING %%%
         for j = 1:trainingSize
             r=j;
@@ -178,10 +179,9 @@ for p = 1:cycles
         end
         
         %calculo los errores de entrenamientoexit
-        training_cuadratic_error_prev = training_cuadratic_error
+        training_cuadratic_error_prev = training_cuadratic_error;
         training_cuadratic_error = 0.5 * sum((expected_output(1:trainingSize) - weighted_sum{layers-1}).^2)/trainingSize;
         training_abs_error = abs((expected_output(1:trainingSize) - weighted_sum{layers-1}));
-        training_error_array = [training_error_array; training_cuadratic_error];
         
         %calculo la precision
         counter = 0;
@@ -205,29 +205,10 @@ for p = 1:cycles
         end
             
         %calculo errores de testing    
-        testing_cuadratic_error_prev = testing_cuadratic_error
+        testing_cuadratic_error_prev = testing_cuadratic_error;
         testing_cuadratic_error = 0.5*sum((expected_output((trainingSize+1):terrainSize) - testing_weighted_sum{layers-1}).^2)/(testingSize);
         testing_abs_error = abs((expected_output((trainingSize+1):terrainSize) - testing_weighted_sum{layers-1}));
-        testing_error_array = [testing_error_array; testing_cuadratic_error];
-        
-
-        %plot
-        figure (1);
-        plot(1:i, training_error_array, 'r-', 1:i, testing_error_array, 'b-');
-        xlabel('epochs');
-        ylabel('error');
-        axis([0 i]);
-        legend('training error', 'testing error');
-        
-        figure (2);
-        plot(1:i, eta_array, 'g-');
-        xlabel('epochs');
-        ylabel('eta');
-        axis([0 i]);
-        
-
-        
-        
+                
         
         %calculo la precision
         counter = 0;
@@ -243,7 +224,7 @@ for p = 1:cycles
         end
 
         if(adaptative_eta_flag)
-             if(training_cuadratic_error < training_cuadratic_old_error)
+             if(training_cuadratic_error < training_cuadratic_error_prev)
                 eta_change++;
              end
             % si el error actual es mayor que el anterior, entonces nos quedamos con el peso viejo
@@ -254,6 +235,9 @@ for p = 1:cycles
                 weights_cell = weights_old_cell;
                 eta = eta - eta*eta_decrease_factor;
                 alpha_momentum = 0;
+                testing_cuadratic_error = testing_cuadratic_error_prev;
+                training_cuadratic_error = training_cuadratic_error_prev;
+                plot_flag = 0;      
             end
             % si el error actual es menor que el anterior, venimos bien
             % entonces incrementamos el eta y guardamos estos pesos
@@ -268,7 +252,6 @@ for p = 1:cycles
             %guardamos el error actual
             training_cuadratic_old_error = training_cuadratic_error;
         end
-
          
         if (i == 1)
             testing_cuadratic_error_prev = testing_cuadratic_error;
@@ -281,6 +264,33 @@ for p = 1:cycles
             weights_cell_best = weights_cell;
             testing_cuadratic_error_best = testing_cuadratic_error;
         end
+        
+        
+        
+        %si estoy en eta adaptativo no deberia plotear el error si es mayor
+        if(plot_flag)
+          eta_prev = eta;
+          testing_error_array = [testing_error_array; testing_cuadratic_error];
+          training_error_array = [training_error_array; training_cuadratic_error];
+          eta_array = [eta_array; eta_prev];
+          
+          %plot
+          figure (1);
+          plot(1:i, training_error_array, 'r-', 1:i, testing_error_array, 'b-');
+          xlabel('epochs');
+          ylabel('error');
+          axis([0 i]);
+          legend('training error', 'testing error');
+        
+          figure (2);
+          plot(1:i, eta_array, 'g-');
+          xlabel('epochs');
+          ylabel('eta');
+          axis([0 i]);
+
+          i++;
+
+        end        
         
         % para cortar antes si hay una cota de error
         if (error_threshold_flag)
