@@ -104,7 +104,6 @@ cycles = 1;
 epochs_array= zeros(cycles, 1);
 ecm_array = zeros(cycles,1);
 
-
 %para ciclar
 for p = 1:cycles
     printf("EPOCHS: %d\n", epochs);

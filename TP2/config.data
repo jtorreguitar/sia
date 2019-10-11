@@ -2,7 +2,7 @@ input_file terrain01.data
 
 neurons 2,15,10,1
 
-epochs 1000
+epochs 10000
 
 training_size 300
 training_percentage 0.75
@@ -11,12 +11,12 @@ training_percentage_flag 0
 eta 0.01
 
 error_threshold_flag 0
-error_threshold_value 0.0001
+error_threshold_value 0.00025
 
 momentum_flag 0
 alpha_momentum 0.9
 
-adaptative_eta_flag 1
+adaptative_eta_flag 0
 eta_check_steps 10
 eta_increase_value 0.001
 eta_decrease_factor 0.05
