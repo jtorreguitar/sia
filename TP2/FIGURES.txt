@@ -13,3 +13,24 @@ eta 0.01
 10k epochs
 0.00063
 0.00091
+
+
+
+fig 9:
+2,15,10,1
+eta 0.01
+eta adapt on
+a = 0.001
+b = 0.05
+steps = 10
+15k epochs
+train error: 0.000515
+test error: 0.000899
+last eta: 0.019 (pareciera que rondo por el 0.2)
+
+
+
+
+
+
+
