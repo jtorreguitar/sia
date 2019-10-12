@@ -264,7 +264,7 @@ for p = 1:cycles
             testing_cuadratic_error_best = testing_cuadratic_error;
         end
         
-        
+        eta
         
         %si estoy en eta adaptativo no deberia plotear el error si es mayor
         if(plot_flag)
@@ -303,8 +303,11 @@ for p = 1:cycles
     printf("Training success rate: %i%%.\n", training_success_rate);
     printf("Testing success rate: %i%%.\n", testing_success_rate);
 
+
     ecm_array(p) = testing_cuadratic_error;
+    
 
 end
+
 
 
