@@ -17,9 +17,9 @@ momentum_flag 0
 alpha_momentum 0.9
 
 adaptative_eta_flag 1
-eta_check_steps 10
-eta_increase_value 0.001
-eta_decrease_factor 0.05
+eta_check_steps 7
+eta_increase_value 0.01
+eta_decrease_factor 0.3
 
 epsilon_error 0.1
 

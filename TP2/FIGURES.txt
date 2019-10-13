@@ -31,6 +31,21 @@ last eta: 0.019 (pareciera que rondo por el 0.2)
 
 
 
+fig 13:
+2,15,10,1
+eta 0.01
+eta adapt on
+a = 0.01
+b = 0.3
+steps = 7
+14k epochs
+train error: 0.000446
+test error: 0.000861
+last eta: 0.0245
+
+
+
+
 
 
 
