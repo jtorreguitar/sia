@@ -1,0 +1,37 @@
+package ar.edu.itba.sia.interfaces;
+
+import ar.edu.itba.sia.interfaces.enums.*;
+
+import java.util.List;
+
+public interface Configuration {
+    /**
+     * Selection
+     */
+    List<SelectorType> getSelectors();
+    List<Double> getSelectionPercentages();
+
+    /**
+     * cross over
+     */
+    CrosserType getCrosser();
+
+    /**
+     * mutation
+     */
+    double getMutationRate();
+    MutatorType getMutator();
+
+    /**
+     * replacement
+     */
+    ReplacerType getReplacer();
+    List<SelectorType> getReplacementSelectors();
+    List<Double> getReplacementPercentages();
+
+    /**
+     * stop condition
+     */
+    boolean stopConditionIsMet(double stopCondition);
+    StopCondition getStopCondition();
+}
