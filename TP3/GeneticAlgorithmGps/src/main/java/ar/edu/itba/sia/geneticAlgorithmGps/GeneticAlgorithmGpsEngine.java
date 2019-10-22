@@ -48,6 +48,18 @@ public class GeneticAlgorithmGpsEngine {
             final List<Chromosome> children = cross(selected);
             final List<Chromosome> mutatedChildren = mutate(children);
             final List<Chromosome> newPopulation = replacer.replace(population, mutatedChildren);
+            updateMetrics(newPopulation);
+            population = newPopulation;
+        }
+    }
+
+    private double getCondition() {
+        switch (configuration.getStopCondition()) {
+            case CONTENT: return repeatIndividuals.get(repeatIndividuals.size() - 1).doubleValue();
+            case STRUCTURE:
+            case OPTIMUM: return fittestIndividualForEachGeneration.get(fittestIndividualForEachGeneration.size() - 1).getAptitude();
+            case GENERATIONS: return generations.doubleValue();
+            default: throw new IllegalArgumentException("invalid stop condition");
         }
     }
 
@@ -69,13 +81,9 @@ public class GeneticAlgorithmGpsEngine {
         return children.stream().map(mutator::mutate).collect(Collectors.toList());
     }
 
-    private double getCondition() {
-        switch (configuration.getStopCondition()) {
-            case CONTENT: return repeatIndividuals.get(repeatIndividuals.size() - 1).doubleValue();
-            case STRUCTURE:
-            case OPTIMUM: return fittestIndividualForEachGeneration.get(repeatIndividuals.size() - 1).getAptitude();
-            case GENERATIONS: return generations.doubleValue();
-            default: throw new IllegalArgumentException("invalid stop condition");
-        }
+    private void updateMetrics(List<Chromosome> newPopulation) {
+        fittestIndividualForEachGeneration.add(newPopulation.stream().sorted((c1, c2) -> (int) (c1.getAptitude() - c2.getAptitude())).findFirst().get());
+        repeatIndividuals.add(new Long(newPopulation.stream().filter(c -> !population.contains(c)).count()).intValue());
+        generations++;
     }
 }
