@@ -12,10 +12,6 @@ public class GeneticAlgorithmGpsEngine {
 
     private List<Chromosome> population;
 
-    /**
-     * configuration
-     */
-    private final ConfigurationParser configurationParser = new ConfigurationParser();
     private final Configuration configuration;
 
     /**
@@ -33,13 +29,14 @@ public class GeneticAlgorithmGpsEngine {
     private final List<Integer> repeatIndividuals = new LinkedList<>();
     private Integer generations = 0;
 
-    public GeneticAlgorithmGpsEngine(List<Chromosome> population, Configuration configuration) {
+    public GeneticAlgorithmGpsEngine(final List<Chromosome> population, final Configuration configuration) {
         this.population = population;
         this.configuration = configuration;
-        selectors = configurationParser.determineSelectors(configuration.getSelectors(), configuration.getSelectionPercentages());
-        replacer = configurationParser.determineReplacer(configuration.getReplacer(), configuration.getReplacementSelectors(), configuration.getReplacementPercentages());
-        crosser = configurationParser.determineCrosser(configuration.getCrosser());
-        mutator = configurationParser.determineMutator(configuration.getMutator(), configuration.getMutationRate());
+        ConfigurationParser configurationParser = new ConfigurationParser();
+        selectors = configurationParser.determineSelectors(configuration);
+        crosser = configurationParser.determineCrosser(configuration);
+        mutator = configurationParser.determineMutator(configuration);
+        replacer = configurationParser.determineReplacer(configuration);
     }
 
     public void solve() {
@@ -63,26 +60,25 @@ public class GeneticAlgorithmGpsEngine {
         }
     }
 
-    private List<Chromosome> select(List<Chromosome> population) {
-        List<Chromosome> selected = new LinkedList<>();
-        selectors.forEach(s -> selected.addAll(s.select(population)));
-        return selected;
+    private List<Chromosome> select(final List<Chromosome> population) {
+        return selectors.stream().flatMap(s -> s.select(population).stream())
+                                .collect(Collectors.toList());
     }
 
     // TODO: checkear bien como se seleccionan los padres porque si el nro aca no es par cagamo.
-    private List<Chromosome> cross(List<Chromosome> selected) {
+    private List<Chromosome> cross(final List<Chromosome> selected) {
         List<Chromosome> children = new LinkedList<>();
         for (int i = 0; i < selected.size(); i += 2)
             children.addAll(crosser.cross(selected.get(i), selected.get(i + 1)));
         return children;
     }
 
-    private List<Chromosome> mutate(List<Chromosome> children) {
+    private List<Chromosome> mutate(final List<Chromosome> children) {
         return children.stream().map(mutator::mutate).collect(Collectors.toList());
     }
 
-    private void updateMetrics(List<Chromosome> newPopulation) {
-        fittestIndividualForEachGeneration.add(newPopulation.stream().sorted((c1, c2) -> (int) (c1.getAptitude() - c2.getAptitude())).findFirst().get());
+    private void updateMetrics(final List<Chromosome> newPopulation) {
+        fittestIndividualForEachGeneration.add(newPopulation.stream().min((c1, c2) -> (int) (c1.getAptitude() - c2.getAptitude())).get());
         repeatIndividuals.add(new Long(newPopulation.stream().filter(c -> !population.contains(c)).count()).intValue());
         generations++;
     }

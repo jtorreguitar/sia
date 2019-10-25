@@ -3,6 +3,7 @@ package ar.edu.itba.sia.interfaces;
 import ar.edu.itba.sia.interfaces.enums.*;
 
 import java.util.List;
+import java.util.Random;
 
 public interface Configuration {
     /**
@@ -32,6 +33,11 @@ public interface Configuration {
     /**
      * stop condition
      */
-    boolean stopConditionIsMet(double stopCondition);
+    boolean stopConditionIsMet(final double stopCondition);
     StopCondition getStopCondition();
+
+    /**
+     * random for ensuring constant seed if needed.
+     */
+    Random getRandom();
 }

@@ -5,5 +5,5 @@ import ar.edu.itba.sia.interfaces.Chromosome;
 import java.util.List;
 
 public interface Replacer {
-    List<Chromosome> replace(List<Chromosome> population, List<Chromosome> children);
+    List<Chromosome> replace(final List<Chromosome> population, final List<Chromosome> children);
 }

@@ -37,3 +37,13 @@ hs_err_pid*
 
 # eclipse
 .project
+
+# documentation
+TP3/teorica.pdf
+TP3/enunciado.pdf
+
+# test data
+TP3/testdata/
+
+# octave
+TP2/octave-workspace

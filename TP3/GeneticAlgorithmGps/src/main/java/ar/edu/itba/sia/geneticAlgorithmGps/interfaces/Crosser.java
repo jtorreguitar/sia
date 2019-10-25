@@ -6,5 +6,5 @@ import java.util.List;
 
 @FunctionalInterface
 public interface Crosser {
-    List<Chromosome> cross(Chromosome c1, Chromosome c2);
+    List<Chromosome> cross(final Chromosome c1, final Chromosome c2);
 }

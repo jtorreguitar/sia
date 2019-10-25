@@ -7,15 +7,8 @@ import ar.edu.itba.sia.interfaces.Chromosome;
 import java.util.List;
 
 public class FullReplacer implements Replacer {
-
-    private final List<Selector> selectors;
-
-    public FullReplacer(List<Selector> selectors) {
-        this.selectors = selectors;
-    }
-
     @Override
     public List<Chromosome> replace(List<Chromosome> population, List<Chromosome> children) {
-        return null;
+        return children;
     }
 }
