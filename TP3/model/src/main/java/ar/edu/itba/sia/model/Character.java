@@ -29,46 +29,71 @@ public class Character implements Chromosome {
                                                                         {EquipmentStorage.BREAST_PLATE_NAME, null}})
                                                     .collect(Collectors.toMap(data -> (String) data[0],
                                                                             data -> (Equipment) data[1]));
-    private Double height = MIN_HEIGHT;
+    private Double height;
     private Random random;
-    private Double attackModifier;
-    private Double defenseModifier;
+    private Double characterAttackModifier;
+    private Double characterDefenseModifier;
+    private Double characterStrengthModifier;
+    private Double characterAgilityModifier;
+    private Double characterWisdomModifier;
+    private Double characterEnduranceModifier;
+    private Double characterHealthModifier;
 
     public Character(Equipment weapon,
-                             Equipment boots,
-                             Equipment gauntlets,
-                             Equipment helmet,
-                             Equipment breastPlate,
-                             Double attackModifier,
-                             Double defenseModifier,
-                             Double height,
-                             Random random) {
+                    Equipment boots,
+                    Equipment gauntlets,
+                    Equipment helmet,
+                    Equipment breastPlate,
+                    Double characterAttackModifier,
+                    Double characterDefenseModifier,
+                    Double characterStrengthModifier,
+                    Double characterAgilityModifier,
+                    Double characterWisdomModifier,
+                    Double characterEnduranceModifier,
+                    Double characterHealthModifier,
+                    Double height,
+                    Random random) {
         equipment.put(EquipmentStorage.WEAPON_NAME, weapon);
         equipment.put(EquipmentStorage.BOOTS_NAME, boots);
         equipment.put(EquipmentStorage.HELMET_NAME, gauntlets);
         equipment.put(EquipmentStorage.GAUNTLETS_NAME, helmet);
         equipment.put(EquipmentStorage.BREAST_PLATE_NAME, breastPlate);
         this.random = random;
-        this.attackModifier = attackModifier;
-        this.defenseModifier = defenseModifier;
+        this.characterAttackModifier = characterAttackModifier;
+        this.characterDefenseModifier = characterDefenseModifier;
+        this.characterStrengthModifier = characterStrengthModifier;
+        this.characterAgilityModifier = characterAgilityModifier;
+        this.characterWisdomModifier = characterWisdomModifier;
+        this.characterEnduranceModifier = characterEnduranceModifier;
+        this.characterHealthModifier = characterHealthModifier;
         this.height = height;
     }
 
     private Character(Map<String, Equipment> equipment,
-                      Double attackModifier,
-                      Double defenseModifier,
+                      Double characterAttackModifier,
+                      Double characterDefenseModifier,
+                      Double characterStrengthModifier,
+                      Double characterAgilityModifier,
+                      Double characterWisdomModifier,
+                      Double characterEnduranceModifier,
+                      Double characterHealthModifier,
                       Double height,
                       Random random) {
         this.equipment = equipment;
         this.random = random;
-        this.attackModifier = attackModifier;
-        this.defenseModifier = defenseModifier;
+        this.characterAttackModifier = characterAttackModifier;
+        this.characterDefenseModifier = characterDefenseModifier;
+        this.characterStrengthModifier = characterStrengthModifier;
+        this.characterAgilityModifier = characterAgilityModifier;
+        this.characterWisdomModifier = characterWisdomModifier;
+        this.characterEnduranceModifier = characterEnduranceModifier;
+        this.characterHealthModifier = characterHealthModifier;
         this.height = height;
     }
 
     @Override
     public double getAptitude() {
-        return 0;
+        return attack()*characterAttackModifier + defense()*characterDefenseModifier;
     }
 
     @Override
@@ -105,8 +130,26 @@ public class Character implements Chromosome {
             retHeight1 = character.height;
             retHeight2 = height;
         }
-        return Arrays.asList(new Character(retMap1, attackModifier, defenseModifier, retHeight1, random),
-                            new Character(retMap2, attackModifier, defenseModifier, retHeight2, random));
+        return Arrays.asList(new Character(retMap1,
+                                            characterAttackModifier,
+                                            characterDefenseModifier,
+                                            characterStrengthModifier,
+                                            characterAgilityModifier,
+                                            characterWisdomModifier,
+                                            characterEnduranceModifier,
+                                            characterHealthModifier,
+                                            retHeight1,
+                                            random),
+                                new Character(retMap2,
+                                            characterAttackModifier,
+                                            characterDefenseModifier,
+                                            characterStrengthModifier,
+                                            characterAgilityModifier,
+                                            characterWisdomModifier,
+                                            characterEnduranceModifier,
+                                            characterHealthModifier,
+                                            retHeight2,
+                                            random));
     }
 
     @Override
@@ -118,10 +161,55 @@ public class Character implements Chromosome {
         Double retHeight = height;
         if(indexes.contains(HEIGHT_INDEX))
             retHeight = randomInRange(MIN_HEIGHT, MAX_HEIGHT);
-        return new Character(retMap, attackModifier, defenseModifier, retHeight, random);
+        return new Character(retMap,
+                characterAttackModifier,
+                characterDefenseModifier,
+                characterStrengthModifier,
+                characterAgilityModifier,
+                characterWisdomModifier,
+                characterEnduranceModifier,
+                characterHealthModifier,
+                retHeight,
+                random);
+    }
+
+    private Double attack() {
+        return (agility() + wisdom())*strength()* attackModifier();
+    }
+
+    private Double defense() {
+        return (endurance() + wisdom())*health()*defenseModifier();
+    }
+
+    private Double strength() {
+        return 100*Math.tanh(0.01*equipment.values().stream().mapToDouble(e -> e.getStrength()*characterStrengthModifier).sum());
+    }
+
+    private Double agility() {
+        return Math.tanh(0.01*equipment.values().stream().mapToDouble(e -> e.getAgility()*characterAgilityModifier).sum());
+    }
+
+    private Double wisdom() {
+        return 0.6*Math.tanh(0.01*equipment.values().stream().mapToDouble(e -> e.getWisdom()*characterWisdomModifier).sum());
+    }
+
+    private Double endurance() {
+        return Math.tanh(0.01*equipment.values().stream().mapToDouble(e -> e.getEndurance()*characterEnduranceModifier).sum());
+    }
+
+    private Double health() {
+        return 100*Math.tanh(0.01*equipment.values().stream().mapToDouble(e -> e.getHealth()*characterHealthModifier).sum());
+    }
+
+    private Double attackModifier() {
+        return 0.5 - Math.pow(3*height -5, 4) + Math.pow(3*height-5, 2) + 0.5*height;
+    }
+
+    private Double defenseModifier() {
+        return 2 + Math.pow(3*height -5, 4) - Math.pow(3*height-5, 2) - 0.5*height;
     }
 
     private Double randomInRange(Double left, Double right) {
-        return random.nextDouble()/(right-left) + left;
+        return random.nextDouble()*(right-left) + left;
     }
 }
