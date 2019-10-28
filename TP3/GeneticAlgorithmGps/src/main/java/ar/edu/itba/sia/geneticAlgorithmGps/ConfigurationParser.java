@@ -1,10 +1,16 @@
 package ar.edu.itba.sia.geneticAlgorithmGps;
 
+import ar.edu.itba.sia.geneticAlgorithmGps.implementations.crossers.AnnularCrosser;
+import ar.edu.itba.sia.geneticAlgorithmGps.implementations.crossers.TwoPointCrosser;
+import ar.edu.itba.sia.geneticAlgorithmGps.implementations.crossers.UniformCrosser;
 import ar.edu.itba.sia.geneticAlgorithmGps.implementations.mutators.MultiGeneMutator;
 import ar.edu.itba.sia.geneticAlgorithmGps.implementations.mutators.SingleGeneMutator;
 import ar.edu.itba.sia.geneticAlgorithmGps.implementations.replacers.FullReplacer;
+import ar.edu.itba.sia.geneticAlgorithmGps.implementations.replacers.SecondReplacer;
+import ar.edu.itba.sia.geneticAlgorithmGps.implementations.replacers.ThirdReplacer;
 import ar.edu.itba.sia.geneticAlgorithmGps.implementations.selectors.EliteSelector;
 import ar.edu.itba.sia.geneticAlgorithmGps.implementations.crossers.SinglePointCrosser;
+import ar.edu.itba.sia.geneticAlgorithmGps.implementations.selectors.RouletteSelector;
 import ar.edu.itba.sia.geneticAlgorithmGps.interfaces.Crosser;
 import ar.edu.itba.sia.geneticAlgorithmGps.interfaces.Mutator;
 import ar.edu.itba.sia.geneticAlgorithmGps.interfaces.Replacer;
@@ -33,14 +39,8 @@ import java.util.stream.IntStream;
     /* package */ Selector determineSelector(SelectorType selectorType, double selectionPercentage, Random random) {
         switch (selectorType) {
             case ELITE: return new EliteSelector(selectionPercentage);
+            case ROULETTE: return new RouletteSelector(selectionPercentage, random);
             default: throw new IllegalArgumentException("invalid selector provided");
-        }
-    }
-
-    /* package */ Replacer determineReplacer(Configuration configuration) {
-        switch (configuration.getReplacer()) {
-            case FULL_REPLACEMENT: return new FullReplacer();
-            default: throw new IllegalArgumentException("invalid replacer provided");
         }
     }
 
@@ -52,9 +52,21 @@ import java.util.stream.IntStream;
                 .collect(Collectors.toList());
     }
 
+    /* package */ Replacer determineReplacer(Configuration configuration) {
+        switch (configuration.getReplacer()) {
+            case FULL_REPLACEMENT: return new FullReplacer();
+            case SECOND: return new SecondReplacer();
+            case THIRD: return new ThirdReplacer();
+            default: throw new IllegalArgumentException("invalid replacer provided");
+        }
+    }
+
     /* package */ Crosser determineCrosser(Configuration configuration) {
         switch (configuration.getCrosser()) {
             case SINGLE_POINT: return new SinglePointCrosser(configuration.getRandom());
+            case TWO_POINT: return new TwoPointCrosser(configuration.getRandom());
+            case UNIFORM: return new UniformCrosser(configuration.getRandom());
+            case ANNULAR: return new AnnularCrosser(configuration.getRandom());
             default: throw new IllegalArgumentException("invalid crosser provided");
         }
     }

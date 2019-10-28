@@ -63,4 +63,6 @@ import java.util.stream.Stream;
     /* package */ static int size(String equipmentType) {
         return equipment.get(equipmentType).length;
     }
+
+
 }

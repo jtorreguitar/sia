@@ -3,7 +3,10 @@ package ar.edu.itba.sia.geneticAlgorithmGps;
 import ar.edu.itba.sia.geneticAlgorithmGps.interfaces.*;
 import ar.edu.itba.sia.interfaces.Chromosome;
 import ar.edu.itba.sia.interfaces.Configuration;
+import ar.edu.itba.sia.interfaces.enums.ReplacerType;
+import ar.edu.itba.sia.interfaces.enums.SelectorType;
 
+import javax.management.AttributeNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,9 +21,13 @@ public class GeneticAlgorithmGpsEngine {
      * genetic operators
      */
     private final List<Selector> selectors;
+    private final List<Selector> replacerSelectors;
     private final Crosser crosser;
     private final Mutator mutator;
     private final Replacer replacer;
+
+    private Selector selectAlgorithmA;
+    private Selector selectAlgorithmB;
 
     /**
      * metric params
@@ -29,14 +36,42 @@ public class GeneticAlgorithmGpsEngine {
     private final List<Integer> repeatIndividuals = new LinkedList<>();
     private Integer generations = 0;
 
-    public GeneticAlgorithmGpsEngine(final List<Chromosome> population, final Configuration configuration) {
+    public GeneticAlgorithmGpsEngine(final List<Chromosome> population, final Configuration configuration)
+                                        throws AttributeNotFoundException {
         this.population = population;
         this.configuration = configuration;
         ConfigurationParser configurationParser = new ConfigurationParser();
+
+        double replacementPercent = configurationParser.getReplacementPercent();
+        double selectionPercent = configurationParser.getSelectionPercent();
+        int selectionCant = configurationParser.getSelectionCant();
+        int selectionCantA = (int) Math.floor( selectionCant * selectionPercent );
+        int selectionCantB = selectionCant - selectionCantA;
+
+        replacer = configurationParser.determineReplacer(configuration);
+        int replacementCant = 0;
+        switch ( ReplacerType.getReplacementMethod(replacer.toString()) ){
+            case SECOND:
+                replacementCant = population.size() - selectionCant;
+                break;
+            case THIRD:
+                replacementCant = population.size();
+                break;
+        }
+
+        int replacementCantA = (int) Math.floor(replacementPercent * replacementCant);
+        int replacementCantB = replacementCant - replacementCantA;
+
         selectors = configurationParser.determineSelectors(configuration);
+        Selector selectionAlgorithmA = selectors.get(0);
+        Selector selectionAlgorithmB = selectors.get(1);
+
+        replacerSelectors = configurationParser.determineSelectorsForReplacer(configuration);
+        Selector selectionReplacementAlgorithmA = replacerSelectors.get(0);
+        Selector selectionReplacementAlgorithmB = replacerSelectors.get(1);
+
         crosser = configurationParser.determineCrosser(configuration);
         mutator = configurationParser.determineMutator(configuration);
-        replacer = configurationParser.determineReplacer(configuration);
     }
 
     public void solve() {
@@ -44,7 +79,8 @@ public class GeneticAlgorithmGpsEngine {
             final List<Chromosome> selected = select(population);
             final List<Chromosome> children = cross(selected);
             final List<Chromosome> mutatedChildren = mutate(children);
-            final List<Chromosome> newPopulation = replacer.replace(population, mutatedChildren);
+            final List<Chromosome> newPopulation = replacer.replace(population, mutatedChildren,
+                                                                        selectAlgorithmA, selectAlgorithmB);
             updateMetrics(newPopulation);
             population = newPopulation;
         }
