@@ -1,0 +1,47 @@
+{
+  "selectors": [
+    {
+      "method": "universal",
+      "percentage": 0.5
+    },
+    {
+      "method": "roulette",
+      "percentage": 0.5
+    }
+  ],
+  "replacerSelectors": [
+    {
+      "method": "universal",
+      "percentage": 0.5
+    },
+    {
+      "method": "roulette",
+      "percentage": 0.5
+    }
+  ],
+  "replacer": "FULL_REPLACER",
+  "crosser": "SINGLE_POINT",
+  "mutator": "MULTI_GENE",
+  "mutationRate": 0.1,
+  "stopCondition": [
+    "GENERATIONS"
+  ],
+  "initialPopulationSize": 10,
+  "participantsPerMatchInTournament": 2,
+  "randomSeed": -1,
+  "stoppingData": {
+    "generations": 10000,
+    "bestAptitude": 0,
+    "bestAptitudeIncrease": 0,
+    "repeatIndividuals": 0
+  },
+  "characterData": {
+    "attackModifier": 1,
+    "defenseModifier": 1,
+    "strengthModifier": 1,
+    "agilityModifier": 1,
+    "wisdomModifier": 1,
+    "enduranceModifier": 1,
+    "healthModifier": 1
+  }
+}

@@ -9,8 +9,8 @@ import java.util.stream.Stream;
 
 public class Character implements Chromosome {
 
-    private static final Double MAX_HEIGHT = 2.0;
-    private static final Double MIN_HEIGHT = 1.3;
+    /* package */ static final Double MAX_HEIGHT = 2.0;
+    /* package */ static final Double MIN_HEIGHT = 1.3;
     private static final Integer EQUIPMENT_COUNT = 5;
     private static final Integer HEIGHT_INDEX = 5;
 
@@ -31,26 +31,14 @@ public class Character implements Chromosome {
                                                                             data -> (Equipment) data[1]));
     private Double height;
     private Random random;
-    private Double characterAttackModifier;
-    private Double characterDefenseModifier;
-    private Double characterStrengthModifier;
-    private Double characterAgilityModifier;
-    private Double characterWisdomModifier;
-    private Double characterEnduranceModifier;
-    private Double characterHealthModifier;
+    private CharacterData characterData;
 
     public Character(Equipment weapon,
                     Equipment boots,
                     Equipment gauntlets,
                     Equipment helmet,
                     Equipment breastPlate,
-                    Double characterAttackModifier,
-                    Double characterDefenseModifier,
-                    Double characterStrengthModifier,
-                    Double characterAgilityModifier,
-                    Double characterWisdomModifier,
-                    Double characterEnduranceModifier,
-                    Double characterHealthModifier,
+                    CharacterData characterData,
                     Double height,
                     Random random) {
         equipment.put(EquipmentStorage.WEAPON_NAME, weapon);
@@ -59,41 +47,23 @@ public class Character implements Chromosome {
         equipment.put(EquipmentStorage.GAUNTLETS_NAME, helmet);
         equipment.put(EquipmentStorage.BREAST_PLATE_NAME, breastPlate);
         this.random = random;
-        this.characterAttackModifier = characterAttackModifier;
-        this.characterDefenseModifier = characterDefenseModifier;
-        this.characterStrengthModifier = characterStrengthModifier;
-        this.characterAgilityModifier = characterAgilityModifier;
-        this.characterWisdomModifier = characterWisdomModifier;
-        this.characterEnduranceModifier = characterEnduranceModifier;
-        this.characterHealthModifier = characterHealthModifier;
+        this.characterData = characterData;
         this.height = height;
     }
 
     private Character(Map<String, Equipment> equipment,
-                      Double characterAttackModifier,
-                      Double characterDefenseModifier,
-                      Double characterStrengthModifier,
-                      Double characterAgilityModifier,
-                      Double characterWisdomModifier,
-                      Double characterEnduranceModifier,
-                      Double characterHealthModifier,
+                      CharacterData characterData,
                       Double height,
                       Random random) {
         this.equipment = equipment;
         this.random = random;
-        this.characterAttackModifier = characterAttackModifier;
-        this.characterDefenseModifier = characterDefenseModifier;
-        this.characterStrengthModifier = characterStrengthModifier;
-        this.characterAgilityModifier = characterAgilityModifier;
-        this.characterWisdomModifier = characterWisdomModifier;
-        this.characterEnduranceModifier = characterEnduranceModifier;
-        this.characterHealthModifier = characterHealthModifier;
+        this.characterData = characterData;
         this.height = height;
     }
 
     @Override
     public double getAptitude() {
-        return attack()*characterAttackModifier + defense()*characterDefenseModifier;
+        return attack()* characterData.getAttackModifier() + defense() * characterData.getDefenseModifier();
     }
 
     @Override
@@ -130,26 +100,8 @@ public class Character implements Chromosome {
             retHeight1 = character.height;
             retHeight2 = height;
         }
-        return Arrays.asList(new Character(retMap1,
-                                            characterAttackModifier,
-                                            characterDefenseModifier,
-                                            characterStrengthModifier,
-                                            characterAgilityModifier,
-                                            characterWisdomModifier,
-                                            characterEnduranceModifier,
-                                            characterHealthModifier,
-                                            retHeight1,
-                                            random),
-                                new Character(retMap2,
-                                            characterAttackModifier,
-                                            characterDefenseModifier,
-                                            characterStrengthModifier,
-                                            characterAgilityModifier,
-                                            characterWisdomModifier,
-                                            characterEnduranceModifier,
-                                            characterHealthModifier,
-                                            retHeight2,
-                                            random));
+        return Arrays.asList(new Character(retMap1, characterData, retHeight1, random),
+                            new Character(retMap2, characterData, retHeight2, random));
     }
 
     @Override
@@ -160,17 +112,8 @@ public class Character implements Chromosome {
                         .forEach(e -> retMap.put(e, EquipmentStorage.get(random.nextInt(EquipmentStorage.size(e)), e)));
         Double retHeight = height;
         if(indexes.contains(HEIGHT_INDEX))
-            retHeight = randomInRange(MIN_HEIGHT, MAX_HEIGHT);
-        return new Character(retMap,
-                characterAttackModifier,
-                characterDefenseModifier,
-                characterStrengthModifier,
-                characterAgilityModifier,
-                characterWisdomModifier,
-                characterEnduranceModifier,
-                characterHealthModifier,
-                retHeight,
-                random);
+            retHeight = randomHeight(random);
+        return new Character(retMap, characterData, retHeight, random);
     }
 
     private Double attack() {
@@ -182,23 +125,23 @@ public class Character implements Chromosome {
     }
 
     private Double strength() {
-        return 100*Math.tanh(0.01*equipment.values().stream().mapToDouble(e -> e.getStrength()*characterStrengthModifier).sum());
+        return 100*Math.tanh(0.01*equipment.values().stream().mapToDouble(e -> e.getStrength() * characterData.getStrengthModifier()).sum());
     }
 
     private Double agility() {
-        return Math.tanh(0.01*equipment.values().stream().mapToDouble(e -> e.getAgility()*characterAgilityModifier).sum());
+        return Math.tanh(0.01*equipment.values().stream().mapToDouble(e -> e.getAgility() * characterData.getAgilityModifier()).sum());
     }
 
     private Double wisdom() {
-        return 0.6*Math.tanh(0.01*equipment.values().stream().mapToDouble(e -> e.getWisdom()*characterWisdomModifier).sum());
+        return 0.6*Math.tanh(0.01*equipment.values().stream().mapToDouble(e -> e.getWisdom() * characterData.getWisdomModifier()).sum());
     }
 
     private Double endurance() {
-        return Math.tanh(0.01*equipment.values().stream().mapToDouble(e -> e.getEndurance()*characterEnduranceModifier).sum());
+        return Math.tanh(0.01*equipment.values().stream().mapToDouble(e -> e.getEndurance() * characterData.getEnduranceModifier()).sum());
     }
 
     private Double health() {
-        return 100*Math.tanh(0.01*equipment.values().stream().mapToDouble(e -> e.getHealth()*characterHealthModifier).sum());
+        return 100*Math.tanh(0.01*equipment.values().stream().mapToDouble(e -> e.getHealth() * characterData.getHealthModifier()).sum());
     }
 
     private Double attackModifier() {
@@ -209,7 +152,7 @@ public class Character implements Chromosome {
         return 2 + Math.pow(3*height -5, 4) - Math.pow(3*height-5, 2) - 0.5*height;
     }
 
-    private Double randomInRange(Double left, Double right) {
-        return random.nextDouble()*(right-left) + left;
+    /* package */ static Double randomHeight(Random random) {
+        return random.nextDouble() * (MAX_HEIGHT - MIN_HEIGHT) + MIN_HEIGHT;
     }
 }

@@ -1,4 +1,4 @@
-package ar.edu.itba.sia.interfaces.enums;
+package ar.edu.itba.sia.main;
 
 public enum StopCondition {
     GENERATIONS,

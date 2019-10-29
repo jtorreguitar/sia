@@ -33,8 +33,7 @@ public interface Configuration {
     /**
      * stop condition
      */
-    boolean stopConditionIsMet(final double stopCondition);
-    StopCondition getStopCondition();
+    boolean stopConditionIsMet(final StoppingData stoppingData);
 
     /**
      * random for ensuring constant seed if needed.

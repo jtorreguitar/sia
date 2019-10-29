@@ -3,6 +3,7 @@ package ar.edu.itba.sia.geneticAlgorithmGps;
 import ar.edu.itba.sia.geneticAlgorithmGps.interfaces.*;
 import ar.edu.itba.sia.interfaces.Chromosome;
 import ar.edu.itba.sia.interfaces.Configuration;
+import ar.edu.itba.sia.interfaces.StoppingData;
 import ar.edu.itba.sia.interfaces.enums.ReplacerType;
 import ar.edu.itba.sia.interfaces.enums.SelectorType;
 
@@ -32,22 +33,22 @@ public class GeneticAlgorithmGpsEngine {
     private final List<Chromosome> fittestIndividualForEachGeneration = new LinkedList<>();
     private final List<Integer> repeatIndividuals = new LinkedList<>();
     private Integer generations = 0;
+    private GeneticAlgorithmStoppingData stoppingData;
 
-    public GeneticAlgorithmGpsEngine(final List<Chromosome> population, final Configuration configuration)
-                                        throws AttributeNotFoundException {
+    public GeneticAlgorithmGpsEngine(final List<Chromosome> population, final Configuration configuration) {
         this.population = population;
         this.configuration = configuration;
         ConfigurationParser configurationParser = new ConfigurationParser();
-
         selectors = configurationParser.determineSelectors(configuration);
         replacer = configurationParser.determineReplacer(configuration);
         crosser = configurationParser.determineCrosser(configuration);
         mutator = configurationParser.determineMutator(configuration);
+        stoppingData = new GeneticAlgorithmStoppingData();
     }
 
     //TODO: Cuando tomamos los parametros, si hacemos FULLREPLACE el pctg de reemplazo debe ser 100, sino puede ser cualquiera.
     public void solve() {
-        while(!configuration.stopConditionIsMet(getCondition())) {
+        do {
             final List<Chromosome> selected = select(population);
             final List<Chromosome> children = cross(selected);
             final List<Chromosome> mutatedChildren = mutate(children);
@@ -55,16 +56,8 @@ public class GeneticAlgorithmGpsEngine {
             updateMetrics(newPopulation);
             population = newPopulation;
         }
-    }
+        while(!configuration.stopConditionIsMet(stoppingData));
 
-    private double getCondition() {
-        switch (configuration.getStopCondition()) {
-            case CONTENT: return repeatIndividuals.get(repeatIndividuals.size() - 1).doubleValue();
-            case STRUCTURE:
-            case OPTIMUM: return fittestIndividualForEachGeneration.get(fittestIndividualForEachGeneration.size() - 1).getAptitude();
-            case GENERATIONS: return generations.doubleValue();
-            default: throw new IllegalArgumentException("invalid stop condition");
-        }
     }
 
     private List<Chromosome> select(final List<Chromosome> population) {
@@ -72,7 +65,6 @@ public class GeneticAlgorithmGpsEngine {
                                 .collect(Collectors.toList());
     }
 
-    // TODO: checkear bien como se seleccionan los padres porque si el nro aca no es par cagamo.
     private List<Chromosome> cross(final List<Chromosome> selected) {
         List<Chromosome> children = new LinkedList<>();
         for (int i = 0; i < selected.size(); i += 2)
@@ -85,8 +77,15 @@ public class GeneticAlgorithmGpsEngine {
     }
 
     private void updateMetrics(final List<Chromosome> newPopulation) {
-        fittestIndividualForEachGeneration.add(newPopulation.stream().min((c1, c2) -> (int) (c1.getAptitude() - c2.getAptitude())).get());
-        repeatIndividuals.add(new Long(newPopulation.stream().filter(c -> !population.contains(c)).count()).intValue());
+        Chromosome fittestIndividual = newPopulation.stream().min((c1, c2) -> (int) (c1.getAptitude() - c2.getAptitude())).get();
+        stoppingData.setBestAptitude(fittestIndividual.getAptitude());
+        fittestIndividualForEachGeneration.add(fittestIndividual);
+        stoppingData.setRepeatIndividuals(new Long(newPopulation.stream().filter(c -> !population.contains(c)).count()).intValue());
+        repeatIndividuals.add(stoppingData.getRepeatIndividuals());
         generations++;
+        stoppingData.setGenerations(generations);
+        stoppingData.setBestAptitudeIncrease(fittestIndividualForEachGeneration.size() > 1 ?
+                                            fittestIndividual.getAptitude() - fittestIndividualForEachGeneration.get(fittestIndividualForEachGeneration.size() - 2).getAptitude() :
+                                            fittestIndividual.getAptitude());
     }
 }
