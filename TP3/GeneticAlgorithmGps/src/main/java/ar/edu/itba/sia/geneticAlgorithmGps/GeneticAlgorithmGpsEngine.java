@@ -21,13 +21,10 @@ public class GeneticAlgorithmGpsEngine {
      * genetic operators
      */
     private final List<Selector> selectors;
-    private final List<Selector> replacerSelectors;
     private final Crosser crosser;
     private final Mutator mutator;
     private final Replacer replacer;
 
-    private Selector selectAlgorithmA;
-    private Selector selectAlgorithmB;
 
     /**
      * metric params
@@ -42,45 +39,19 @@ public class GeneticAlgorithmGpsEngine {
         this.configuration = configuration;
         ConfigurationParser configurationParser = new ConfigurationParser();
 
-        double replacementPercent = configurationParser.getReplacementPercent();
-        double selectionPercent = configurationParser.getSelectionPercent();
-        int selectionCant = configurationParser.getSelectionCant();
-        int selectionCantA = (int) Math.floor( selectionCant * selectionPercent );
-        int selectionCantB = selectionCant - selectionCantA;
-
-        replacer = configurationParser.determineReplacer(configuration);
-        int replacementCant = 0;
-        switch ( ReplacerType.getReplacementMethod(replacer.toString()) ){
-            case SECOND:
-                replacementCant = population.size() - selectionCant;
-                break;
-            case THIRD:
-                replacementCant = population.size();
-                break;
-        }
-
-        int replacementCantA = (int) Math.floor(replacementPercent * replacementCant);
-        int replacementCantB = replacementCant - replacementCantA;
-
         selectors = configurationParser.determineSelectors(configuration);
-        Selector selectionAlgorithmA = selectors.get(0);
-        Selector selectionAlgorithmB = selectors.get(1);
-
-        replacerSelectors = configurationParser.determineSelectorsForReplacer(configuration);
-        Selector selectionReplacementAlgorithmA = replacerSelectors.get(0);
-        Selector selectionReplacementAlgorithmB = replacerSelectors.get(1);
-
+        replacer = configurationParser.determineReplacer(configuration);
         crosser = configurationParser.determineCrosser(configuration);
         mutator = configurationParser.determineMutator(configuration);
     }
 
+    //TODO: Cuando tomamos los parametros, si hacemos FULLREPLACE el pctg de reemplazo debe ser 100, sino puede ser cualquiera.
     public void solve() {
         while(!configuration.stopConditionIsMet(getCondition())) {
             final List<Chromosome> selected = select(population);
             final List<Chromosome> children = cross(selected);
             final List<Chromosome> mutatedChildren = mutate(children);
-            final List<Chromosome> newPopulation = replacer.replace(population, mutatedChildren,
-                                                                        selectAlgorithmA, selectAlgorithmB);
+            final List<Chromosome> newPopulation = replacer.replace(population, mutatedChildren, selected);
             updateMetrics(newPopulation);
             population = newPopulation;
         }

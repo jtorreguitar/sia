@@ -8,8 +8,7 @@ import java.util.List;
 
 public class FullReplacer implements Replacer {
     @Override
-    public List<Chromosome> replace(List<Chromosome> population, List<Chromosome> children
-                                        ,Selector selectionAlgorithmA, Selector selectionAlgorithmB) {
+    public List<Chromosome> replace(List<Chromosome> population, List<Chromosome> children, List<Chromosome> selected) {
         return children;
     }
 }

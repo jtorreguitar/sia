@@ -47,3 +47,6 @@ TP3/testdata/
 
 # octave
 TP2/octave-workspace
+
+# macos
+.DS_Store
