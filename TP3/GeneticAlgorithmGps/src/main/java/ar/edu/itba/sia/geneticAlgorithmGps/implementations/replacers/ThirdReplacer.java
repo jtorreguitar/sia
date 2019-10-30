@@ -9,23 +9,25 @@ import java.util.List;
 
 public class ThirdReplacer implements Replacer {
 
-    Selector selectionAlgorithm;
+    List<Selector> algos;
+    Double percent;
 
-    public ThirdReplacer(Selector selectionAlgorithm){
-        this.selectionAlgorithm = selectionAlgorithm;
+    public ThirdReplacer(List<Selector> selectionAlgorithms, Double replacementPercentage){
+        this.algos = selectionAlgorithms;
+        this.percent = replacementPercentage;
     }
-
 
     @Override
     public List<Chromosome> replace(List<Chromosome> population, List<Chromosome> children, List<Chromosome> selected) {
         List<Chromosome> newGen = new LinkedList<>();
-        List<Chromosome> pool = new LinkedList<>(population);
-        pool.addAll(children);
-        List<Chromosome> prevGen = new LinkedList<>(population);
-        prevGen.removeAll(selected);
-        newGen.addAll(prevGen);
-        List<Chromosome> selection = selectionAlgorithm.select(pool);
-        newGen.addAll(selection);
+        int k = selected.size();
+        int nMinK = population.size() - k;
+        List<Chromosome> selection = population;
+        selection.addAll(children);
+        newGen.addAll(algos.get(0).select(population, (int) Math.floor( percent * nMinK ) ));
+        newGen.addAll(algos.get(1).select(population, (int) Math.floor( (1-percent) * nMinK ) ));
+        newGen.addAll(algos.get(0).select(selection, (int) Math.floor( percent * k )));
+        newGen.addAll(algos.get(1).select(selection, (int) Math.floor( (1-percent) * k ) ));
 
         return newGen;
     }

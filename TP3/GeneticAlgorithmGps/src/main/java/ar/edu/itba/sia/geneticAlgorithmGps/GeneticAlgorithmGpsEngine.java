@@ -61,7 +61,7 @@ public class GeneticAlgorithmGpsEngine {
     }
 
     private List<Chromosome> select(final List<Chromosome> population) {
-        return selectors.stream().flatMap(s -> s.select(population).stream())
+        return selectors.stream().flatMap(s -> s.select(population, population.size()).stream())
                                 .collect(Collectors.toList());
     }
 
