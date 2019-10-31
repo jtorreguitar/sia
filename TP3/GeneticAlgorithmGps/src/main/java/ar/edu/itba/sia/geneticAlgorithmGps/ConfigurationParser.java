@@ -36,10 +36,15 @@ import java.util.stream.IntStream;
                         .collect(Collectors.toList());
     }
 
-    /* package */ Selector determineSelector(SelectorType selectorType, double selectionPercentage, Random random) {
+    /* package */ Selector determineSelector(SelectorType selectorType, Random random) {
         switch (selectorType) {
             case ELITE: return new EliteSelector();
             case ROULETTE: return new RouletteSelector(random);
+            case PTOURNAMENT: return new ProbabilisticTournamentSelector(random);
+            case DTOURNAMENT: return new DeterministicTournamentSelector(random, m);
+            case UNIVERSAL: return new UniversalSelector(random);
+            case RANKING: return new RankingSelector(random);
+            case BOLTZMANN: return new BoltzmannRouletteSelector(random, temperature, slope);
             default: throw new IllegalArgumentException("invalid selector provided");
         }
     }

@@ -28,7 +28,7 @@ public class RouletteSelector implements Selector {
 
         for (int i = 0 ; i < selectionCant; i++) {
             double random = r.nextDouble();
-            accumToMatch[i] = random / Double.MAX_VALUE;
+            accumToMatch[i] = random;
         }
 
         double totalFitness = 0;

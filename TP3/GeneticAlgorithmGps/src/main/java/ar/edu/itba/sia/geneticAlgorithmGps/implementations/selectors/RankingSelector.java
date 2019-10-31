@@ -9,22 +9,17 @@ import java.util.stream.Collectors;
 
 public class RankingSelector implements Selector {
 
-    private double selectionPercentage;
     private Random random;
 
-    public RankingSelector(double selectionPercentage, Random random) {
-        this.selectionPercentage = selectionPercentage;
+    public RankingSelector(Random random) {
         this.random = random;
     }
 
     @Override
-    public List<Chromosome> select(List<Chromosome> population) {
+    public List<Chromosome> select(List<Chromosome> population, int k) {
 
-        int selectionCant = (int) Math.floor( selectionPercentage * population.size() );
-
-        //debe ser par
-        if (selectionCant % 2 != 0 )
-            selectionCant= selectionCant - 1;
+        if (k % 2 != 0 )
+            k = k - 1;
 
         List<Chromosome> winners = new LinkedList<>();
 
@@ -43,6 +38,8 @@ public class RankingSelector implements Selector {
             }
 
             winners.add(population.get(t));
+            
+            i++;
 
         }
         return winners;

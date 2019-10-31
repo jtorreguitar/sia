@@ -9,20 +9,17 @@ import java.util.stream.Collectors;
 
 public class ProbabilisticTournamentSelector implements Selector {
 
-    private double selectionPercentage;
     private Random random;
 
-    public ProbabilisticTournamentSelector(double selectionPercentage, Random random) {
-        this.selectionPercentage = selectionPercentage;
+    public ProbabilisticTournamentSelector(Random random) {
         this.random = random;
     }
 
     @Override
-    public List<Chromosome> select(List<Chromosome> population) {
-        if (Double.valueOf(Math.floor(population.size()*selectionPercentage)) % 2 == 0)
-           double k = Double.valueOf(Math.floor(population.size()*selectionPercentage));
-        else 
-           double k = Double.valueOf(Math.ceil(population.size()*selectionPercentage));
+    public List<Chromosome> select(List<Chromosome> population, int k) {
+       
+        if (k % 2 != 0 )
+            k = k - 1;
 
         List<Chromosome> winners = new LinkedList<>();
 

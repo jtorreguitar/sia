@@ -9,14 +9,12 @@ import java.util.stream.Collectors;
 
 public class BoltzmannRouletteSelector implements Selector {
 
-    private double selectionPercentage;
     private Random random;
     private int temperature;
     private int slope;
     private int x;
 
-    public BoltzmannRouletteSelector(double selectionPercentage, Random random, int temperature, int slope) {
-        this.selectionPercentage = selectionPercentage;
+    public BoltzmannRouletteSelector(Random random, int temperature, int slope) {
         this.random = random;
         this.temperature = temperature;
         this.slope = slope;
@@ -24,19 +22,17 @@ public class BoltzmannRouletteSelector implements Selector {
     }
 
     @Override
-    public List<Chromosome> select(List<Chromosome> population) {
-
-        int selectionCant = (int) Math.floor( selectionPercentage * population.size() );
+    public List<Chromosome> select(List<Chromosome> population, int k) {
 
         //debe ser par
-        if (selectionCant % 2 != 0 )
-            selectionCant= selectionCant - 1;
+        if (k % 2 != 0 )
+            k = k - 1;
 
         List<Chromosome> winners = new LinkedList<>();
 
-        double boltzmannValue[] = new double[selectionCant];
+        double boltzmannValue[] = new double[k];
 
-        for (int i = 0; i < selectionCant; i++){
+        for (int i = 0; i < k; i++){
             boltzmannValue[i] = Math.pow(Math.E, population.get(i))*temperature);
         }
 
