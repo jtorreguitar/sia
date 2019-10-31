@@ -3,18 +3,16 @@ package ar.edu.itba.sia.geneticAlgorithmGps.implementations.selectors;
 import ar.edu.itba.sia.geneticAlgorithmGps.interfaces.Selector;
 import ar.edu.itba.sia.interfaces.Chromosome;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.*;
 
 public class BoltzmannRouletteSelector implements Selector {
 
     private Random random;
-    private int temperature;
-    private int slope;
+    private double temperature;
+    private double slope;
     private int x;
 
-    public BoltzmannRouletteSelector(Random random, int temperature, int slope) {
+    public BoltzmannRouletteSelector(Random random, double temperature, double slope) {
         this.random = random;
         this.temperature = temperature;
         this.slope = slope;
@@ -32,13 +30,18 @@ public class BoltzmannRouletteSelector implements Selector {
 
         double boltzmannValue[] = new double[k];
 
-        for (int i = 0; i < k; i++){
-            boltzmannValue[i] = Math.pow(Math.E, population.get(i))*temperature);
+        for (int j = 0; j < k; j++){
+            boltzmannValue[j] = Math.pow(Math.E, (population.get(j).getAptitude())*temperature);
         }
 
         double totalBoltzmann = Arrays.stream(boltzmannValue).sum();
         double averageBoltzmann = totalBoltzmann/k; 
-        boltzmannValue = Arrays.stream(boltzmannValue).map(v -> v/averageBoltzmann).collect(Collectors.toAR);
+        
+        for (int j = 0; j < k; j++){
+            boltzmannValue[j] = boltzmannValue[j]/averageBoltzmann;
+        }
+
+        int i = 0;
 
         while(i < k){
 
@@ -46,14 +49,17 @@ public class BoltzmannRouletteSelector implements Selector {
 
             double pickWinner = random.nextDouble();
 
-            for(t = 0; (accumulated + boltzmannValue[t]/totalBoltzmann) < pickWinner; t++){
+            int t = 0;
+
+            while(accumulated + boltzmannValue[t]/totalBoltzmann < pickWinner){
                 accumulated += boltzmannValue[t]/totalBoltzmann;
+                t++;
             }
 
             winners.add(population.get(t));
 
         }
-        temperature = Math.pow(Math.E, -1*n*x);
+        temperature = Math.pow(Math.E, -1*slope*x);
         x ++;
         return winners;
     }

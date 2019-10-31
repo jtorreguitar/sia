@@ -3,9 +3,8 @@ package ar.edu.itba.sia.geneticAlgorithmGps.implementations.selectors;
 import ar.edu.itba.sia.geneticAlgorithmGps.interfaces.Selector;
 import ar.edu.itba.sia.interfaces.Chromosome;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.*;
+
 
 public class UniversalSelector implements Selector {
 
@@ -23,7 +22,7 @@ public class UniversalSelector implements Selector {
         List<Chromosome> winners = new LinkedList<>();
 
         double totalFitness = 0;
-        for (Chromosome c : chromosomes)
+        for (Chromosome c : population)
             totalFitness += c.getAptitude();
 
         double r = random.nextDouble();
@@ -38,8 +37,11 @@ public class UniversalSelector implements Selector {
 
             double accumulated = 0;
 
-            for(t = 0; accumulated + ((population.get(t).getAptitude)/totalFitness) < pickWinner; t++){
-                accumulated += (population.get(t).getAptitude)/totalFitness);
+            int t = 0;
+
+            while(accumulated + (population.get(t).getAptitude())/totalFitness < pickWinner){
+                accumulated += (population.get(t).getAptitude())/totalFitness;
+                t++;
             }
 
             winners.add(population.get(t));

@@ -3,9 +3,8 @@ package ar.edu.itba.sia.geneticAlgorithmGps.implementations.selectors;
 import ar.edu.itba.sia.geneticAlgorithmGps.interfaces.Selector;
 import ar.edu.itba.sia.interfaces.Chromosome;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.*;
+
 
 public class ProbabilisticTournamentSelector implements Selector {
 
