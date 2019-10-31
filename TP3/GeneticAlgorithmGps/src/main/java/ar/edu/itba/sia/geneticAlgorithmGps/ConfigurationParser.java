@@ -38,8 +38,8 @@ import java.util.stream.IntStream;
 
     /* package */ Selector determineSelector(SelectorType selectorType, double selectionPercentage, Random random) {
         switch (selectorType) {
-            case ELITE: return new EliteSelector(selectionPercentage);
-            case ROULETTE: return new RouletteSelector(selectionPercentage, random);
+            case ELITE: return new EliteSelector();
+            case ROULETTE: return new RouletteSelector(random);
             default: throw new IllegalArgumentException("invalid selector provided");
         }
     }
@@ -55,9 +55,16 @@ import java.util.stream.IntStream;
     //TODO no se si el constructor del third replacer deberia manejarse de otra manera
     /* package */ Replacer determineReplacer(Configuration configuration) {
         switch (configuration.getReplacer()) {
-            case FULL_REPLACEMENT: return new FullReplacer();
-            case SECOND: return new SecondReplacer();
-            case THIRD: return new ThirdReplacer( determineSelectorsForReplacer(configuration).get(0) );
+            case FULL_REPLACEMENT:
+                if(configuration.getReplacementPercentages().get(0) != 1.0){
+                    // TODO throw excep o le hardcodeamos el 100% ?
+                }
+                return new FullReplacer( determineSelectorsForReplacer(configuration),
+                                            configuration.getReplacementPercentages().get(0) );
+            case SECOND: return new SecondReplacer(determineSelectorsForReplacer(configuration),
+                                                    configuration.getReplacementPercentages().get(0) );
+            case THIRD: return new ThirdReplacer( determineSelectorsForReplacer(configuration),
+                                                    configuration.getReplacementPercentages().get(0) );
             default: throw new IllegalArgumentException("invalid replacer provided");
         }
     }

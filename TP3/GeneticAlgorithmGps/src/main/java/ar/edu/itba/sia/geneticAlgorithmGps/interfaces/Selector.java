@@ -6,5 +6,5 @@ import java.util.List;
 
 @FunctionalInterface
 public interface Selector {
-    List<Chromosome> select(final List<Chromosome> population);
+    List<Chromosome> select(final List<Chromosome> population, int cant);
 }
