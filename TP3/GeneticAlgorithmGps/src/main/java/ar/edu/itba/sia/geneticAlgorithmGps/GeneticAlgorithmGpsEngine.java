@@ -84,7 +84,7 @@ public class GeneticAlgorithmGpsEngine {
         Chromosome fittestIndividual = newPopulation.stream().max(Comparator.comparing(Chromosome::getAptitude)).get();
         stoppingData.setBestAptitude(fittestIndividual.getAptitude());
         fittestIndividualForEachGeneration.add(fittestIndividual);
-        stoppingData.setRepeatIndividuals(new Long(newPopulation.stream().filter(c -> !population.contains(c)).count()).intValue());
+        stoppingData.setRepeatIndividuals(new Long(newPopulation.stream().filter(c -> population.contains(c)).count()).intValue());
         repeatIndividuals.add(stoppingData.getRepeatIndividuals());
         generations++;
         stoppingData.setGenerations(generations);
