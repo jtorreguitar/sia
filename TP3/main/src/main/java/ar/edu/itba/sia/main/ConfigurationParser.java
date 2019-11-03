@@ -51,7 +51,6 @@ import java.util.stream.Collectors;
     }
 
     private StopConditionFunction parseStopConditionFunction(final StopCondition[] stopConditions, final StoppingData stoppingData) {
-        System.out.println(stopConditions);
         return s -> Arrays.stream(stopConditions)
                         .map(sc -> parseStopConditionFunctions(sc, stoppingData).stopConditionIsMet(s))
                         .reduce(false, (accum, val) -> accum || val);

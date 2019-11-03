@@ -23,14 +23,14 @@
   "crosser": "SINGLE_POINT",
   "mutator": "MULTI_GENE",
   "mutationRate": 0.1,
-  "stopCondition": [
-    "STRUCTURE"
+  "stopConditions": [
+    "GENERATIONS"
   ],
   "initialPopulationSize": 10,
   "participantsPerMatchInTournament": 2,
   "randomSeed": -1,
   "stoppingData": {
-    "generations": 10000,
+    "generations": 10,
     "bestAptitude": 0,
     "bestAptitudeIncrease": 0,
     "repeatIndividuals": 0
