@@ -11,6 +11,7 @@ public interface Configuration {
      */
     List<SelectorType> getSelectors();
     List<Integer> getSelectionQuantities();
+    List<Integer> getSelectionCompetitors();
 
     /**
      * cross over
@@ -29,6 +30,7 @@ public interface Configuration {
     ReplacerType getReplacer();
     List<SelectorType> getReplacementSelectors();
     List<Integer> getReplacementQuantities();
+    List<Integer> getReplacementCompetitors();
 
     /**
      * stop condition

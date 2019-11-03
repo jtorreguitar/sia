@@ -2,21 +2,25 @@
   "selectors": [
     {
       "method": "ELITE",
-      "quantity": 5
+      "quantity": 5,
+      "competitors": 5
     },
     {
       "method": "ELITE",
-      "quantity": 5
+      "quantity": 5,
+      "competitors": 5
     }
   ],
   "replacerSelectors": [
     {
       "method": "ELITE",
-      "quantity": 5
+      "quantity": 5,
+      "competitors": 5
     },
     {
       "method": "ELITE",
-      "quantity": 5
+      "quantity": 5,
+      "competitors": 5
     }
   ],
   "replacer": "FULL_REPLACEMENT",

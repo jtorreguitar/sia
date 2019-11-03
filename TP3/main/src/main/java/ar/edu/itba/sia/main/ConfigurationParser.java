@@ -33,11 +33,13 @@ import java.util.stream.Collectors;
     private void setVariables(MainConfiguration mainConfiguration, JsonConfiguration jsonConfiguration) {
         mainConfiguration.setSelectors(Arrays.stream(jsonConfiguration.selectors).map(s -> s.method).collect(Collectors.toList()));
         mainConfiguration.setSelectionQuantities(Arrays.stream(jsonConfiguration.selectors).map(s -> s.quantity).collect(Collectors.toList()));
+        mainConfiguration.setSelectionCompetitors(Arrays.stream(jsonConfiguration.selectors).map(s -> s.competitors).collect(Collectors.toList()));
         mainConfiguration.setCrosser(jsonConfiguration.crosser);
         mainConfiguration.setMutationRate(jsonConfiguration.mutationRate);
         mainConfiguration.setMutator(jsonConfiguration.mutator);
         mainConfiguration.setReplacer(jsonConfiguration.replacer);
         mainConfiguration.setReplacementQuantities(Arrays.stream(jsonConfiguration.replacerSelectors).map(s -> s.quantity).collect(Collectors.toList()));
+        mainConfiguration.setReplacementCompetitors(Arrays.stream(jsonConfiguration.replacerSelectors).map(s -> s.competitors).collect(Collectors.toList()));
         mainConfiguration.setReplacementSelectors(Arrays.stream(jsonConfiguration.replacerSelectors).map(s -> s.method).collect(Collectors.toList()));
         mainConfiguration.setRandom(parseRandom(jsonConfiguration));
         mainConfiguration.setStopConditionFunction(parseStopConditionFunction(jsonConfiguration.stopConditions, jsonConfiguration.stoppingData));
@@ -83,6 +85,7 @@ import java.util.stream.Collectors;
     private class SelectionMethodAndQuantity {
         private SelectorType method;
         private Integer quantity;
+        private Integer competitors;
     }
 
     private class JsonStoppingData implements StoppingData {

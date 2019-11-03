@@ -8,15 +8,11 @@ import java.util.*;
 public class BoltzmannRouletteSelector implements Selector {
 
     private Random random;
-    private double temperature;
-    private double slope;
     private int x;
     private int quantity;
 
-    public BoltzmannRouletteSelector(Random random, double temperature, double slope, int quantity) {
+    public BoltzmannRouletteSelector(Random random, int quantity) {
         this.random = random;
-        this.temperature = temperature;
-        this.slope = slope;
         this.x = 1;
         this.quantity = quantity;
     }
@@ -31,6 +27,8 @@ public class BoltzmannRouletteSelector implements Selector {
         List<Chromosome> winners = new LinkedList<>();
 
         double boltzmannValue[] = new double[quantity];
+
+        double temperature = 1/(0.002*x + 1);
 
         for (int j = 0; j < quantity; j++){
             boltzmannValue[j] = Math.pow(Math.E, (population.get(j).getAptitude())*temperature);
@@ -61,7 +59,6 @@ public class BoltzmannRouletteSelector implements Selector {
             winners.add(population.get(t));
 
         }
-        temperature = Math.pow(Math.E, -1*slope*x);
         x ++;
         return winners;
     }

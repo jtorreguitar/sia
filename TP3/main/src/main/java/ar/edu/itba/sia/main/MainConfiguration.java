@@ -12,12 +12,14 @@ public class MainConfiguration implements Configuration {
 
     private List<SelectorType> selectors;
     private List<Integer> selectionQuantities;
+    private List<Integer> selectionCompetitors;
     private CrosserType crosser;
     private double mutationRate;
     private MutatorType mutator;
     private ReplacerType replacer;
     private List<SelectorType> replacementSelectors;
     private List<Integer> replacementQuantities;
+    private List<Integer> replacementCompetitors;
     private Random random;
     private StopConditionFunction stopConditionFunction;
     private int initialPopulationSize;
@@ -31,6 +33,11 @@ public class MainConfiguration implements Configuration {
     @Override
     public List<Integer> getSelectionQuantities() {
         return selectionQuantities;
+    }
+
+    @Override
+    public List<Integer> getSelectionCompetitors() {
+        return selectionCompetitors;
     }
 
     @Override
@@ -64,6 +71,11 @@ public class MainConfiguration implements Configuration {
     }
 
     @Override
+    public List<Integer> getReplacementCompetitors() {
+        return replacementCompetitors;
+    }
+
+    @Override
     public boolean stopConditionIsMet(final StoppingData stoppingData) {
         return stopConditionFunction.stopConditionIsMet(stoppingData);
     }
@@ -89,6 +101,10 @@ public class MainConfiguration implements Configuration {
         this.selectionQuantities = selectionQuantities;
     }
 
+    /* package */ void setSelectionCompetitors(List<Integer> selectionCompetitors){
+        this.selectionCompetitors = selectionCompetitors;
+    }
+
     /* package */ void setCrosser(CrosserType crosser) {
         this.crosser = crosser;
     }
@@ -111,6 +127,10 @@ public class MainConfiguration implements Configuration {
 
     /* package */ void setReplacementQuantities(List<Integer> replacementQuantities) {
         this.replacementQuantities = replacementQuantities;
+    }
+
+    /* package */ void setReplacementCompetitors(List<Integer> replacementCompetitors){
+        this.replacementCompetitors = replacementCompetitors;
     }
 
     /* package */ void setRandom(Random random) {

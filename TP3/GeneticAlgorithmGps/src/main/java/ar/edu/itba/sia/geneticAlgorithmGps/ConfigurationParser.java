@@ -11,7 +11,9 @@ import ar.edu.itba.sia.geneticAlgorithmGps.implementations.replacers.SecondRepla
 import ar.edu.itba.sia.geneticAlgorithmGps.implementations.replacers.ThirdReplacer;
 import ar.edu.itba.sia.geneticAlgorithmGps.implementations.selectors.EliteSelector;
 import ar.edu.itba.sia.geneticAlgorithmGps.implementations.selectors.RouletteSelector;
+import ar.edu.itba.sia.geneticAlgorithmGps.implementations.selectors.BoltzmannRouletteSelector;
 import ar.edu.itba.sia.geneticAlgorithmGps.implementations.selectors.ProbabilisticTournamentSelector;
+import ar.edu.itba.sia.geneticAlgorithmGps.implementations.selectors.DeterministicTournamentSelector;
 import ar.edu.itba.sia.geneticAlgorithmGps.implementations.selectors.RankingSelector;
 import ar.edu.itba.sia.geneticAlgorithmGps.implementations.selectors.UniversalSelector;
 import ar.edu.itba.sia.geneticAlgorithmGps.interfaces.Crosser;
@@ -32,19 +34,20 @@ import java.util.stream.IntStream;
         return IntStream.range(0, configuration.getSelectors().size())
                         .mapToObj(i -> determineSelector(configuration.getSelectors().get(i),
                                                             configuration.getSelectionQuantities().get(i),
-                                                            configuration.getRandom()))
+                                                            configuration.getRandom(),
+                                                            configuration.getSelectionCompetitors().get(i)))
                         .collect(Collectors.toList());
     }
 
-    /* package */ Selector determineSelector(SelectorType selectorType, Integer quantity, Random random) {
+    /* package */ Selector determineSelector(SelectorType selectorType, Integer quantity, Random random, Integer competitors) {
         switch (selectorType) {
             case ELITE: return new EliteSelector(quantity);
             case ROULETTE: return new RouletteSelector(random, quantity);
             case PTOURNAMENT: return new ProbabilisticTournamentSelector(random, quantity);
-            //case DTOURNAMENT: return new DeterministicTournamentSelector(random, m, quantity);
+            case DTOURNAMENT: return new DeterministicTournamentSelector(random, competitors, quantity);
             case UNIVERSAL: return new UniversalSelector(random, quantity);
             case RANKING: return new RankingSelector(random, quantity);
-            //case BOLTZMANN: return new BoltzmannRouletteSelector(random, temperature, slope, quantity);
+            case BOLTZMANN: return new BoltzmannRouletteSelector(random, quantity);
             default: throw new IllegalArgumentException("invalid selector provided");
         }
     }
@@ -53,18 +56,15 @@ import java.util.stream.IntStream;
         return IntStream.range(0, configuration.getSelectors().size())
                 .mapToObj(i -> determineSelector(configuration.getReplacementSelectors().get(i),
                         configuration.getReplacementQuantities().get(i),
-                        configuration.getRandom()))
+                        configuration.getRandom(),
+                        configuration.getReplacementCompetitors().get(i)))
                 .collect(Collectors.toList());
     }
 
     //TODO no se si el constructor del third replacer deberia manejarse de otra manera
     /* package */ Replacer determineReplacer(Configuration configuration) {
         switch (configuration.getReplacer()) {
-            case FULL_REPLACEMENT:
-                if(configuration.getReplacementQuantities().get(0) != 1.0){
-                    // TODO throw excep o le hardcodeamos el 100% ?
-                }
-                return new FullReplacer(determineSelectorsForReplacer(configuration));
+            case FULL_REPLACEMENT: return new FullReplacer(determineSelectorsForReplacer(configuration));
             case SECOND: return new SecondReplacer(determineSelectorsForReplacer(configuration));
             case THIRD: return new ThirdReplacer( determineSelectorsForReplacer(configuration));
             default: throw new IllegalArgumentException("invalid replacer provided");
