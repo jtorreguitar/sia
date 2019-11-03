@@ -35,7 +35,7 @@
   "initialPopulationSize": 20,
   "randomSeed": -1,
   "stoppingData": {
-    "generations": 30000,
+    "generations": 10,
     "bestAptitude": 50,
     "bestAptitudeIncrease": 0,
     "repeatIndividuals": 0

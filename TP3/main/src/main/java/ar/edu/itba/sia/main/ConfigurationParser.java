@@ -16,9 +16,9 @@ import java.util.stream.Collectors;
 
     private static final String filePath = "config.json";
 
-    public MainConfiguration parse() {
+    public MainConfiguration parse(String path) {
         try {
-            final FileReader reader = new FileReader(filePath);
+            final FileReader reader = new FileReader(path + filePath);
             final JsonParser parser = new JsonParser();
             final JsonConfiguration jsonConfiguration = new Gson().fromJson(parser.parse(reader), JsonConfiguration.class);
             MainConfiguration mainConfiguration = new MainConfiguration();

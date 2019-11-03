@@ -11,8 +11,8 @@ import java.util.Locale;
 
 public class Main {
     public static void main(String[] args) {
-        new EquipmentParser().parse();
-        MainConfiguration configuration = new ConfigurationParser().parse();
+        new EquipmentParser().parse(args[0]);
+        MainConfiguration configuration = new ConfigurationParser().parse(args[0]);
         List<Chromosome> population = new Population().generateRandomPopulation(configuration.getInitialPopulationSize(),
                                                                                 configuration.getCharacterData(),
                                                                                 configuration.getRandom());

@@ -25,12 +25,12 @@ public class EquipmentParser {
     private static final String gauntletsPath = "guantes.tsv";
     private static final String breastPlatePath = "pecheras.tsv";
 
-    /* package */ void parse() {
-        EquipmentStorage.setWeapons(readTsvFile(dataPath + weaponPath));
-        EquipmentStorage.setBoots(readTsvFile(dataPath + bootsPath));
-        EquipmentStorage.setHelmets(readTsvFile(dataPath + helmetPath));
-        EquipmentStorage.setBreastPlates(readTsvFile(dataPath + breastPlatePath));
-        EquipmentStorage.setGauntlets(readTsvFile(dataPath + gauntletsPath));
+    /* package */ void parse(String path) {
+        EquipmentStorage.setWeapons(readTsvFile(path + dataPath + weaponPath));
+        EquipmentStorage.setBoots(readTsvFile(path + dataPath + bootsPath));
+        EquipmentStorage.setHelmets(readTsvFile(path + dataPath + helmetPath));
+        EquipmentStorage.setBreastPlates(readTsvFile(path + dataPath + breastPlatePath));
+        EquipmentStorage.setGauntlets(readTsvFile(path + dataPath + gauntletsPath));
     }
 
     private Equipment[] readTsvFile(String filePath) {
