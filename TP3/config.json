@@ -33,7 +33,6 @@
     "OPTIMUM"
   ],
   "initialPopulationSize": 20,
-  "participantsPerMatchInTournament": 2,
   "randomSeed": -1,
   "stoppingData": {
     "generations": 30000,

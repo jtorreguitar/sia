@@ -77,7 +77,6 @@ import java.util.stream.Collectors;
         private double mutationRate;
         private double mutationRateChangeRate;
         private StopCondition[] stopConditions;
-        private int participantsPerMatchInTournament;
         private long randomSeed;
         private JsonStoppingData stoppingData;
         private int initialPopulationSize;
