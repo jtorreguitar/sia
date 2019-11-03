@@ -7,6 +7,7 @@ import ar.edu.itba.sia.model.Population;
 
 import java.io.*;
 import java.util.List;
+import java.util.Locale;
 
 public class Main {
     public static void main(String[] args) {
@@ -17,17 +18,20 @@ public class Main {
                                                                                 configuration.getRandom());
         GeneticAlgorithmGpsEngine engine = new GeneticAlgorithmGpsEngine(population, configuration);
         Metrics metrics = engine.solve();
-        writeToCsv(metrics);
+        writeToTsv(metrics);
     }
 
-    private static void writeToCsv(Metrics metrics) {
-        File file = new File("metrics.csv");
+    private static void writeToTsv(Metrics metrics) {
+        File file = new File("metrics.tsv");
         try (FileWriter fw = new FileWriter(file); BufferedWriter br = new BufferedWriter(fw)){
-            br.write("generation,repeats,mean,best\n");
+            br.write("generation\trepeats\tmean\tbest\tmutation rate\n");
             for(int i = 0; i < metrics.getMeanFitness().size(); i++) {
-                br.write(String.format("%d,%d,%.3f,%.3f\n", i, metrics.getRepeatIndividuals().get(i),
-                                                            metrics.getMeanFitness().get(i),
-                                                            metrics.getFittestIndividualForEachGeneration().get(i)));
+                br.write(String.format(Locale.forLanguageTag("es-AR"), "%d\t%d\t%.3f\t%.3f\t%.5f\n",
+                                                                    i,
+                                                                    metrics.getRepeatIndividuals().get(i),
+                                                                    metrics.getMeanFitness().get(i),
+                                                                    metrics.getFittestIndividualForEachGeneration().get(i),
+                                                                    metrics.getMutationRates().get(i)));
             }
         }
         catch (IOException e) {

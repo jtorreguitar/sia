@@ -8,6 +8,7 @@ import ar.edu.itba.sia.interfaces.enums.ReplacerType;
 import ar.edu.itba.sia.interfaces.enums.SelectorType;
 
 import javax.management.AttributeNotFoundException;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,6 +34,7 @@ public class GeneticAlgorithmGpsEngine {
     private final List<Chromosome> fittestIndividualForEachGeneration = new LinkedList<>();
     private final List<Integer> repeatIndividuals = new LinkedList<>();
     private final List<Double> meanFitness = new LinkedList<>();
+    private final List<Double> mutationRates = new LinkedList<>();
     private Integer generations = 0;
     private GeneticAlgorithmStoppingData stoppingData;
 
@@ -54,11 +56,12 @@ public class GeneticAlgorithmGpsEngine {
             final List<Chromosome> children = cross(selected);
             final List<Chromosome> mutatedChildren = mutate(children);
             final List<Chromosome> newPopulation = replacer.replace(population, mutatedChildren, selected);
+            updateMutationRate(mutator);
             updateMetrics(newPopulation);
             population = newPopulation;
         }
         while(!configuration.stopConditionIsMet(stoppingData));
-        return new Metrics(repeatIndividuals, fittestIndividualForEachGeneration, meanFitness);
+        return new Metrics(repeatIndividuals, fittestIndividualForEachGeneration, meanFitness, mutationRates);
     }
 
     private List<Chromosome> select(final List<Chromosome> population) {
@@ -78,7 +81,7 @@ public class GeneticAlgorithmGpsEngine {
     }
 
     private void updateMetrics(final List<Chromosome> newPopulation) {
-        Chromosome fittestIndividual = newPopulation.stream().min((c1, c2) -> (int) (c1.getAptitude() - c2.getAptitude())).get();
+        Chromosome fittestIndividual = newPopulation.stream().max(Comparator.comparing(Chromosome::getAptitude)).get();
         stoppingData.setBestAptitude(fittestIndividual.getAptitude());
         fittestIndividualForEachGeneration.add(fittestIndividual);
         stoppingData.setRepeatIndividuals(new Long(newPopulation.stream().filter(c -> !population.contains(c)).count()).intValue());
@@ -89,5 +92,10 @@ public class GeneticAlgorithmGpsEngine {
                                             fittestIndividual.getAptitude() - fittestIndividualForEachGeneration.get(fittestIndividualForEachGeneration.size() - 2).getAptitude() :
                                             fittestIndividual.getAptitude());
         meanFitness.add(newPopulation.stream().mapToDouble(c -> c.getAptitude()).average().getAsDouble());
+        mutationRates.add(mutator.getMutationRate());
+    }
+
+    private void updateMutationRate(Mutator mutator) {
+        mutator.setMutationRate(mutator.getMutationRate()*Math.pow(Math.E, -configuration.getMutationRateChangeRate()));
     }
 }

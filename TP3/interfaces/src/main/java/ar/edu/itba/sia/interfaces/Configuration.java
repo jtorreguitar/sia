@@ -23,6 +23,7 @@ public interface Configuration {
      */
     double getMutationRate();
     MutatorType getMutator();
+    double getMutationRateChangeRate();
 
     /**
      * replacement

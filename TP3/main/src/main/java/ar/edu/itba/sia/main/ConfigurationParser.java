@@ -45,6 +45,7 @@ import java.util.stream.Collectors;
         mainConfiguration.setStopConditionFunction(parseStopConditionFunction(jsonConfiguration.stopConditions, jsonConfiguration.stoppingData));
         mainConfiguration.setInitialPopulationSize(jsonConfiguration.initialPopulationSize);
         mainConfiguration.setCharacterData(jsonConfiguration.characterData);
+        mainConfiguration.setMutationRateChangeRate(jsonConfiguration.mutationRateChangeRate);
     }
 
     private Random parseRandom(JsonConfiguration jsonConfiguration) {
@@ -74,6 +75,7 @@ import java.util.stream.Collectors;
         private CrosserType crosser;
         private MutatorType mutator;
         private double mutationRate;
+        private double mutationRateChangeRate;
         private StopCondition[] stopConditions;
         private int participantsPerMatchInTournament;
         private long randomSeed;

@@ -16,6 +16,7 @@ public class MainConfiguration implements Configuration {
     private CrosserType crosser;
     private double mutationRate;
     private MutatorType mutator;
+    private double mutationRateChangeRate;
     private ReplacerType replacer;
     private List<SelectorType> replacementSelectors;
     private List<Integer> replacementQuantities;
@@ -85,6 +86,11 @@ public class MainConfiguration implements Configuration {
         return random;
     }
 
+    @Override
+    public double getMutationRateChangeRate() {
+        return mutationRateChangeRate;
+    }
+
     public int getInitialPopulationSize() {
         return initialPopulationSize;
     }
@@ -141,11 +147,15 @@ public class MainConfiguration implements Configuration {
         this.stopConditionFunction = stopConditionFunction;
     }
 
-    public void setInitialPopulationSize(int initialPopulationSize) {
+    /* package */ void setInitialPopulationSize(int initialPopulationSize) {
         this.initialPopulationSize = initialPopulationSize;
     }
 
-    public void setCharacterData(CharacterData characterData) {
+    /* package */ void setCharacterData(CharacterData characterData) {
         this.characterData = characterData;
+    }
+
+    /* package */ void setMutationRateChangeRate(double mutationRateChangeRate) {
+        this.mutationRateChangeRate = mutationRateChangeRate;
     }
 }

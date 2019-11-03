@@ -2,12 +2,12 @@
   "selectors": [
     {
       "method": "ELITE",
-      "quantity": 5,
+      "quantity": 6,
       "competitors": 5
     },
     {
-      "method": "ELITE",
-      "quantity": 5,
+      "method": "UNIVERSAL",
+      "quantity": 14,
       "competitors": 5
     }
   ],
@@ -27,25 +27,27 @@
   "crosser": "SINGLE_POINT",
   "mutator": "MULTI_GENE",
   "mutationRate": 0.1,
+  "mutationRateChangeRate": 0.01,
   "stopConditions": [
-    "GENERATIONS"
+    "GENERATIONS",
+    "OPTIMUM"
   ],
-  "initialPopulationSize": 10,
+  "initialPopulationSize": 20,
   "participantsPerMatchInTournament": 2,
   "randomSeed": -1,
   "stoppingData": {
-    "generations": 3000,
-    "bestAptitude": 0,
+    "generations": 30000,
+    "bestAptitude": 50,
     "bestAptitudeIncrease": 0,
     "repeatIndividuals": 0
   },
   "characterData": {
-    "attackModifier": 1,
-    "defenseModifier": 1,
-    "strengthModifier": 1,
-    "agilityModifier": 1,
-    "wisdomModifier": 1,
+    "attackModifier": 0.7,
+    "defenseModifier": 0.3,
+    "strengthModifier": 0.8,
+    "agilityModifier": 1.2,
+    "wisdomModifier": 1.1,
     "enduranceModifier": 1,
-    "healthModifier": 1
+    "healthModifier": 0.8
   }
 }

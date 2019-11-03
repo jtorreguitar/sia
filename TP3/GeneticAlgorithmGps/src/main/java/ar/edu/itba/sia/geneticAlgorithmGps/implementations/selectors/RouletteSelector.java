@@ -58,7 +58,6 @@ public class RouletteSelector implements Selector {
                 j++;
             }
         }
-
         return selected;
     }
 }
