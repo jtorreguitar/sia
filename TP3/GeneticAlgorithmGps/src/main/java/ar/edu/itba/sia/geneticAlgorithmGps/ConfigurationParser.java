@@ -3,14 +3,19 @@ package ar.edu.itba.sia.geneticAlgorithmGps;
 import ar.edu.itba.sia.geneticAlgorithmGps.implementations.crossers.AnnularCrosser;
 import ar.edu.itba.sia.geneticAlgorithmGps.implementations.crossers.TwoPointCrosser;
 import ar.edu.itba.sia.geneticAlgorithmGps.implementations.crossers.UniformCrosser;
+import ar.edu.itba.sia.geneticAlgorithmGps.implementations.crossers.SinglePointCrosser;
 import ar.edu.itba.sia.geneticAlgorithmGps.implementations.mutators.MultiGeneMutator;
 import ar.edu.itba.sia.geneticAlgorithmGps.implementations.mutators.SingleGeneMutator;
 import ar.edu.itba.sia.geneticAlgorithmGps.implementations.replacers.FullReplacer;
 import ar.edu.itba.sia.geneticAlgorithmGps.implementations.replacers.SecondReplacer;
 import ar.edu.itba.sia.geneticAlgorithmGps.implementations.replacers.ThirdReplacer;
 import ar.edu.itba.sia.geneticAlgorithmGps.implementations.selectors.EliteSelector;
-import ar.edu.itba.sia.geneticAlgorithmGps.implementations.crossers.SinglePointCrosser;
 import ar.edu.itba.sia.geneticAlgorithmGps.implementations.selectors.RouletteSelector;
+import ar.edu.itba.sia.geneticAlgorithmGps.implementations.selectors.BoltzmannRouletteSelector;
+import ar.edu.itba.sia.geneticAlgorithmGps.implementations.selectors.DeterministicTournamentSelector;
+import ar.edu.itba.sia.geneticAlgorithmGps.implementations.selectors.ProbabilisticTournamentSelector;
+import ar.edu.itba.sia.geneticAlgorithmGps.implementations.selectors.RankingSelector;
+import ar.edu.itba.sia.geneticAlgorithmGps.implementations.selectors.UniversalSelector;
 import ar.edu.itba.sia.geneticAlgorithmGps.interfaces.Crosser;
 import ar.edu.itba.sia.geneticAlgorithmGps.interfaces.Mutator;
 import ar.edu.itba.sia.geneticAlgorithmGps.interfaces.Replacer;
@@ -38,8 +43,13 @@ import java.util.stream.IntStream;
 
     /* package */ Selector determineSelector(SelectorType selectorType, double selectionPercentage, Random random) {
         switch (selectorType) {
-            case ELITE: return new EliteSelector(selectionPercentage);
-            case ROULETTE: return new RouletteSelector(selectionPercentage, random);
+            case ELITE: return new EliteSelector();
+            case ROULETTE: return new RouletteSelector(random);
+            case PTOURNAMENT: return new ProbabilisticTournamentSelector(random);
+            //case DTOURNAMENT: return new DeterministicTournamentSelector(random, m);
+            case UNIVERSAL: return new UniversalSelector(random);
+            case RANKING: return new RankingSelector(random);
+            //case BOLTZMANN: return new BoltzmannRouletteSelector(random, temperature, slope);
             default: throw new IllegalArgumentException("invalid selector provided");
         }
     }
@@ -55,9 +65,16 @@ import java.util.stream.IntStream;
     //TODO no se si el constructor del third replacer deberia manejarse de otra manera
     /* package */ Replacer determineReplacer(Configuration configuration) {
         switch (configuration.getReplacer()) {
-            case FULL_REPLACEMENT: return new FullReplacer();
-            case SECOND: return new SecondReplacer();
-            case THIRD: return new ThirdReplacer( determineSelectorsForReplacer(configuration).get(0) );
+            case FULL_REPLACEMENT:
+                if(configuration.getReplacementPercentages().get(0) != 1.0){
+                    // TODO throw excep o le hardcodeamos el 100% ?
+                }
+                return new FullReplacer( determineSelectorsForReplacer(configuration),
+                                            configuration.getReplacementPercentages().get(0) );
+            case SECOND: return new SecondReplacer(determineSelectorsForReplacer(configuration),
+                                                    configuration.getReplacementPercentages().get(0) );
+            case THIRD: return new ThirdReplacer( determineSelectorsForReplacer(configuration),
+                                                    configuration.getReplacementPercentages().get(0) );
             default: throw new IllegalArgumentException("invalid replacer provided");
         }
     }

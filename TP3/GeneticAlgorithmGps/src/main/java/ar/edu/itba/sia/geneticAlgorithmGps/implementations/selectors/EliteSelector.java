@@ -9,16 +9,10 @@ import java.util.stream.Collectors;
 
 public class EliteSelector implements Selector {
 
-    private double selectionPercentage;
-
-    public EliteSelector(double selectionPercentage) {
-        this.selectionPercentage = selectionPercentage;
-    }
-
     @Override
-    public List<Chromosome> select(List<Chromosome> population) {
+    public List<Chromosome> select(List<Chromosome> population, int cant) {
         return population.stream().sorted((c1, c2) -> Double.compare(c2.getAptitude(), c1.getAptitude()))
-                                .limit(Double.valueOf(Math.floor(population.size()*selectionPercentage)).longValue())
+                                .limit(Double.valueOf(cant).longValue())
                                 .collect(Collectors.toList());
     }
 }

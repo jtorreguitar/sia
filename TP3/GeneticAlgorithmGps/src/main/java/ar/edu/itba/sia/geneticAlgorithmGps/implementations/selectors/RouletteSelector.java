@@ -8,18 +8,15 @@ import java.util.*;
 
 public class RouletteSelector implements Selector {
 
-    private double selectionPercentage;
-    private Random r;
+    Random r;
 
-    public RouletteSelector(double selectionPercentage, Random r) {
-
-        this.selectionPercentage = selectionPercentage;
+    public RouletteSelector (Random r){
         this.r = r;
     }
 
-    public List<Chromosome> select(List<Chromosome> chromosomes) {
+    public List<Chromosome> select(List<Chromosome> chromosomes, int cant) {
 
-        int selectionCant = (int) Math.floor( selectionPercentage * chromosomes.size() );
+        int selectionCant = cant;
 
         //debe ser par
         if (selectionCant % 2 != 0 )
@@ -31,7 +28,7 @@ public class RouletteSelector implements Selector {
 
         for (int i = 0 ; i < selectionCant; i++) {
             double random = r.nextDouble();
-            accumToMatch[i] = random / Double.MAX_VALUE;
+            accumToMatch[i] = random;
         }
 
         double totalFitness = 0;

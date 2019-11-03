@@ -5,6 +5,7 @@ public enum SelectorType {
     ROULETTE,
     UNIVERSAL,
     BOLTZMANN,
-    TOURNAMENT,
+    PTOURNAMENT,
+    DTOURNAMENT,
     RANKING
 }
