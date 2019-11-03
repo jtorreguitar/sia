@@ -32,6 +32,7 @@ public class GeneticAlgorithmGpsEngine {
      */
     private final List<Chromosome> fittestIndividualForEachGeneration = new LinkedList<>();
     private final List<Integer> repeatIndividuals = new LinkedList<>();
+    private final List<Double> meanFitness = new LinkedList<>();
     private Integer generations = 0;
     private GeneticAlgorithmStoppingData stoppingData;
 
@@ -47,7 +48,7 @@ public class GeneticAlgorithmGpsEngine {
     }
 
     //TODO: Cuando tomamos los parametros, si hacemos FULLREPLACE el pctg de reemplazo debe ser 100, sino puede ser cualquiera.
-    public void solve() {
+    public Metrics solve() {
         do {
             final List<Chromosome> selected = select(population);
             final List<Chromosome> children = cross(selected);
@@ -57,11 +58,11 @@ public class GeneticAlgorithmGpsEngine {
             population = newPopulation;
         }
         while(!configuration.stopConditionIsMet(stoppingData));
-
+        return new Metrics(repeatIndividuals, fittestIndividualForEachGeneration, meanFitness);
     }
 
     private List<Chromosome> select(final List<Chromosome> population) {
-        return selectors.stream().flatMap(s -> s.select(population, population.size()).stream())
+        return selectors.stream().flatMap(s -> s.select(population).stream())
                                 .collect(Collectors.toList());
     }
 
@@ -87,5 +88,6 @@ public class GeneticAlgorithmGpsEngine {
         stoppingData.setBestAptitudeIncrease(fittestIndividualForEachGeneration.size() > 1 ?
                                             fittestIndividual.getAptitude() - fittestIndividualForEachGeneration.get(fittestIndividualForEachGeneration.size() - 2).getAptitude() :
                                             fittestIndividual.getAptitude());
+        meanFitness.add(newPopulation.stream().mapToDouble(c -> c.getAptitude()).average().getAsDouble());
     }
 }

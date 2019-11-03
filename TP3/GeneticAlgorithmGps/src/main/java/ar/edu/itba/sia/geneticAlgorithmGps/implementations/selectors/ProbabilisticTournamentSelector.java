@@ -9,22 +9,24 @@ import java.util.*;
 public class ProbabilisticTournamentSelector implements Selector {
 
     private Random random;
+    private int quantity;
 
-    public ProbabilisticTournamentSelector(Random random) {
+    public ProbabilisticTournamentSelector(Random random, int quantity) {
         this.random = random;
+        this.quantity = quantity;
     }
 
     @Override
-    public List<Chromosome> select(List<Chromosome> population, int k) {
+    public List<Chromosome> select(List<Chromosome> population) {
        
-        if (k % 2 != 0 )
-            k = k - 1;
+        if (quantity % 2 != 0 )
+            quantity = quantity - 1;
 
         List<Chromosome> winners = new LinkedList<>();
 
-        while(k > 0){
-            Chromosome X = population.get((int) random.nextDouble() * (k-1));
-            Chromosome Y = population.get((int) random.nextDouble() * (k-1));
+        while(quantity > 0){
+            Chromosome X = population.get((int) random.nextDouble() * (quantity-1));
+            Chromosome Y = population.get((int) random.nextDouble() * (quantity-1));
             
             double pickWinner = random.nextDouble();
 
@@ -35,7 +37,7 @@ public class ProbabilisticTournamentSelector implements Selector {
             else
                 winners.add(Y);
 
-            k--;
+            quantity--;
         }
         return winners;
     }

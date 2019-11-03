@@ -11,8 +11,6 @@ import ar.edu.itba.sia.geneticAlgorithmGps.implementations.replacers.SecondRepla
 import ar.edu.itba.sia.geneticAlgorithmGps.implementations.replacers.ThirdReplacer;
 import ar.edu.itba.sia.geneticAlgorithmGps.implementations.selectors.EliteSelector;
 import ar.edu.itba.sia.geneticAlgorithmGps.implementations.selectors.RouletteSelector;
-import ar.edu.itba.sia.geneticAlgorithmGps.implementations.selectors.BoltzmannRouletteSelector;
-import ar.edu.itba.sia.geneticAlgorithmGps.implementations.selectors.DeterministicTournamentSelector;
 import ar.edu.itba.sia.geneticAlgorithmGps.implementations.selectors.ProbabilisticTournamentSelector;
 import ar.edu.itba.sia.geneticAlgorithmGps.implementations.selectors.RankingSelector;
 import ar.edu.itba.sia.geneticAlgorithmGps.implementations.selectors.UniversalSelector;
@@ -21,9 +19,6 @@ import ar.edu.itba.sia.geneticAlgorithmGps.interfaces.Mutator;
 import ar.edu.itba.sia.geneticAlgorithmGps.interfaces.Replacer;
 import ar.edu.itba.sia.geneticAlgorithmGps.interfaces.Selector;
 import ar.edu.itba.sia.interfaces.Configuration;
-import ar.edu.itba.sia.interfaces.enums.CrosserType;
-import ar.edu.itba.sia.interfaces.enums.MutatorType;
-import ar.edu.itba.sia.interfaces.enums.ReplacerType;
 import ar.edu.itba.sia.interfaces.enums.SelectorType;
 
 import java.util.List;
@@ -36,20 +31,20 @@ import java.util.stream.IntStream;
     /* package */ List<Selector> determineSelectors(final Configuration configuration) {
         return IntStream.range(0, configuration.getSelectors().size())
                         .mapToObj(i -> determineSelector(configuration.getSelectors().get(i),
-                                                            configuration.getSelectionPercentages().get(i),
+                                                            configuration.getSelectionQuantities().get(i),
                                                             configuration.getRandom()))
                         .collect(Collectors.toList());
     }
 
-    /* package */ Selector determineSelector(SelectorType selectorType, double selectionPercentage, Random random) {
+    /* package */ Selector determineSelector(SelectorType selectorType, Integer quantity, Random random) {
         switch (selectorType) {
-            case ELITE: return new EliteSelector();
-            case ROULETTE: return new RouletteSelector(random);
-            case PTOURNAMENT: return new ProbabilisticTournamentSelector(random);
-            //case DTOURNAMENT: return new DeterministicTournamentSelector(random, m);
-            case UNIVERSAL: return new UniversalSelector(random);
-            case RANKING: return new RankingSelector(random);
-            //case BOLTZMANN: return new BoltzmannRouletteSelector(random, temperature, slope);
+            case ELITE: return new EliteSelector(quantity);
+            case ROULETTE: return new RouletteSelector(random, quantity);
+            case PTOURNAMENT: return new ProbabilisticTournamentSelector(random, quantity);
+            //case DTOURNAMENT: return new DeterministicTournamentSelector(random, m, quantity);
+            case UNIVERSAL: return new UniversalSelector(random, quantity);
+            case RANKING: return new RankingSelector(random, quantity);
+            //case BOLTZMANN: return new BoltzmannRouletteSelector(random, temperature, slope, quantity);
             default: throw new IllegalArgumentException("invalid selector provided");
         }
     }
@@ -57,7 +52,7 @@ import java.util.stream.IntStream;
     /* package */ List<Selector> determineSelectorsForReplacer(final Configuration configuration) {
         return IntStream.range(0, configuration.getSelectors().size())
                 .mapToObj(i -> determineSelector(configuration.getReplacementSelectors().get(i),
-                        configuration.getReplacementPercentages().get(i),
+                        configuration.getReplacementQuantities().get(i),
                         configuration.getRandom()))
                 .collect(Collectors.toList());
     }
@@ -66,15 +61,12 @@ import java.util.stream.IntStream;
     /* package */ Replacer determineReplacer(Configuration configuration) {
         switch (configuration.getReplacer()) {
             case FULL_REPLACEMENT:
-                if(configuration.getReplacementPercentages().get(0) != 1.0){
+                if(configuration.getReplacementQuantities().get(0) != 1.0){
                     // TODO throw excep o le hardcodeamos el 100% ?
                 }
-                return new FullReplacer( determineSelectorsForReplacer(configuration),
-                                            configuration.getReplacementPercentages().get(0) );
-            case SECOND: return new SecondReplacer(determineSelectorsForReplacer(configuration),
-                                                    configuration.getReplacementPercentages().get(0) );
-            case THIRD: return new ThirdReplacer( determineSelectorsForReplacer(configuration),
-                                                    configuration.getReplacementPercentages().get(0) );
+                return new FullReplacer(determineSelectorsForReplacer(configuration));
+            case SECOND: return new SecondReplacer(determineSelectorsForReplacer(configuration));
+            case THIRD: return new ThirdReplacer( determineSelectorsForReplacer(configuration));
             default: throw new IllegalArgumentException("invalid replacer provided");
         }
     }

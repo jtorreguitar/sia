@@ -9,15 +9,17 @@ import java.util.*;
 public class UniversalSelector implements Selector {
 
     private Random random;
+    private int quantity;
 
-    public UniversalSelector(Random random) {
+    public UniversalSelector(Random random, int quantity) {
         this.random = random;
+        this.quantity = quantity;
     }
 
     @Override
-    public List<Chromosome> select(List<Chromosome> population, int k) {
-       if (k % 2 != 0 )
-            k = k - 1;
+    public List<Chromosome> select(List<Chromosome> population) {
+       if (quantity % 2 != 0 )
+            quantity = quantity - 1;
 
         List<Chromosome> winners = new LinkedList<>();
 
@@ -29,11 +31,11 @@ public class UniversalSelector implements Selector {
 
         int i = 0;
 
-        while(i < k){
+        while(i < quantity){
 
             i++;
 
-            double pickWinner = (r + i -1)/k;
+            double pickWinner = (r + i -1)/quantity;
 
             double accumulated = 0;
 

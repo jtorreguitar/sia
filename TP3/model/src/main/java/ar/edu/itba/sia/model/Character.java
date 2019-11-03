@@ -155,4 +155,30 @@ public class Character implements Chromosome {
     /* package */ static Double randomHeight(Random random) {
         return random.nextDouble() * (MAX_HEIGHT - MIN_HEIGHT) + MIN_HEIGHT;
     }
+
+    @Override
+    public String toString() {
+        return "attack: " + attack() + ", defense: " + defense() + ". ";
+    }
+
+    @Override
+    public int hashCode() {
+        int hashcode = 31;
+        for(Equipment e : equipment.values())
+            hashcode = hashcode + 31 * e.hashCode();
+        return hashcode;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Character))
+            return false;
+        Character c = (Character) obj;
+        boolean ret = true;
+        for(Equipment e : equipment.values()) {
+            if(!c.equipment.containsValue(e))
+                ret = false;
+        }
+        return ret;
+    }
 }

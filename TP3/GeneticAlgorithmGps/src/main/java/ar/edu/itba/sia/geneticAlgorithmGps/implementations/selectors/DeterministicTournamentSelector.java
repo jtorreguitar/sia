@@ -10,33 +10,35 @@ public class DeterministicTournamentSelector implements Selector {
 
     private Random random;
     private int m;
+    private int quantity;
 
-    public DeterministicTournamentSelector(Random random, int m) {
+    public DeterministicTournamentSelector(Random random, int m, int quantity) {
         this.random = random;
         this.m = m;
+        this.quantity = quantity;
     }
 
     @Override
-    public List<Chromosome> select(List<Chromosome> population, int k) {
+    public List<Chromosome> select(List<Chromosome> population) {
         
-        if (k % 2 != 0 )
-            k = k - 1;
+        if (quantity % 2 != 0 )
+            quantity = quantity - 1;
             
         List<Chromosome> winners = new LinkedList<>();
 
-        while(k > 0){
-            Chromosome winner = population.get((int) random.nextDouble() * (k-1));
+        while(quantity > 0){
+            Chromosome winner = population.get((int) random.nextDouble() * (quantity-1));
             int i = 0;
 
             while(i < m-1){
-                Chromosome candidate = population.get((int) (Math.random() * (k-1)));
+                Chromosome candidate = population.get((int) (Math.random() * (quantity-1)));
                 if(Double.compare(winner.getAptitude(), candidate.getAptitude()) < 0){
                     winner = candidate;
                 }
                 i ++;
             }
             winners.add(winner);
-            k--;
+            quantity--;
         }
         return winners;
     }

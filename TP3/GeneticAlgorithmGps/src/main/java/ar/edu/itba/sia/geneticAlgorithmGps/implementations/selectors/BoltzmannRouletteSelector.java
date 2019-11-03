@@ -11,39 +11,41 @@ public class BoltzmannRouletteSelector implements Selector {
     private double temperature;
     private double slope;
     private int x;
+    private int quantity;
 
-    public BoltzmannRouletteSelector(Random random, double temperature, double slope) {
+    public BoltzmannRouletteSelector(Random random, double temperature, double slope, int quantity) {
         this.random = random;
         this.temperature = temperature;
         this.slope = slope;
         this.x = 1;
+        this.quantity = quantity;
     }
 
     @Override
-    public List<Chromosome> select(List<Chromosome> population, int k) {
+    public List<Chromosome> select(List<Chromosome> population) {
 
         //debe ser par
-        if (k % 2 != 0 )
-            k = k - 1;
+        if (quantity % 2 != 0 )
+            quantity = quantity - 1;
 
         List<Chromosome> winners = new LinkedList<>();
 
-        double boltzmannValue[] = new double[k];
+        double boltzmannValue[] = new double[quantity];
 
-        for (int j = 0; j < k; j++){
+        for (int j = 0; j < quantity; j++){
             boltzmannValue[j] = Math.pow(Math.E, (population.get(j).getAptitude())*temperature);
         }
 
         double totalBoltzmann = Arrays.stream(boltzmannValue).sum();
-        double averageBoltzmann = totalBoltzmann/k; 
+        double averageBoltzmann = totalBoltzmann/quantity;
         
-        for (int j = 0; j < k; j++){
+        for (int j = 0; j < quantity; j++){
             boltzmannValue[j] = boltzmannValue[j]/averageBoltzmann;
         }
 
         int i = 0;
 
-        while(i < k){
+        while(i < quantity){
 
             double accumulated = 0;
 

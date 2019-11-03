@@ -12,16 +12,18 @@ import java.util.stream.Collectors;
 public class RankingSelector implements Selector {
 
     private Random random;
+    private int quantity;
 
-    public RankingSelector(Random random) {
+    public RankingSelector(Random random, int quantity) {
         this.random = random;
+        this.quantity = quantity;
     }
 
     @Override
-    public List<Chromosome> select(List<Chromosome> population, int k) {
+    public List<Chromosome> select(List<Chromosome> population) {
 
-        if (k % 2 != 0 )
-            k = k - 1;
+        if (quantity % 2 != 0 )
+            quantity = quantity - 1;
 
         List<Chromosome> winners = new LinkedList<>();
 
@@ -33,7 +35,7 @@ public class RankingSelector implements Selector {
 
         int i = 0;
 
-        while(i < k){
+        while(i < quantity){
 
             double accumulated = 0;
 
@@ -41,8 +43,8 @@ public class RankingSelector implements Selector {
 
             int t = 0;
 
-            while((accumulated + (k-t)/total) < pickWinner){
-                accumulated += (k-t)/total;
+            while((accumulated + (quantity-t)/total) < pickWinner){
+                accumulated += (quantity-t)/total;
                 t++;
             }
 

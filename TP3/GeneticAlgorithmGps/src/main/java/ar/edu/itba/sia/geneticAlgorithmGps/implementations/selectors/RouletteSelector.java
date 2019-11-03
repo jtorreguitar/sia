@@ -8,15 +8,17 @@ import java.util.*;
 
 public class RouletteSelector implements Selector {
 
-    Random r;
+    private Random r;
+    private int quantity;
 
-    public RouletteSelector (Random r){
+    public RouletteSelector (Random r, int quantity){
         this.r = r;
+        this.quantity = quantity;
     }
 
-    public List<Chromosome> select(List<Chromosome> chromosomes, int cant) {
+    public List<Chromosome> select(List<Chromosome> chromosomes) {
 
-        int selectionCant = cant;
+        int selectionCant = quantity;
 
         //debe ser par
         if (selectionCant % 2 != 0 )

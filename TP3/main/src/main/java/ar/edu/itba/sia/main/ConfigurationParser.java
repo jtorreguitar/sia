@@ -1,6 +1,5 @@
 package ar.edu.itba.sia.main;
 
-import ar.edu.itba.sia.interfaces.Configuration;
 import ar.edu.itba.sia.interfaces.StoppingData;
 import ar.edu.itba.sia.interfaces.enums.*;
 import ar.edu.itba.sia.model.CharacterData;
@@ -33,12 +32,12 @@ import java.util.stream.Collectors;
 
     private void setVariables(MainConfiguration mainConfiguration, JsonConfiguration jsonConfiguration) {
         mainConfiguration.setSelectors(Arrays.stream(jsonConfiguration.selectors).map(s -> s.method).collect(Collectors.toList()));
-        mainConfiguration.setSelectionPercentages(Arrays.stream(jsonConfiguration.selectors).map(s -> s.percentage).collect(Collectors.toList()));
+        mainConfiguration.setSelectionQuantities(Arrays.stream(jsonConfiguration.selectors).map(s -> s.quantity).collect(Collectors.toList()));
         mainConfiguration.setCrosser(jsonConfiguration.crosser);
         mainConfiguration.setMutationRate(jsonConfiguration.mutationRate);
         mainConfiguration.setMutator(jsonConfiguration.mutator);
         mainConfiguration.setReplacer(jsonConfiguration.replacer);
-        mainConfiguration.setReplacementPercentages(Arrays.stream(jsonConfiguration.replacerSelectors).map(s -> s.percentage).collect(Collectors.toList()));
+        mainConfiguration.setReplacementQuantities(Arrays.stream(jsonConfiguration.replacerSelectors).map(s -> s.quantity).collect(Collectors.toList()));
         mainConfiguration.setReplacementSelectors(Arrays.stream(jsonConfiguration.replacerSelectors).map(s -> s.method).collect(Collectors.toList()));
         mainConfiguration.setRandom(parseRandom(jsonConfiguration));
         mainConfiguration.setStopConditionFunction(parseStopConditionFunction(jsonConfiguration.stopConditions, jsonConfiguration.stoppingData));
@@ -67,8 +66,8 @@ import java.util.stream.Collectors;
     }
 
     private class JsonConfiguration {
-        private SelectionMethodAndPercentage[] selectors;
-        private SelectionMethodAndPercentage[] replacerSelectors;
+        private SelectionMethodAndQuantity[] selectors;
+        private SelectionMethodAndQuantity[] replacerSelectors;
         private ReplacerType replacer;
         private CrosserType crosser;
         private MutatorType mutator;
@@ -81,9 +80,9 @@ import java.util.stream.Collectors;
         private CharacterData characterData;
     }
 
-    private class SelectionMethodAndPercentage {
+    private class SelectionMethodAndQuantity {
         private SelectorType method;
-        private Double percentage;
+        private Integer quantity;
     }
 
     private class JsonStoppingData implements StoppingData {

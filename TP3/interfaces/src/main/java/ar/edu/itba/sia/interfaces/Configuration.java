@@ -10,7 +10,7 @@ public interface Configuration {
      * Selection
      */
     List<SelectorType> getSelectors();
-    List<Double> getSelectionPercentages();
+    List<Integer> getSelectionQuantities();
 
     /**
      * cross over
@@ -28,7 +28,7 @@ public interface Configuration {
      */
     ReplacerType getReplacer();
     List<SelectorType> getReplacementSelectors();
-    List<Double> getReplacementPercentages();
+    List<Integer> getReplacementQuantities();
 
     /**
      * stop condition

@@ -2,21 +2,21 @@
   "selectors": [
     {
       "method": "ELITE",
-      "percentage": 0.5
+      "quantity": 5
     },
     {
       "method": "ELITE",
-      "percentage": 0.5
+      "quantity": 5
     }
   ],
   "replacerSelectors": [
     {
       "method": "ELITE",
-      "percentage": 0.5
+      "quantity": 5
     },
     {
       "method": "ELITE",
-      "percentage": 0.5
+      "quantity": 5
     }
   ],
   "replacer": "FULL_REPLACEMENT",
@@ -30,7 +30,7 @@
   "participantsPerMatchInTournament": 2,
   "randomSeed": -1,
   "stoppingData": {
-    "generations": 10,
+    "generations": 3000,
     "bestAptitude": 0,
     "bestAptitudeIncrease": 0,
     "repeatIndividuals": 0

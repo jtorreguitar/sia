@@ -11,13 +11,13 @@ import java.util.Random;
 public class MainConfiguration implements Configuration {
 
     private List<SelectorType> selectors;
-    private List<Double> selectionPercentages;
+    private List<Integer> selectionQuantities;
     private CrosserType crosser;
     private double mutationRate;
     private MutatorType mutator;
     private ReplacerType replacer;
     private List<SelectorType> replacementSelectors;
-    private List<Double> replacementPercentages;
+    private List<Integer> replacementQuantities;
     private Random random;
     private StopConditionFunction stopConditionFunction;
     private int initialPopulationSize;
@@ -29,8 +29,8 @@ public class MainConfiguration implements Configuration {
     }
 
     @Override
-    public List<Double> getSelectionPercentages() {
-        return selectionPercentages;
+    public List<Integer> getSelectionQuantities() {
+        return selectionQuantities;
     }
 
     @Override
@@ -59,8 +59,8 @@ public class MainConfiguration implements Configuration {
     }
 
     @Override
-    public List<Double> getReplacementPercentages() {
-        return replacementPercentages;
+    public List<Integer> getReplacementQuantities() {
+        return replacementQuantities;
     }
 
     @Override
@@ -85,8 +85,8 @@ public class MainConfiguration implements Configuration {
         this.selectors = selectors;
     }
 
-    /* package */ void setSelectionPercentages(List<Double> selectionPercentages) {
-        this.selectionPercentages = selectionPercentages;
+    /* package */ void setSelectionQuantities(List<Integer> selectionQuantities) {
+        this.selectionQuantities = selectionQuantities;
     }
 
     /* package */ void setCrosser(CrosserType crosser) {
@@ -109,8 +109,8 @@ public class MainConfiguration implements Configuration {
         this.replacementSelectors = replacementSelectors;
     }
 
-    /* package */ void setReplacementPercentages(List<Double> replacementPercentages) {
-        this.replacementPercentages = replacementPercentages;
+    /* package */ void setReplacementQuantities(List<Integer> replacementQuantities) {
+        this.replacementQuantities = replacementQuantities;
     }
 
     /* package */ void setRandom(Random random) {

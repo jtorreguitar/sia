@@ -40,4 +40,17 @@ public class Equipment {
     public Double getHealth() {
         return health;
     }
+
+    @Override
+    public int hashCode() {
+        return Long.hashCode(id);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Equipment))
+            return false;
+        Equipment e = (Equipment) obj;
+        return e.id.equals(id);
+    }
 }
