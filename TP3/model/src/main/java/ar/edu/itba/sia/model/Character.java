@@ -22,11 +22,11 @@ public class Character implements Chromosome {
                                                             .collect(Collectors.toMap(data -> (Integer) data[0],
                                                                                     data -> (String) data[1]));
 
-    private Map<String, Equipment> equipment = Stream.of(new Object[][] {{EquipmentStorage.WEAPON_NAME, null},
-                                                                        {EquipmentStorage.BOOTS_NAME, null},
-                                                                        {EquipmentStorage.HELMET_NAME, null},
-                                                                        {EquipmentStorage.GAUNTLETS_NAME, null},
-                                                                        {EquipmentStorage.BREAST_PLATE_NAME, null}})
+    private Map<String, Equipment> equipment = Stream.of(new Object[][] {{EquipmentStorage.WEAPON_NAME, EquipmentStorage.get(0, EquipmentStorage.WEAPON_NAME) },
+                                                                        {EquipmentStorage.BOOTS_NAME, EquipmentStorage.get(0, EquipmentStorage.BOOTS_NAME)},
+                                                                        {EquipmentStorage.HELMET_NAME, EquipmentStorage.get(0, EquipmentStorage.HELMET_NAME)},
+                                                                        {EquipmentStorage.GAUNTLETS_NAME, EquipmentStorage.get(0, EquipmentStorage.GAUNTLETS_NAME)},
+                                                                        {EquipmentStorage.BREAST_PLATE_NAME, EquipmentStorage.get(0, EquipmentStorage.BREAST_PLATE_NAME)}})
                                                     .collect(Collectors.toMap(data -> (String) data[0],
                                                                             data -> (Equipment) data[1]));
     private Double height;

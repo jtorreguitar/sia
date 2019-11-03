@@ -50,7 +50,8 @@ import java.util.stream.Collectors;
         return jsonConfiguration.randomSeed == -1 ? new Random() : new Random(jsonConfiguration.randomSeed);
     }
 
-    private StopConditionFunction parseStopConditionFunction(StopCondition[] stopConditions, final StoppingData stoppingData) {
+    private StopConditionFunction parseStopConditionFunction(final StopCondition[] stopConditions, final StoppingData stoppingData) {
+        System.out.println(stopConditions);
         return s -> Arrays.stream(stopConditions)
                         .map(sc -> parseStopConditionFunctions(sc, stoppingData).stopConditionIsMet(s))
                         .reduce(false, (accum, val) -> accum || val);

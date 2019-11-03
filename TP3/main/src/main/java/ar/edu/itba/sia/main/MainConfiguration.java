@@ -70,7 +70,7 @@ public class MainConfiguration implements Configuration {
 
     @Override
     public Random getRandom() {
-        return null;
+        return random;
     }
 
     public int getInitialPopulationSize() {
