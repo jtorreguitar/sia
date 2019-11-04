@@ -10,20 +10,24 @@ import java.util.List;
 public class FullReplacer implements Replacer {
 
     List<Selector> algos;
+    int quant;
 
-    public FullReplacer(List<Selector> selectionAlgorithms){
+    public FullReplacer(List<Selector> selectionAlgorithms, int quant){
+
         this.algos = selectionAlgorithms;
+        this.quant = quant;
     }
 
     @Override
     public List<Chromosome> replace(List<Chromosome> population, List<Chromosome> children, List<Chromosome> selected) {
         List<Chromosome> newGen = new LinkedList<>();
+        double percent = quant/population.size();
         // Selection es toda la generacion t MENOS los padres mutados MAS los hijos
         List<Chromosome> selection = population;
         selection.removeAll(selected);
         selection.addAll(children);
-        newGen.addAll(algos.get(0).select(selection));
-        newGen.addAll(algos.get(1).select(selection));
+        newGen.addAll(algos.get(0).select(selection, (int) Math.floor( population.size() * percent ) ));
+        newGen.addAll(algos.get(1).select(selection, (int) Math.floor( population.size() * (1-percent) ) ));
         return newGen;
     }
 }

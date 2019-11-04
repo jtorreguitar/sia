@@ -62,7 +62,8 @@ import java.util.stream.IntStream;
     //TODO no se si el constructor del third replacer deberia manejarse de otra manera
     /* package */ Replacer determineReplacer(Configuration configuration) {
         switch (configuration.getReplacer()) {
-            case FULL_REPLACEMENT: return new FullReplacer(determineSelectorsForReplacer(configuration));
+            case FULL_REPLACEMENT: return new FullReplacer(determineSelectorsForReplacer(configuration),
+                                                    configuration.getReplacementQuantities().get(0));
             case SECOND: return new SecondReplacer(determineSelectorsForReplacer(configuration),
                                                     configuration.getReplacementQuantities().get(0));
             case THIRD: return new ThirdReplacer( determineSelectorsForReplacer(configuration),

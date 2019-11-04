@@ -2,7 +2,6 @@ package ar.edu.itba.sia.geneticAlgorithmGps.implementations.selectors;
 
 import ar.edu.itba.sia.geneticAlgorithmGps.interfaces.Selector;
 import ar.edu.itba.sia.interfaces.Chromosome;
-import javafx.util.Pair;
 
 import java.util.*;
 
