@@ -9,16 +9,14 @@ public class BoltzmannRouletteSelector implements Selector {
 
     private Random random;
     private int x;
-    private int quantity;
 
-    public BoltzmannRouletteSelector(Random random, int quantity) {
+    public BoltzmannRouletteSelector(Random random) {
         this.random = random;
         this.x = 1;
-        this.quantity = quantity;
     }
 
     @Override
-    public List<Chromosome> select(List<Chromosome> population) {
+    public List<Chromosome> select(List<Chromosome> population, int quantity) {
 
         //debe ser par
         if (quantity % 2 != 0 )

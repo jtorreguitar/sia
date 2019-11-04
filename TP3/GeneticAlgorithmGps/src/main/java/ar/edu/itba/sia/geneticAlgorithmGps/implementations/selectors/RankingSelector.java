@@ -12,15 +12,13 @@ import java.util.stream.Collectors;
 public class RankingSelector implements Selector {
 
     private Random random;
-    private int quantity;
 
-    public RankingSelector(Random random, int quantity) {
+    public RankingSelector(Random random) {
         this.random = random;
-        this.quantity = quantity;
     }
 
     @Override
-    public List<Chromosome> select(List<Chromosome> population) {
+    public List<Chromosome> select(List<Chromosome> population, int quantity) {
 
         if (quantity % 2 != 0 )
             quantity = quantity - 1;

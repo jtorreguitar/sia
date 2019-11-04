@@ -33,21 +33,20 @@ import java.util.stream.IntStream;
     /* package */ List<Selector> determineSelectors(final Configuration configuration) {
         return IntStream.range(0, configuration.getSelectors().size())
                         .mapToObj(i -> determineSelector(configuration.getSelectors().get(i),
-                                                            configuration.getSelectionQuantities().get(i),
                                                             configuration.getRandom(),
                                                             configuration.getSelectionCompetitors().get(i)))
                         .collect(Collectors.toList());
     }
 
-    /* package */ Selector determineSelector(SelectorType selectorType, Integer quantity, Random random, Integer competitors) {
+    /* package */ Selector determineSelector(SelectorType selectorType, Random random, Integer competitors) {
         switch (selectorType) {
-            case ELITE: return new EliteSelector(quantity);
-            case ROULETTE: return new RouletteSelector(random, quantity);
-            case PTOURNAMENT: return new ProbabilisticTournamentSelector(random, quantity);
-            case DTOURNAMENT: return new DeterministicTournamentSelector(random, competitors, quantity);
-            case UNIVERSAL: return new UniversalSelector(random, quantity);
-            case RANKING: return new RankingSelector(random, quantity);
-            case BOLTZMANN: return new BoltzmannRouletteSelector(random, quantity);
+            case ELITE: return new EliteSelector();
+            case ROULETTE: return new RouletteSelector(random);
+            case PTOURNAMENT: return new ProbabilisticTournamentSelector(random);
+            case DTOURNAMENT: return new DeterministicTournamentSelector(random, competitors);
+            case UNIVERSAL: return new UniversalSelector(random);
+            case RANKING: return new RankingSelector(random);
+            case BOLTZMANN: return new BoltzmannRouletteSelector(random);
             default: throw new IllegalArgumentException("invalid selector provided");
         }
     }
@@ -55,7 +54,6 @@ import java.util.stream.IntStream;
     /* package */ List<Selector> determineSelectorsForReplacer(final Configuration configuration) {
         return IntStream.range(0, configuration.getSelectors().size())
                 .mapToObj(i -> determineSelector(configuration.getReplacementSelectors().get(i),
-                        configuration.getReplacementQuantities().get(i),
                         configuration.getRandom(),
                         configuration.getReplacementCompetitors().get(i)))
                 .collect(Collectors.toList());

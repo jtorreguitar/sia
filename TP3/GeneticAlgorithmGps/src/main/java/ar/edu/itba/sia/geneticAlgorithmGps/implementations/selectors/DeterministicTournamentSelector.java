@@ -10,16 +10,14 @@ public class DeterministicTournamentSelector implements Selector {
 
     private Random random;
     private int m;
-    private int quantity;
 
-    public DeterministicTournamentSelector(Random random, int m, int quantity) {
+    public DeterministicTournamentSelector(Random random, int m) {
         this.random = random;
         this.m = m;
-        this.quantity = quantity;
     }
 
     @Override
-    public List<Chromosome> select(List<Chromosome> population) {
+    public List<Chromosome> select(List<Chromosome> population, int quantity) {
         
         if (quantity % 2 != 0 )
             quantity = quantity - 1;
