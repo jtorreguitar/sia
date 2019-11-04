@@ -18,11 +18,11 @@ public class Main {
                                                                                 configuration.getRandom());
         GeneticAlgorithmGpsEngine engine = new GeneticAlgorithmGpsEngine(population, configuration);
         Metrics metrics = engine.solve();
-        writeToTsv(metrics);
+        writeToTsv(metrics, args[0]);
     }
 
-    private static void writeToTsv(Metrics metrics) {
-        File file = new File("metrics.tsv");
+    private static void writeToTsv(Metrics metrics, String path) {
+        File file = new File(path + "metrics.tsv");
         try (FileWriter fw = new FileWriter(file); BufferedWriter br = new BufferedWriter(fw)){
             br.write("generation\trepeats\tmean\tbest\tmutation rate\n");
             for(int i = 0; i < metrics.getMeanFitness().size(); i++) {

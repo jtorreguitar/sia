@@ -17,6 +17,13 @@ public class FullReplacer implements Replacer {
 
     @Override
     public List<Chromosome> replace(List<Chromosome> population, List<Chromosome> children, List<Chromosome> selected) {
-        return children;
+        List<Chromosome> newGen = new LinkedList<>();
+        // Selection es toda la generacion t MENOS los padres mutados MAS los hijos
+        List<Chromosome> selection = population;
+        selection.removeAll(selected);
+        selection.addAll(children);
+        newGen.addAll(algos.get(0).select(selection));
+        newGen.addAll(algos.get(1).select(selection));
+        return newGen;
     }
 }

@@ -65,8 +65,10 @@ public class GeneticAlgorithmGpsEngine {
     }
 
     private List<Chromosome> select(final List<Chromosome> population) {
-        return selectors.stream().flatMap(s -> s.select(population).stream())
-                                .collect(Collectors.toList());
+        List<Chromosome> selected = new LinkedList<>();
+        for(int i = 0; i < selectors.size(); i++)
+            selected.addAll(selectors.get(i).select(population, configuration.getSelectionQuantities().get(i)));
+        return selected;
     }
 
     private List<Chromosome> cross(final List<Chromosome> selected) {

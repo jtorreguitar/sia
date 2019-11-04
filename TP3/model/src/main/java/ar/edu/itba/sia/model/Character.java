@@ -165,8 +165,8 @@ public class Character implements Chromosome {
     public int hashCode() {
         int hashcode = 31;
         for(Equipment e : equipment.values())
-            hashcode = hashcode + 31 * e.hashCode();
-        return hashcode;
+            hashcode = hashcode * 31 + e.hashCode();
+        return hashcode + 31 * height.hashCode();
     }
 
     @Override
@@ -174,11 +174,6 @@ public class Character implements Chromosome {
         if(!(obj instanceof Character))
             return false;
         Character c = (Character) obj;
-        boolean ret = true;
-        for(Equipment e : equipment.values()) {
-            if(!c.equipment.containsValue(e))
-                ret = false;
-        }
-        return ret;
+        return c.equipment.values().containsAll(equipment.values()) && height.equals(c.height);
     }
 }

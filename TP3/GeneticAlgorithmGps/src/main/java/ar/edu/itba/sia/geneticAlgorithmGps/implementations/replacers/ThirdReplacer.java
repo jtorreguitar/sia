@@ -22,7 +22,7 @@ public class ThirdReplacer implements Replacer {
         List<Chromosome> newGen = new LinkedList<>();
         int k = selected.size();
         int nMinK = population.size() - k;
-        List<Chromosome> selection = population;
+        List<Chromosome> selection = new LinkedList<>(population);
         selection.addAll(children);
         newGen.addAll(algos.get(0).select(population, (int) Math.floor( percent * nMinK ) ));
         newGen.addAll(algos.get(1).select(population, (int) Math.floor( (1-percent) * nMinK ) ));

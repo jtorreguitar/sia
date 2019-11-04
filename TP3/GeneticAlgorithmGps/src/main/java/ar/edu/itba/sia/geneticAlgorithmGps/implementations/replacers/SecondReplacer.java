@@ -21,9 +21,9 @@ public class SecondReplacer implements Replacer {
     public List<Chromosome> replace(List<Chromosome> population, List<Chromosome> children, List<Chromosome> selected) {
         List<Chromosome> newGen = new LinkedList<>();
         newGen.addAll(children);
-        List<Chromosome> selection = population;
+        List<Chromosome> selection = new LinkedList<>(population);
         // selection es N-K donde K son los padres seleccionados para mutar
-        population.removeAll(selected);
+        selection.removeAll(selected);
         int k = selected.size();
         int nMinK = population.size() - k;
         newGen.addAll(algos.get(0).select(selection, (int) Math.floor( percent * nMinK ) ));
