@@ -9,14 +9,8 @@ import java.util.stream.Collectors;
 
 public class EliteSelector implements Selector {
 
-    private int quantity;
-
-    public EliteSelector(int quantity) {
-        this.quantity = quantity;
-    }
-
     @Override
-    public List<Chromosome> select(List<Chromosome> population) {
+    public List<Chromosome> select(List<Chromosome> population, int quantity) {
         return population.stream().sorted((c1, c2) -> Double.compare(c2.getAptitude(), c1.getAptitude()))
                                 .limit(Double.valueOf(quantity).longValue())
                                 .collect(Collectors.toList());

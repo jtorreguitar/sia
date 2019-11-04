@@ -9,15 +9,13 @@ import java.util.*;
 public class RouletteSelector implements Selector {
 
     private Random random;
-    private int quantity;
 
-    public RouletteSelector (Random random, int quantity){
+    public RouletteSelector (Random random){
         this.random = random;
-        this.quantity = quantity;
     }
 
     @Override
-    public List<Chromosome> select(List<Chromosome> population) {
+    public List<Chromosome> select(List<Chromosome> population, int quantity) {
        if (quantity % 2 != 0 )
             quantity = quantity - 1;
 
