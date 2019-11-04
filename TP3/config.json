@@ -2,40 +2,40 @@
   "selectors": [
     {
       "method": "ELITE",
-      "quantity": 6,
+      "quantity": 200,
       "competitors": 5
     },
     {
-      "method": "UNIVERSAL",
-      "quantity": 14,
+      "method": "ROULETTE",
+      "quantity": 300,
       "competitors": 5
     }
   ],
   "replacerSelectors": [
     {
       "method": "ELITE",
-      "quantity": 5,
+      "quantity": 100,
       "competitors": 5
     },
     {
-      "method": "ELITE",
-      "quantity": 5,
+      "method": "ROULETTE",
+      "quantity": 400,
       "competitors": 5
     }
   ],
-  "replacer": "FULL_REPLACEMENT",
+  "replacer": "THIRD",
   "crosser": "SINGLE_POINT",
   "mutator": "MULTI_GENE",
-  "mutationRate": 0.5,
-  "mutationRateChangeRate": 0.01,
+  "mutationRate": 0.2,
+  "mutationRateChangeRate": 0,
   "stopConditions": [
     "GENERATIONS",
     "OPTIMUM"
   ],
-  "initialPopulationSize": 20,
+  "initialPopulationSize": 1000,
   "randomSeed": -1,
   "stoppingData": {
-    "generations": 10,
+    "generations": 30000,
     "bestAptitude": 50,
     "bestAptitudeIncrease": 0,
     "repeatIndividuals": 0

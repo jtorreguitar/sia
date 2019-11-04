@@ -18,7 +18,7 @@ public class ThirdReplacer implements Replacer {
     @Override
     public List<Chromosome> replace(List<Chromosome> population, List<Chromosome> children, List<Chromosome> selected) {
         List<Chromosome> newGen = new LinkedList<>();
-        List<Chromosome> selection = population;
+        List<Chromosome> selection = new LinkedList<>(population);
         selection.addAll(children);
         newGen.addAll(algos.get(0).select(population));
         newGen.addAll(algos.get(1).select(population));
