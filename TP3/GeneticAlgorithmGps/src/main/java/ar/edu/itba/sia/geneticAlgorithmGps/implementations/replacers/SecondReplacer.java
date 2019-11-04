@@ -10,16 +10,17 @@ import java.util.List;
 public class SecondReplacer implements Replacer {
 
     List<Selector> algos;
-    Double percent;
+    int quant;
 
-    public SecondReplacer(List<Selector> selectionAlgorithms, Double replacementPercentage){
+    public SecondReplacer(List<Selector> selectionAlgorithms, int quant){
         this.algos = selectionAlgorithms;
-        this.percent = replacementPercentage;
+        this.quant = quant;
     }
 
     @Override
     public List<Chromosome> replace(List<Chromosome> population, List<Chromosome> children, List<Chromosome> selected) {
         List<Chromosome> newGen = new LinkedList<>();
+        double percent = quant / population.size();
         newGen.addAll(children);
         List<Chromosome> selection = new LinkedList<>(population);
         // selection es N-K donde K son los padres seleccionados para mutar

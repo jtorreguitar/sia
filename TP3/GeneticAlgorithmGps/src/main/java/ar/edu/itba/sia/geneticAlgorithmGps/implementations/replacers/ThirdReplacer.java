@@ -10,16 +10,17 @@ import java.util.List;
 public class ThirdReplacer implements Replacer {
 
     List<Selector> algos;
-    Double percent;
+    int quant;
 
-    public ThirdReplacer(List<Selector> selectionAlgorithms, Double replacementPercentage){
+    public ThirdReplacer(List<Selector> selectionAlgorithms, int quant){
         this.algos = selectionAlgorithms;
-        this.percent = replacementPercentage;
+        this.quant = quant;
     }
 
     @Override
     public List<Chromosome> replace(List<Chromosome> population, List<Chromosome> children, List<Chromosome> selected) {
         List<Chromosome> newGen = new LinkedList<>();
+        double percent = quant / population.size();
         int k = selected.size();
         int nMinK = population.size() - k;
         List<Chromosome> selection = new LinkedList<>(population);
