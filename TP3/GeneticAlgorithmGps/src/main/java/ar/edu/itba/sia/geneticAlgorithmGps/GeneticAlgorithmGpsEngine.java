@@ -38,6 +38,11 @@ public class GeneticAlgorithmGpsEngine {
     private Integer generations = 0;
     private GeneticAlgorithmStoppingData stoppingData;
 
+    /**
+     * Grapher
+     */
+    private Grapher graph = new Grapher();
+
     public GeneticAlgorithmGpsEngine(final List<Chromosome> population, final Configuration configuration) {
         this.population = population;
         this.configuration = configuration;
@@ -84,6 +89,7 @@ public class GeneticAlgorithmGpsEngine {
 
     private void updateMetrics(final List<Chromosome> newPopulation) {
         Chromosome fittestIndividual = newPopulation.stream().max(Comparator.comparing(Chromosome::getAptitude)).get();
+        graph.updateChart(fittestIndividual.getAptitude());
         stoppingData.setBestAptitude(fittestIndividual.getAptitude());
         fittestIndividualForEachGeneration.add(fittestIndividual);
         stoppingData.setRepeatIndividuals(new Long(newPopulation.stream().filter(c -> population.contains(c)).count()).intValue());

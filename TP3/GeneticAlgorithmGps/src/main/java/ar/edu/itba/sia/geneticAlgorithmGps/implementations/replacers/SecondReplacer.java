@@ -23,7 +23,7 @@ public class SecondReplacer implements Replacer {
         double percent = quant / population.size();
         newGen.addAll(children);
         //List<Chromosome> selection = new LinkedList<>(population);
-        // selection es N-K donde K son los padres seleccionados para mutar
+        //selection es N-K donde K son los padres seleccionados para mutar
         //selection.removeAll(selected);
         int k = selected.size();
         int nMinK = population.size() - k;
