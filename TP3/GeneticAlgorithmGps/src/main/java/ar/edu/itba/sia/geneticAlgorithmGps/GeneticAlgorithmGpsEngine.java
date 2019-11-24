@@ -41,7 +41,7 @@ public class GeneticAlgorithmGpsEngine {
     /**
      * Grapher
      */
-    private Grapher graph = new Grapher();
+    //private Grapher graph = new Grapher();
 
     /**
      * mutation add params
@@ -131,7 +131,7 @@ public class GeneticAlgorithmGpsEngine {
             bestApt = fittestIndividual.getAptitude();
         }
         prevApt = fittestIndividual.getAptitude();
-        graph.updateChart(fittestIndividual.getAptitude());
+        //graph.updateChart(fittestIndividual.getAptitude());
         stoppingData.setBestAptitude(fittestIndividual.getAptitude());
         fittestIndividualForEachGeneration.add(fittestIndividual);
         stoppingData.setRepeatIndividuals(new Long(newPopulation.stream().filter(c -> population.contains(c)).count()).intValue());

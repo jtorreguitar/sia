@@ -8,8 +8,8 @@ import org.knowm.xchart.style.PieStyler;
 public class Grapher {
 
     private int t = 1;
-    private double generations[] = new double[9999];
-    private double maxApt[] = new double[9999];
+    private double generations[] = new double[2002];
+    private double maxApt[] = new double[2002];
     private XYChart chart = QuickChart.getChart("max Aptitude vs generations", "Generations", " Max Aptitude", "Max Aptitude",generations, maxApt );;
     private SwingWrapper<XYChart> sw = new SwingWrapper<XYChart>(chart);
 
