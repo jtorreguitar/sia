@@ -59,15 +59,14 @@ import java.util.stream.IntStream;
                 .collect(Collectors.toList());
     }
 
-    //TODO no se si el constructor del third replacer deberia manejarse de otra manera
     /* package */ Replacer determineReplacer(Configuration configuration) {
         switch (configuration.getReplacer()) {
             case FULL_REPLACEMENT: return new FullReplacer(determineSelectorsForReplacer(configuration),
-                                                    configuration.getReplacementQuantities().get(0));
+                                                    configuration.getReplacementQuantities().get(0),configuration.getReplacementQuantities().get(1));
             case SECOND: return new SecondReplacer(determineSelectorsForReplacer(configuration),
-                                                    configuration.getReplacementQuantities().get(0));
+                                                    configuration.getReplacementQuantities().get(0),configuration.getReplacementQuantities().get(1));
             case THIRD: return new ThirdReplacer( determineSelectorsForReplacer(configuration),
-                                                    configuration.getReplacementQuantities().get(0));
+                                                    configuration.getReplacementQuantities().get(0),configuration.getReplacementQuantities().get(1));
             default: throw new IllegalArgumentException("invalid replacer provided");
         }
     }

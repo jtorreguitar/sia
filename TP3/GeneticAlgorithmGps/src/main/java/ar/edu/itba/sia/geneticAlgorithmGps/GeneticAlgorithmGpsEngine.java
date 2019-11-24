@@ -43,6 +43,23 @@ public class GeneticAlgorithmGpsEngine {
      */
     private Grapher graph = new Grapher();
 
+    /**
+     * mutation add params
+     */
+    private int noChangeGenerations = 0;
+    private int generationsWithMutation = 30;
+    private double MUTATION_ADD = 0.0;
+    private double prevApt = 0.0;
+    private int GENERATION_TOLERANCE = 10;
+    private double originalMutationRate;
+    private boolean MUTATION_ALTERED = false;
+
+    /**
+     * General info
+     */
+    private double bestApt = 0.0;
+
+
     public GeneticAlgorithmGpsEngine(final List<Chromosome> population, final Configuration configuration) {
         this.population = population;
         this.configuration = configuration;
@@ -52,6 +69,7 @@ public class GeneticAlgorithmGpsEngine {
         crosser = configurationParser.determineCrosser(configuration);
         mutator = configurationParser.determineMutator(configuration);
         stoppingData = new GeneticAlgorithmStoppingData();
+        originalMutationRate = mutator.getMutationRate();
     }
 
     //TODO: Cuando tomamos los parametros, si hacemos FULLREPLACE el pctg de reemplazo debe ser 100, sino puede ser cualquiera.
@@ -66,6 +84,8 @@ public class GeneticAlgorithmGpsEngine {
             population = newPopulation;
         }
         while(!configuration.stopConditionIsMet(stoppingData));
+        Chromosome lastBest = population.stream().max(Comparator.comparing(Chromosome::getAptitude)).get();
+        System.out.println("Best Aptitude: " + bestApt+ " \nLast Gen Best Aptitude: " + lastBest.getAptitude());
         return new Metrics(repeatIndividuals, fittestIndividualForEachGeneration, meanFitness, mutationRates);
     }
 
@@ -89,6 +109,28 @@ public class GeneticAlgorithmGpsEngine {
 
     private void updateMetrics(final List<Chromosome> newPopulation) {
         Chromosome fittestIndividual = newPopulation.stream().max(Comparator.comparing(Chromosome::getAptitude)).get();
+        if(MUTATION_ALTERED){
+            if (generationsWithMutation == 0) {
+                generationsWithMutation = 10;
+                MUTATION_ALTERED = false;
+                mutator.setMutationRate(originalMutationRate);
+            } else{
+                generationsWithMutation--;
+            }
+        }
+        if(prevApt == fittestIndividual.getAptitude()){
+
+            noChangeGenerations++;
+            if(noChangeGenerations == GENERATION_TOLERANCE){
+                noChangeGenerations = 0;
+                mutator.setMutationRate(originalMutationRate + MUTATION_ADD);
+                MUTATION_ALTERED = true;
+            }
+        }
+        if (bestApt < fittestIndividual.getAptitude()){
+            bestApt = fittestIndividual.getAptitude();
+        }
+        prevApt = fittestIndividual.getAptitude();
         graph.updateChart(fittestIndividual.getAptitude());
         stoppingData.setBestAptitude(fittestIndividual.getAptitude());
         fittestIndividualForEachGeneration.add(fittestIndividual);
