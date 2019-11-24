@@ -31,7 +31,6 @@ public class RankingSelector implements Selector {
 
         for(int k = 0; k < population.size(); k++){
             rankingValue[k] = (population.size() - k)/total;
-            System.out.println(rankingValue[k]);
         }
 
         List<Chromosome> ranking = population.stream()

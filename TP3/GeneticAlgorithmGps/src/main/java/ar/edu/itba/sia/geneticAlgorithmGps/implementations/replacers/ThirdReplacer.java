@@ -10,28 +10,25 @@ import java.util.List;
 public class ThirdReplacer implements Replacer {
 
     List<Selector> algos;
-    int quant1;
-    int quant2;
+    int quant;
 
-    public ThirdReplacer(List<Selector> selectionAlgorithms, int quant1){
+    public ThirdReplacer(List<Selector> selectionAlgorithms, int quant){
         this.algos = selectionAlgorithms;
-        this.quant1 = quant1;
-        //this.quant2 = quant2;
+        this.quant = quant;
     }
 
     @Override
     public List<Chromosome> replace(List<Chromosome> population, List<Chromosome> children, List<Chromosome> selected) {
         List<Chromosome> newGen = new LinkedList<>();
-        double percent1 = ((double)quant1) / population.size();
-        //double percent2 = ((double)quant2) / population.size();
+        double percent = ((double)quant) / population.size();
         int k = selected.size();
         int nMinK = population.size() - k;
         List<Chromosome> selection = new LinkedList<>(population);
         selection.addAll(children);
-        newGen.addAll(algos.get(0).select(population, (int) Math.floor( percent1 * nMinK ) ));
-        newGen.addAll(algos.get(1).select(population, (int) Math.floor( (1-percent1)  * nMinK ) ));
-        newGen.addAll(algos.get(0).select(selection, (int) Math.floor( percent1 * k )));
-        newGen.addAll(algos.get(1).select(selection, (int) Math.floor( (1-percent1) * k ) ));
+        newGen.addAll(algos.get(0).select(population, (int) Math.floor( percent * nMinK ) ));
+        newGen.addAll(algos.get(1).select(population, (int) Math.floor( (1-percent)  * nMinK ) ));
+        newGen.addAll(algos.get(0).select(selection, (int) Math.floor( percent * k )));
+        newGen.addAll(algos.get(1).select(selection, (int) Math.floor( (1-percent) * k ) ));
 
         return newGen;
     }

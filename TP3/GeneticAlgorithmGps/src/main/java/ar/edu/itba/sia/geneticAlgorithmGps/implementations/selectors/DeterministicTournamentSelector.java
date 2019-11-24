@@ -25,11 +25,11 @@ public class DeterministicTournamentSelector implements Selector {
         List<Chromosome> winners = new LinkedList<>();
 
         while(quantity > 0){
-            Chromosome winner = population.get((int) random.nextDouble() * (quantity-1));
+            Chromosome winner = population.get((int) (random.nextDouble() * (population.size()-1)));
             int i = 0;
 
             while(i < m-1){
-                Chromosome candidate = population.get((int) (Math.random() * (quantity-1)));
+                Chromosome candidate = population.get((int) (random.nextDouble() * (population.size()-1)));
                 if(Double.compare(winner.getAptitude(), candidate.getAptitude()) < 0){
                     winner = candidate;
                 }

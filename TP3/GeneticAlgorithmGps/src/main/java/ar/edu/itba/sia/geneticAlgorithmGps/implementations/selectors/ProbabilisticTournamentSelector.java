@@ -23,8 +23,8 @@ public class ProbabilisticTournamentSelector implements Selector {
         List<Chromosome> winners = new LinkedList<>();
 
         while(quantity > 0){
-            Chromosome X = population.get((int) random.nextDouble() * (quantity-1));
-            Chromosome Y = population.get((int) random.nextDouble() * (quantity-1));
+            Chromosome X = population.get((int) (random.nextDouble() * (population.size()-1)));
+            Chromosome Y = population.get((int) (random.nextDouble() * (population.size()-1)));
             
             double pickWinner = random.nextDouble();
 

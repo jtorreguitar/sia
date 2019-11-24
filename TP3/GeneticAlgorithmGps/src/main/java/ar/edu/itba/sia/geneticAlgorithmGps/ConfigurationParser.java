@@ -62,11 +62,11 @@ import java.util.stream.IntStream;
     /* package */ Replacer determineReplacer(Configuration configuration) {
         switch (configuration.getReplacer()) {
             case FULL_REPLACEMENT: return new FullReplacer(determineSelectorsForReplacer(configuration),
-                                                    configuration.getReplacementQuantities().get(0),configuration.getReplacementQuantities().get(1));
+                                                    configuration.getReplacementQuantities().get(0));
             case SECOND: return new SecondReplacer(determineSelectorsForReplacer(configuration),
                                                     configuration.getReplacementQuantities().get(0));
             case THIRD: return new ThirdReplacer( determineSelectorsForReplacer(configuration),
-                                                    configuration.getReplacementQuantities().get(0),configuration.getReplacementQuantities().get(1));
+                                                    configuration.getReplacementQuantities().get(0));
             default: throw new IllegalArgumentException("invalid replacer provided");
         }
     }

@@ -3,31 +3,31 @@
     {
       "method": "ELITE",
       "quantity": 40,
-      "competitors": 7
+      "competitors": 6
     },
     {
       "method": "ELITE",
       "quantity": 0,
-      "competitors": 5
+      "competitors": 6
     }
   ],
   "replacerSelectors": [
     {
       "method": "ELITE",
-      "quantity": 40,
-      "competitors": 5
+      "quantity": 400,
+      "competitors": 6
     },
     {
       "method": "ELITE",
       "quantity": 0,
-      "competitors": 5
+      "competitors": 6
     }
   ],
   "replacer": "SECOND",
   "crosser": "UNIFORM",
-  "mutator": "SINGLE_GENE",
-  "mutationRate": 0.0,
-  "mutationRateChangeRate": 0.0,
+  "mutator": "MULTI_GENE",
+  "mutationRate": 0.3,
+  "mutationRateChangeRate": 0.01,
   "stopConditions": [
     "GENERATIONS",
     "OPTIMUM"
