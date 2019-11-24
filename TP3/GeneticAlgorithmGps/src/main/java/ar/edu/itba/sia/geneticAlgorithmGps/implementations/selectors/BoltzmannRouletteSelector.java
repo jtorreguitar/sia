@@ -24,20 +24,26 @@ public class BoltzmannRouletteSelector implements Selector {
 
         List<Chromosome> winners = new LinkedList<>();
 
-        double boltzmannValue[] = new double[quantity];
+        double boltzmannValue[] = new double[population.size()];
 
         double temperature = 1/(0.002*x + 1);
 
-        for (int j = 0; j < quantity; j++){
+        double totalBoltzmann = 0;
+
+        for (int j = 0; j < population.size(); j++){
             boltzmannValue[j] = Math.pow(Math.E, (population.get(j).getAptitude())*temperature);
+            totalBoltzmann += boltzmannValue[j];
         }
 
-        double totalBoltzmann = Arrays.stream(boltzmannValue).sum();
-        double averageBoltzmann = totalBoltzmann/quantity;
+        double averageBoltzmann = totalBoltzmann/population.size();
         
-        for (int j = 0; j < quantity; j++){
-            boltzmannValue[j] = boltzmannValue[j]/averageBoltzmann;
+        double totalBoltzmannFitness = 0;
+
+        for (int k = 0; k < population.size(); k++){
+            boltzmannValue[k] = boltzmannValue[k]/averageBoltzmann;
+            totalBoltzmannFitness += boltzmannValue[k];
         }
+
 
         int i = 0;
 
@@ -49,12 +55,14 @@ public class BoltzmannRouletteSelector implements Selector {
 
             int t = 0;
 
-            while(accumulated + boltzmannValue[t]/totalBoltzmann < pickWinner){
-                accumulated += boltzmannValue[t]/totalBoltzmann;
+            while(accumulated + boltzmannValue[t]/totalBoltzmannFitness < pickWinner){
+                accumulated += boltzmannValue[t]/totalBoltzmannFitness;
                 t++;
             }
 
             winners.add(population.get(t));
+
+            i++;
 
         }
         x ++;

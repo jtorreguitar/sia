@@ -25,7 +25,14 @@ public class RankingSelector implements Selector {
 
         List<Chromosome> winners = new LinkedList<>();
 
-        int total = (IntStream.range(1, population.size())).sum();
+        double total = ((population.size()+1)*population.size())/2;
+
+        double rankingValue[] = new double[population.size()];
+
+        for(int k = 0; k < population.size(); k++){
+            rankingValue[k] = (population.size() - k)/total;
+            System.out.println(rankingValue[k]);
+        }
 
         List<Chromosome> ranking = population.stream()
             .sorted((c1, c2) -> Double.compare(c2.getAptitude(), c1.getAptitude()))
@@ -35,18 +42,18 @@ public class RankingSelector implements Selector {
 
         while(i < quantity){
 
-            double accumulated = 0;
-
             double pickWinner = random.nextDouble();
+
+            double accumulated = 0;
 
             int t = 0;
 
-            while((accumulated + (quantity-t)/total) < pickWinner){
-                accumulated += (quantity-t)/total;
+            while(accumulated + rankingValue[t] < pickWinner){
+                accumulated += rankingValue[t];
                 t++;
             }
 
-            winners.add(population.get(t));
+            winners.add(ranking.get(t));
 
             i++;
 
